@@ -1,0 +1,18 @@
+{
+    
+    "type": "object",
+    "properties": {
+        "type": { "const": "scatter" },
+        "places": {
+            "$ref": "feature_ref.schema.json"
+        },
+        "project_input_to_floor": {
+            "type": "boolean"
+        },
+        "distribution": {
+            "$ref": "distribution.schema.json"
+        }
+    },
+    "required": ["places", "distribution"],
+    "additionalProperties": false
+}

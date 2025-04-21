@@ -1,0 +1,23 @@
+{
+    
+    "anyOf": [
+        {
+            "$ref": "aggregate_feature.schema.json"
+        },
+        {
+            "$ref": "scatter_feature.schema.json"
+        },
+        {
+            "$ref": "block_feature.schema.json"
+        },
+        {
+            "$ref": "surface_snap_feature.schema.json"
+        },
+        {
+            "$ref": "search_feature.schema.json"
+        },
+        {
+            "$ref": "weighted_random_feature.schema.json"
+        }
+    ]
+}

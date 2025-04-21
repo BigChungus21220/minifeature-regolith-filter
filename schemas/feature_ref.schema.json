@@ -1,0 +1,16 @@
+{
+    
+    "anyOf": [
+        {
+            "$ref": "feature.schema.json"
+        },
+        {
+            "type": "string",
+            "pattern": "^(([a-z_][a-z0-9_]*\\.)?[a-z_][a-z0-9_]*)$"
+        },
+        {
+            "type": "string",
+            "pattern": "^([a-z_][a-z0-9_]*):([a-z_][a-z0-9_]*/)*([a-z_][a-z0-9_]*)$"
+        }
+    ]
+}

@@ -1,0 +1,43 @@
+{
+  
+  "type": "object",
+  "properties": {
+    "coordinate_eval_order": {
+      "type": "string",
+      "enum": ["xyz", "xzy", "yxz", "yzx", "zxy", "zyx"]
+    },
+    "iterations": {
+      "anyOf": [{ "type": "string" }, { "type": "number" }]
+    },
+    "scatter_chance": {
+      "anyOf": [
+        { "type": "string" },
+        { "type": "number" },
+        {
+          "type": "object",
+          "properties": {
+            "numerator": {
+              "type": "integer"
+            },
+            "denominator": {
+              "type": "integer"
+            }
+          },
+          "required": ["numerator", "denominator"],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "x": {
+      "$ref": "coordinate_distribution.schema.json"
+    },
+    "y": {
+      "$ref": "coordinate_distribution.schema.json"
+    },
+    "z": {
+      "$ref": "coordinate_distribution.schema.json"
+    }
+  },
+  "required": ["iterations", "x", "y", "z"],
+  "additionalProperties": false
+}

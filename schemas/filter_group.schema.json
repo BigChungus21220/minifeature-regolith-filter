@@ -1,0 +1,32 @@
+{
+  
+  "anyOf": [
+    {
+      "$ref": "filter_test.schema.json"
+    },
+    {
+      "type": "object",
+      "propertyNames": {
+        "enum": [
+          "AND",
+          "NOT",
+          "OR",
+          "all",
+          "all_of",
+          "any",
+          "any_of",
+          "none_of"
+        ]
+      },
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+            "$ref": "filter_group.schema.json"
+        },
+        "minItems": 1
+      },
+      "minProperties": 1,
+      "maxProperties": 1
+    }
+  ]
+}

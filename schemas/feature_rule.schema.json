@@ -1,0 +1,53 @@
+{
+  
+  "type": "object",
+  "properties": {
+    "type": { "const": "rule" },
+    "conditions": {
+      "type": "object",
+      "properties": {
+        "placement_pass": {
+          "type": "string",
+          "enum": [
+            "pregeneration_pass",
+            "first_pass",
+            "before_underground_pass",
+            "underground_pass",
+            "after_underground_pass",
+            "before_surface_pass",
+            "surface_pass",
+            "after_surface_pass",
+            "before_sky_pass",
+            "sky_pass",
+            "after_sky_pass",
+            "final_pass"
+          ]
+        },
+        "biome_filter": {
+          "anyOf": [
+            {
+              "$ref": "filter_test.schema.json"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "filter_group.schema.json"
+              },
+              "minItems": 1
+            }
+          ]
+        }
+      },
+      "required": ["placement_pass"],
+      "additionalProperties": false
+    },
+    "distribution": {
+      "$ref": "distribution.schema.json"
+    },
+    "places": { 
+        "$ref": "feature_ref.schema.json"
+    }
+  },
+  "required": ["conditions", "places", "distribution"],
+  "additionalProperties": false
+}

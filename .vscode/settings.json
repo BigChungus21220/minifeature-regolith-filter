@@ -1,0 +1,10 @@
+{
+    "json.schemas": [
+        {
+            "fileMatch": [
+                "**/*.minifeature.json"
+            ],
+            "url": "./schemas/feature_file.schema.json"
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+{
+    "format_version": "1.13.0",
+    "minecraft:aggregate_feature": {
+        "early_out": "first_success",
+        "features": [
+            "minifeature:my_features/my_scatter",
+            "minifeature:my_features/my_rule_0_1",
+            "minifeature:my_features/my_rule_0_2"
+        ],
+        "description": {
+            "identifier": "minifeature:my_features/my_rule_0"
+        }
+    }
+}

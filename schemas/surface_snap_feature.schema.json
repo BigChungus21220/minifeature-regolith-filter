@@ -1,0 +1,32 @@
+{
+  
+  "type": "object",
+  "properties": {
+    "type": { "const": "surface_snap" },
+    "places": {
+      "$ref": "feature_ref.schema.json"
+    },
+    "vertical_search_range": {
+      "type": "integer"
+    },
+    "surface": {
+      "type": "string",
+      "enum": ["floor", "ceiling"]
+    },
+    "allow_air_placement": {
+      "type": "boolean"
+    },
+    "allow_underwater_placement": {
+      "type": "boolean"
+    },
+    "allowed_surface_blocks": {
+      "type": "array",
+      "items": {
+        "$ref": "block_ref.schema.json"
+      },
+      "minItems": 1
+    }
+  },
+  "required": ["places", "vertical_search_range"],
+  "additionalProperties": false
+}

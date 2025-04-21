@@ -1,0 +1,21 @@
+{
+  
+  "type": "object",
+  "properties": {
+    "type": { "const": "weighted_random" },
+    "places": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": [
+          { "$ref": "feature_ref.schema.json" },
+          { "type": "number" }
+        ],
+        "minItems": 2,
+        "maxItems": 2
+      }
+    }
+  },
+  "required": ["places"],
+  "additionalProperties": false
+}

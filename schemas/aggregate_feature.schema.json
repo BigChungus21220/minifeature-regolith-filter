@@ -1,0 +1,19 @@
+{
+  
+  "type": "object",
+  "properties": {
+    "type": { "const": "aggregate" },
+    "early_out": {
+      "type": "string",
+      "enum": ["none", "first_success", "first_failure"]
+    },
+    "places": {
+      "type": "array",
+      "items": {
+        "$ref": "feature_ref.schema.json"
+      }
+    }
+  },
+  "required": ["places"],
+  "additionalProperties": false
+}

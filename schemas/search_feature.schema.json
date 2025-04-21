@@ -1,0 +1,42 @@
+{
+  
+  "type": "object",
+  "properties": {
+    "type": { "const": "search" },
+    "places": {
+      "$ref": "feature_ref.schema.json"
+    },
+    "search_volume": {
+      "type": "object",
+      "properties": {
+        "min": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "max": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        }
+      },
+      "required": ["min", "max"]
+    },
+    "search_axis": {
+      "type": "string",
+      "enum": ["-x", "+x", "-y", "+y", "-z", "+z"]
+    },
+    "required_successes": {
+      "type": "integer",
+      "minimum": 1
+    }
+  },
+  "required": ["places", "search_volume", "search_axis"],
+  "additionalProperties": false
+}

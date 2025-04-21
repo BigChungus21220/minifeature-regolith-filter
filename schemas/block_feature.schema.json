@@ -1,0 +1,121 @@
+{
+  
+  "type": "object",
+  "properties": {
+    "type": { "const": "block" },
+    "places_block": {
+      "anyOf": [
+        {
+          "$ref": "block_ref.schema.json"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "weight": {
+                "type": "number"
+              },
+              "block": {
+                "$ref": "block_ref.schema.json"
+              }
+            },
+            "required": ["weight", "block"],
+            "additionalProperties": false
+          }
+        }
+      ]
+    },
+    "enforce_placement_rules": {
+      "type": "boolean"
+    },
+    "enforce_survivability_rules": {
+      "type": "boolean"
+    },
+    "randomize_rotation": {
+      "type": "boolean"
+    },
+    "may_attach_to": {
+      "type": "object",
+      "properties": {
+        "min_sides_must_attach": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "auto_rotate": {
+          "type": "boolean"
+        },
+        "top": { "$ref": "#definitions/face_attachment" },
+        "bottom": { "$ref": "#definitions/face_attachment" },
+        "north": { "$ref": "#definitions/face_attachment" },
+        "south": { "$ref": "#definitions/face_attachment" },
+        "east": { "$ref": "#definitions/face_attachment" },
+        "west": { "$ref": "#definitions/face_attachment" },
+        "sides": { "$ref": "#definitions/face_attachment" },
+        "all": { "$ref": "#definitions/face_attachment" },
+        "diagonal": { "$ref": "#definitions/face_attachment" }
+      },
+      "additionalProperties": false
+    },
+    "may_not_attach_to": {
+      "type": "object",
+      "properties": {
+        "top": { "$ref": "#definitions/face_attachment" },
+        "bottom": { "$ref": "#definitions/face_attachment" },
+        "north": { "$ref": "#definitions/face_attachment" },
+        "south": { "$ref": "#definitions/face_attachment" },
+        "east": { "$ref": "#definitions/face_attachment" },
+        "west": { "$ref": "#definitions/face_attachment" },
+        "sides": { "$ref": "#definitions/face_attachment" },
+        "all": { "$ref": "#definitions/face_attachment" },
+        "diagonal": { "$ref": "#definitions/face_attachment" }
+      },
+      "additionalProperties": false
+    },
+    "may_replace": {
+      "type": "array",
+      "items": {
+        "$ref": "block_ref.schema.json"
+      },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "places_block",
+    "enforce_placement_rules",
+    "enforce_survivability_rules"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "face_attachment": {
+      "type": "object",
+      "propertyNames": {
+        "enum": [
+          "top",
+          "bottom",
+          "north",
+          "south",
+          "east",
+          "west",
+          "sides",
+          "all"
+        ]
+      },
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "array",
+            "items": { "$ref": "block_ref.schema.json" },
+            "minItems": 1
+          },
+          {
+            "$ref": "block_ref.schema.json"
+          }
+        ]
+      },
+      "minProperties": 1,
+      "maxProperties": 1
+    }
+  }
+}

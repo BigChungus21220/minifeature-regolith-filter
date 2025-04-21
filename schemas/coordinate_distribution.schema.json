@@ -1,0 +1,42 @@
+{
+  
+  "anyOf": [
+    { "type": "string" },
+    { "type": "number" },
+    {
+      "type": "object",
+      "properties": {
+        "distribution": {
+          "type": "string",
+          "enum": [
+            "uniform",
+            "gaussian",
+            "inverse_gaussian",
+            "triangle",
+            "fixed_grid",
+            "jittered_grid"
+          ]
+        },
+        "extent": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              { "type": "number" },
+              { "type": "string" }
+            ]
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "grid_offset": {
+          "type": "integer"
+        },
+        "step_size": {
+          "type": "integer"
+        }
+      },
+      "required": ["distribution", "extent"],
+      "additionalProperties": false
+    }
+  ]
+}
