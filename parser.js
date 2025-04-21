@@ -1,5 +1,4 @@
 let Validator = require("jsonschema").Validator;
-const jsonc = require("jsonc");
 const fs = require("fs");
 const path = require("path");
 let val = new Validator();
