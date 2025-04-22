@@ -1,11 +1,11 @@
 {
-    "description": "A filter for generating world gen features.",
-    "exportData": false,
-    "filters": [
-      {
-        "runWith": "node",
-        "script": "./parser.js",
-        "requirements": "../"
-      }
-    ]
-  }
+  "filters": [
+    {
+      "runWith": "node",
+      "script": "./parser.js",
+      "name": "MiniFeature",
+      "description": "A filter for generating world gen features.",
+      "requirements": "./"
+    }
+  ]
+}
