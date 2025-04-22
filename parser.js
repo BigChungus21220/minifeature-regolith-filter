@@ -8,7 +8,7 @@ const path_pattern = new RegExp("^([a-z_][a-z0-9_]*):([a-z_][a-z0-9_]*/)*([a-z_]
 const simple_path_pattern = new RegExp("^([a-z_][a-z0-9_]*):([a-z_][a-z0-9_]*)/([a-z_][a-z0-9_]*)$");
 const ref_pattern = new RegExp("^(([a-z_][a-z0-9_]*)\\.)?([a-z_][a-z0-9_]*)$");
 
-const filter_dir = ".";//process.env.FILTER_DIR;
+const filter_dir = process.env.FILTER_DIR;
 const features_dir = "./BP/features";
 const minifeatures_dir = "./BP/minifeatures";
 const feature_rules_dir = "./BP/feature_rules";

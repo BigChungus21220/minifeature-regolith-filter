@@ -4,8 +4,7 @@
     "filters": [
       {
         "runWith": "node",
-        "script": "./parser.js",
-        "requirements": "../"
+        "script": "./parser.js"
       }
     ]
   }
