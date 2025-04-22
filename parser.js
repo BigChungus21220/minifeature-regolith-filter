@@ -53,7 +53,7 @@ function write_path(base_dir, namespace, name, object) {
   }
 }
 
-function json_remove_ignored(jsonText){
+function json_preprocess(jsonText){
   return jsonText.replaceAll(single_comment, "").replaceAll(newline, " ").replaceAll(multi_comment, "");
 }
 
@@ -95,7 +95,7 @@ try {
     encoding: "utf8",
     flag: "r",
   });
-  featureJSON = JSON.parse(json_remove_ignored(jsonText));
+  featureJSON = JSON.parse(json_preprocess(jsonText));
 } catch {
   console.error(`Error parsing JSON from ${jsonText}:`, err);
   process.exitCode = 1;
@@ -172,7 +172,7 @@ const featureRegistry = {
         format_version: "1.13.0",
         "minecraft:feature_rules": feature
       });
-    },
+    }
   },
 
   aggregate: {
@@ -195,7 +195,7 @@ const featureRegistry = {
         format_version: "1.13.0",
         "minecraft:aggregate_feature": feature
       });
-    },
+    }
   },
 
   block: {
@@ -211,7 +211,7 @@ const featureRegistry = {
         format_version: "1.13.0",
         "minecraft:single_block_feature": feature
       });
-    },
+    }
   },
 
   scatter: {
@@ -229,7 +229,7 @@ const featureRegistry = {
         format_version: "1.13.0",
         "minecraft:scatter_feature": feature
       });
-    },
+    }
   }
 };
 

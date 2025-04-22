@@ -24,7 +24,7 @@
     },
     "conditions": {
       "placement_pass": "first_pass",
-      "biome_filter": [
+      "minecraft:biome_filter": [
         { "test": "has_biome_tag", "value": "birch" },
         {
           "any_of": [
@@ -36,8 +36,9 @@
     },
     "distribution": {
       /* #molang
-      v.x = 1
-      v.z = 3
+      v.x = 1;
+      v.z = 256;
+      return v.x*v.z;
       */
       "iterations": "#molang",
       "x": 0,

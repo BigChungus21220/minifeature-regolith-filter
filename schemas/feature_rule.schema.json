@@ -23,7 +23,7 @@
             "final_pass"
           ]
         },
-        "biome_filter": {
+        "minecraft:biome_filter": {
           "anyOf": [
             {
               "$ref": "filter_test.schema.json"
