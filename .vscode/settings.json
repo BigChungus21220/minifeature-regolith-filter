@@ -4,7 +4,10 @@
             "fileMatch": [
                 "**/*.minifeature.json"
             ],
-            "url": "./schemas/feature_file.schema.json"
+            "url": "./minifeature/schemas/feature_file.schema.json"
         }
-    ]
+    ],
+    "yaml.schemas": {
+        "./minifeature/schemas/feature_file.schema.json": "**/*.minifeature.yaml"
+    }
 }

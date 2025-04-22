@@ -1,5 +1,4 @@
 {
-  
   "type": "object",
   "properties": {
     "coordinate_eval_order": {
@@ -7,11 +6,20 @@
       "enum": ["xyz", "xzy", "yxz", "yzx", "zxy", "zyx"]
     },
     "iterations": {
-      "anyOf": [{ "type": "string" }, { "type": "number" }]
+      "anyOf": [
+        {
+          "type": "string",
+          "contentMediaType": "text/molang"
+        },
+        { "type": "number" }
+      ]
     },
     "scatter_chance": {
       "anyOf": [
-        { "type": "string" },
+        {
+          "type": "string",
+          "contentMediaType": "text/molang"
+        },
         { "type": "number" },
         {
           "type": "object",

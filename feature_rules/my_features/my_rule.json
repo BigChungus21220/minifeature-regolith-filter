@@ -24,7 +24,7 @@
             ]
         },
         "distribution": {
-            "iterations": 1,
+            "iterations": " v.x = 1; v.z = 256; return v.x*v.z; ",
             "x": 0,
             "y": "5",
             "z": {

@@ -1,0 +1,11 @@
+{
+    "description": "A filter for generating world gen features.",
+    "exportData": false,
+    "filters": [
+      {
+        "runWith": "node",
+        "script": "./parser.js",
+        "requirements": "../"
+      }
+    ]
+  }

@@ -1,7 +1,9 @@
 {
-  
   "anyOf": [
-    { "type": "string" },
+    {
+      "type": "string",
+      "contentMediaType": "text/molang"
+    },
     { "type": "number" },
     {
       "type": "object",
@@ -22,7 +24,10 @@
           "items": {
             "anyOf": [
               { "type": "number" },
-              { "type": "string" }
+              {
+                "type": "string",
+                "contentMediaType": "text/molang"
+              }
             ]
           },
           "minItems": 2,

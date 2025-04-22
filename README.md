@@ -7,6 +7,7 @@ features:
 planned features:
 - more vanilla feature types
 - conditional_list feature type
+- dependency tree analysis for error recovery / more warnings
 
 future features:
 - json-ui like inheritance

@@ -2,6 +2,9 @@
     "format_version": "1.13.0",
     "minecraft:single_block_feature": {
         "places_block": "minecraft:obsidian",
+        "may_attach_to": {
+            "top": "minecraft:air"
+        },
         "enforce_placement_rules": true,
         "enforce_survivability_rules": true,
         "description": {
