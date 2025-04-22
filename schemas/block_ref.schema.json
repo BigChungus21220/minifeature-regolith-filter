@@ -1,5 +1,4 @@
 {
-  
   "anyOf": [
     {
       "type": "string"

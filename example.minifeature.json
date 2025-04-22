@@ -17,6 +17,9 @@
         {
           "type": "block",
           "places_block": "minecraft:obsidian",
+          "may_attach_to": {
+            "top": "minecraft:air"
+          },
           "enforce_placement_rules": true,
           "enforce_survivability_rules": true
         }
