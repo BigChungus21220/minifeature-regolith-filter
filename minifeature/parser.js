@@ -9,8 +9,6 @@ if (filter_dir === undefined){
   throw new Error("FILTER_DIR not defined");
 }
 
-//e
-
 // constants
 
 const features_dir = "./BP/features";
@@ -86,7 +84,7 @@ function forEachFile(directory, fn, recursive=false){
 // makes all whitespace in an object's string single spaces
 function normalizeWhitespace(obj) {
   if (typeof obj === 'string') {
-    return obj.replace(/\s+/g, ' ');
+    return obj.replace(/([\s]|(\\n))+/g, ' ');
   } else if (Array.isArray(obj)) {
     return obj.map(normalizeWhitespace);
   } else if (typeof obj === 'object' && obj !== null) {
