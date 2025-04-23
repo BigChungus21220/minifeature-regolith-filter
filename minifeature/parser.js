@@ -38,7 +38,7 @@ function ref_to_path(ref, namespace) {
         return `minifeature:${ref_namespace}/${ref_name}`, "namespaced";
       }
     } else {
-      logger.error(`Invalid feature reference: ${ref}`);
+      console.error(`Invalid feature reference: ${ref}`);
     }
   }
   return [ref, "path"];
@@ -110,7 +110,7 @@ forEachFile(minifeatures_dir, (data, filename) => {
     try {
       feature = yaml.parse(data);
     } catch (err) {
-      logger.error(`Error parsing YAML from ${filename}:`, err);
+      console.error(`Error parsing YAML from ${filename}:`, err);
       success = false;
       return;
     }
@@ -118,21 +118,21 @@ forEachFile(minifeatures_dir, (data, filename) => {
     try {
       feature = jsonc.parse(data);
     } catch (err) {
-      logger.error(`Error parsing JSON from ${filename}:`, err);
+      console.error(`Error parsing JSON from ${filename}:`, err);
       success = false;
       return;
     }
   } else {
-    logger.error(`Unexpected feature filetype in ${filename}: ${filetype}`);
+    console.error(`Unexpected feature filetype in ${filename}: ${filetype}`);
     success = false;
     return;
   }
   
   const errors = val.validate(feature, schema).errors;
   if (errors.length != 0) {
-    logger.error(`Schema validation failed on ${filename}. Error(s):`);
+    console.error(`Schema validation failed on ${filename}. Error(s):`);
     errors.forEach((error) => {
-      logger.error(error.stack);
+      console.error(error.stack);
     });
     success = false;
     return;
@@ -145,7 +145,7 @@ forEachFile(minifeatures_dir, (data, filename) => {
   for (const key in feature) {
     const [path, ] = ref_to_path(key, namespace);
     if (featureList.has(path)) {
-      logger.error(`Duplicate feature, ${child_path}`);
+      console.error(`Duplicate feature, ${child_path}`);
       success = false;
     } else {
       featureList.add(path);
@@ -163,7 +163,7 @@ function addFeature(data, file){
   try {
     feature = jsonc.parse(data);
   } catch (err) {
-    logger.error(`Error parsing JSON from ${file}:`, err);
+    console.error(`Error parsing JSON from ${file}:`, err);
     success = false;
     return;
   }
@@ -175,7 +175,7 @@ function addFeature(data, file){
       if (feature_def && typeof feature_def === 'object' && feature_def.description && typeof feature_def.description.identifier === 'string') {
         identifier = feature_def.description.identifier;
       } else {
-        logger.error(`Failed to locate feature identifier in ${file}`);
+        console.error(`Failed to locate feature identifier in ${file}`);
         success = false;
         return;
       }
@@ -184,7 +184,7 @@ function addFeature(data, file){
 
   if (identifier){
     if (featureList.has(identifier)){
-      logger.error(`Duplicate feature, ${identifier}`);
+      console.error(`Duplicate feature, ${identifier}`);
       success = false;
       return;
     } else {
@@ -218,7 +218,7 @@ function ref_normalize(ref, path, namespace, index=0) {
       if (ref_type == "path"){
         console.warn(`Feature ${ref} not found locally. This feature may not exist.`);
       } else {
-        logger.error(`Feature ${ref} not found.`);
+        console.error(`Feature ${ref} not found.`);
       }
     }
 
@@ -226,7 +226,7 @@ function ref_normalize(ref, path, namespace, index=0) {
   } else {
     const child_path = `${path}_${index}`;
     if (featureList.has(child_path)) {
-      logger.error(`Duplicate feature, ${child_path}`);
+      console.error(`Duplicate feature, ${child_path}`);
     } else {
       featureList.add(child_path);
       getFeatureType(ref).flatten(ref, child_path);
