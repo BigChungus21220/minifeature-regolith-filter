@@ -332,3 +332,8 @@ for (const namespace in namespaces) {
     getFeatureType(feature).flatten(feature, key);
   }
 }
+
+
+// remove minifeatures directory
+
+fs.rmdir(minifeatures_dir, {recursive: true});
