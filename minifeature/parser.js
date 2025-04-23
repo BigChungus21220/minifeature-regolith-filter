@@ -190,7 +190,7 @@ forEachFile(minifeatures_dir, (data, filename) => {
 
   // remove excess whitespace and newlines in strings
 
-  feature = normalizeWhitespace(feature);
+  //feature = normalizeWhitespace(feature);
 }, true);
 
 
