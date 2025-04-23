@@ -4,12 +4,10 @@ const path = require("path");
 const jsonc = require("jsonc");
 const yaml = require("yaml");
 
-const filter_dir = process.env.FILTER_DIR;
+const filter_dir = process.env.FILTER_DIR === process.env.ROOT_DIR ? process.env.FILTER_DIR + "/.." : process.env.FILTER_DIR;
 if (filter_dir === undefined){
   throw new Error("FILTER_DIR not defined");
 }
-
-//e
 
 // constants
 
