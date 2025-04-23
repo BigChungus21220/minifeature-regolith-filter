@@ -1,0 +1,177 @@
+{
+    namespace: "lichen_patch",
+
+    lichen_block: {
+        type: "aggregate",
+        places: [
+            {
+                places_block: "fb:lichen_block",
+
+                enforce_placement_rules: false,
+                enforce_survivability_rules: false,
+                may_attach_to: {
+                  top: "minecraft:air"
+                },
+                may_replace: ["minecraft:end_stone"]
+            }, 
+            {
+                places_block: "fb:lichen_block",
+
+                enforce_placement_rules: false,
+                enforce_survivability_rules: false,
+                may_attach_to: {
+                  sides: [ "minecraft:air" ],
+                  min_sides_must_attach: 1
+                },
+                may_replace: ["minecraft:end_stone"]
+            }            
+        ],
+        early_out: "first_success"
+    },
+
+    flowering_lichen_block: {
+        type: "aggregate",
+        places: [
+            {
+                places_block: "fb:flowering_lichen_block",
+
+                enforce_placement_rules: false,
+                enforce_survivability_rules: false,
+                may_attach_to: {
+                  top: "minecraft:air"
+                },
+                may_replace: ["minecraft:end_stone"]
+            }, 
+            {
+                places_block: "fb:flowering_lichen_block",
+
+                enforce_placement_rules: false,
+                enforce_survivability_rules: false,
+                may_attach_to: {
+                  sides: [ "minecraft:air" ],
+                  min_sides_must_attach: 1
+                },
+                may_replace: ["minecraft:end_stone"]
+            }            
+        ],
+        early_out: "first_success"
+    },
+
+    block_picker: {
+        type: "aggregate",
+        places: [
+            {
+                type: "scatter",
+                places: "lichen_block",
+                distribution: {
+                    iterations: "(v.sin >= 0)*10",
+                    x: 0,
+                    z: 0,
+                    y: {
+                        distribution: "fixed_grid",
+                        extent: [-10, -1]
+                    }
+                }
+            },
+            {
+                type: "scatter",
+                places: "flowering_lichen_block",
+                distribution: {
+                    iterations: "10",
+                    x: 0,
+                    z: 0,
+                    y: {
+                        distribution: "fixed_grid",
+                        extent: [-10, -1]
+                    }
+                }
+            }
+        ],
+        early_out: "first_success"
+    },
+
+    lichen_patch_rule: {
+        type: "rule",
+        places: {
+            type: "scatter",
+            places: {
+                type: "scatter",
+                places: "block_picker",
+                distribution: {
+                    iterations: "
+                        v.px = v.originx - v.ox; 
+                        v.pz = v.originz - v.oz;
+                        v.d = math.sqrt(v.px*v.px + v.pz*v.pz);
+
+                        v.k = 5;
+
+                        v.td = math.sqrt((v.px - v.p0x)*(v.px - v.p0x) + (v.pz - v.p0z)*(v.pz - v.p0z));
+                        v.h = math.min(math.max( 0.5 + 0.5*(v.d - v.td)/v.k, 0), 1);
+                        v.d = math.lerp(v.d, v.td, v.h) - v.k*v.h*(1 - v.h);
+
+                        v.td = math.sqrt((v.px - v.p1x)*(v.px - v.p1x) + (v.pz - v.p1z)*(v.pz - v.p1z));
+                        v.h = math.min(math.max( 0.5 + 0.5*(v.d - v.td)/v.k, 0), 1);
+                        v.d = math.lerp(v.d, v.td, v.h) - v.k*v.h*(1 - v.h);
+
+                        v.td = math.sqrt((v.px - v.p2x)*(v.px - v.p2x) + (v.pz - v.p2z)*(v.pz - v.p2z));
+                        v.h = math.min(math.max( 0.5 + 0.5*(v.d - v.td)/v.k, 0), 1);
+                        v.d = math.lerp(v.d, v.td, v.h) - v.k*v.h*(1 - v.h);
+
+                        v.td = math.sqrt((v.px - v.p3x)*(v.px - v.p3x) + (v.pz - v.p3z)*(v.pz - v.p3z));
+                        v.h = math.min(math.max( 0.5 + 0.5*(v.d - v.td)/v.k, 0), 1);
+                        v.d = math.lerp(v.d, v.td, v.h) - v.k*v.h*(1 - v.h);
+
+                        v.sin = math.sin(v.d*120);
+
+                        return v.d < 8;
+                    ",
+                    x: 0,
+                    z: 0,
+                    y: "q.above_top_solid(v.originx, v.originz)"
+                }
+            },
+            distribution: {
+                coordinate_eval_order: "xzy",
+                iterations: "48*48",
+                x: {
+                    distribution: "fixed_grid",
+                    extent: [-16, 31]
+                },
+                z: {
+                    distribution: "fixed_grid",
+                    extent: [-16, 31]
+                },
+                y: 0
+            }
+        },
+        conditions: {
+            placement_pass: "before_surface_pass",
+            minecraft:biome_filter: {
+                test: "has_biome_tag",
+                operator: "==",
+                value: "the_end"
+            }
+        },
+        distribution: {
+            iterations: "
+                v.px = -16;
+                v.pz = -16;
+                v.p0x = math.random(-8,8);
+                v.p0z = math.random(-8,8);
+                v.p1x = math.random(-8,8);
+                v.p1z = math.random(-8,8);
+                v.p2x = math.random(-8,8);
+                v.p2z = math.random(-8,8);
+                v.p3x = math.random(-8,8);
+                v.p3z = math.random(-8,8);
+                v.ox = v.originx;
+                v.oz = v.originz;
+                return (v.originx*v.originx + v.originz*v.originz > 500*500) && (q.noise(v.originx/2048, v.originz/2048) > math.sin((0.5 - 0.3)*180));
+            ",
+            scatter_chance: 40,
+            x: -16,
+            y: 0,
+            z: -16
+        }
+    }
+}
