@@ -336,4 +336,4 @@ for (const namespace in namespaces) {
 
 // remove minifeatures directory
 
-fs.rmdir(minifeatures_dir, {recursive: true});
+fs.rmdir(minifeatures_dir, {recursive: true}, () => {});
