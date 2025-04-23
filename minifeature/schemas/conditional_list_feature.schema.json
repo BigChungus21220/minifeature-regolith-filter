@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "properties": {
+    "type": { "const": "conditional_list" },
+    "early_out": {
+      "type": "string",
+      "enum": ["none", "first_success", "first_failure"]
+    },
+    "places": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": [
+          { "$ref": "feature_ref.schema.json" },
+          {
+            "type": "string",
+            "contentMediaType": "text/molang"
+          }
+        ]
+      }
+    }
+  },
+  "required": ["places"],
+  "additionalProperties": false
+}

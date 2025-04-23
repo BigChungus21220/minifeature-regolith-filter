@@ -1,0 +1,58 @@
+{
+  "type": "object",
+  "properties": {
+    "type": { "const": "growing_plant" },
+    "head_blocks": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": [
+          {"$ref": "block_ref.schema.json"},
+          {"type": "number"}
+        ]
+      }
+    },
+    "body_blocks": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": [
+          {"$ref": "block_ref.schema.json"},
+          {"type": "number"}
+        ]
+      }
+    },
+    "growth_direction": {
+      "type": "string",
+      "enum": ["up", "down"]
+    },
+    "allow_water": {
+      "type": "boolean"
+    },
+    "age": {
+      "$ref": "integer_range.schema.json"
+    },
+    "height_distribution": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": [
+          { 
+            "$ref": "integer_range.schema.json"
+          },
+          { "type": "number" }
+        ],
+        "minItems": 2,
+        "maxItems": 2
+      },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "height_distribution",
+    "growth_direction",
+    "head_blocks",
+    "body_blocks"
+  ],
+  "additionalProperties": false
+}

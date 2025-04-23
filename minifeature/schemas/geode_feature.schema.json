@@ -1,0 +1,112 @@
+{
+  "type": "object",
+  "properties": {
+    "type": { "const": "geode" },
+    "max_radius": {
+      "type": "integer"
+    },
+    "filler": {
+      "$ref": "block_ref.schema.json"
+    },
+    "inner_layer": {
+      "$ref": "block_ref.schema.json"
+    },
+    "alternate_inner_layer": {
+      "$ref": "block_ref.schema.json"
+    },
+    "middle_layer": {
+      "$ref": "block_ref.schema.json"
+    },
+    "outer_layer": {
+      "$ref": "block_ref.schema.json"
+    },
+    "inner_placements": {
+      "type": "array",
+      "items": {
+        "$ref": "block_ref.schema.json"
+      },
+      "minItems": 1
+    },
+    "min_outer_wall_distance": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10
+    },
+    "max_outer_wall_distance": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20
+    },
+    "min_distribution_points": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10
+    },
+    "max_distribution_points": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20
+    },
+    "min_point_offset": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "max_point_offset": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "generate_crack_chance": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "base_crack_size": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 5
+    },
+    "noise_multiplier": {
+      "type": "number"
+    },
+    "use_potential_placements_chance": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "use_alternate_layer0_chance": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "placements_require_layer0_alternate": {
+      "type": "boolean"
+    },
+    "invalid_blocks_threshold": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "max_radius",
+    "filler",
+    "inner_layer",
+    "alternate_inner_layer",
+    "middle_layer",
+    "outer_layer",
+    "min_outer_wall_distance",
+    "max_outer_wall_distance",
+    "min_distribution_points",
+    "max_distribution_points",
+    "min_point_offset",
+    "max_point_offset",
+    "generate_crack_chance",
+    "base_crack_size",
+    "noise_multiplier",
+    "use_potential_placements_chance",
+    "use_alternate_layer0_chance",
+    "placements_require_layer0_alternate",
+    "invalid_blocks_threshold"
+  ],
+  "additionalProperties": false
+}

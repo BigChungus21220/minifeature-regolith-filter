@@ -1,0 +1,20 @@
+{
+  "anyOf": [
+    {
+      "type": "integer"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "range_min": {
+          "type": "integer"
+        },
+        "range_max": {
+          "type": "integer"
+        }
+      },
+      "required": ["range_min", "range_max"],
+      "additionalProperties": false
+    }
+  ]
+}

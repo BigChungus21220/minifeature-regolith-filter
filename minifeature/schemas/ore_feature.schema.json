@@ -1,0 +1,40 @@
+{
+  "type": "object",
+  "properties": {
+    "type": { "const": "ore" },
+    "count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "discard_chance_on_air_exposure": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "replace_rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "places_block": {
+            "$ref": "block_ref.schema.json"
+          },
+          "may_replace": {
+            "type": "array",
+            "items": {
+              "$ref": "block_ref.schema.json"
+            },
+            "minItems": 1
+          }
+        },
+        "required": ["places_block"],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "count"
+  ],
+  "additionalProperties": false
+}

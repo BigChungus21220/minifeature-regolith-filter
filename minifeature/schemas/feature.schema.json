@@ -11,16 +11,34 @@
             "$ref": "aggregate_feature.schema.json"
         },
         {
-            "$ref": "scatter_feature.schema.json"
+            "$ref": "conditional_list_feature.schema.json"
         },
         {
             "$ref": "block_feature.schema.json"
         },
         {
-            "$ref": "surface_snap_feature.schema.json"
+            "$ref": "geode_feature.schema.json"
+        },
+        {
+            "$ref": "growing_plant_feature.schema.json"
+        },
+        {
+            "$ref": "ore_feature.schema.json"
+        },
+        {
+            "$ref": "scatter_feature.schema.json"
         },
         {
             "$ref": "search_feature.schema.json"
+        },
+        {
+            "$ref": "structure_feature.schema.json"
+        },
+        {
+            "$ref": "surface_snap_feature.schema.json"
+        },
+        {
+            "$ref": "vegetation_patch_feature.schema.json"
         },
         {
             "$ref": "weighted_random_feature.schema.json"

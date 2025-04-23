@@ -1,0 +1,59 @@
+{
+  "type": "object",
+  "properties": {
+    "type": { "const": "vegetation_patch" },
+    "places": {
+      "$ref": "feature_ref.schema.json"
+    },
+    "replaceable_blocks": {
+      "type": "array",
+      "items": {
+        "$ref": "block_ref.schema.json"
+      },
+      "minItems": 1
+    },
+    "ground_block": {
+      "$ref": "block_ref.schema.json"
+    },
+    "depth": {
+      "type": "integer"
+    },
+    "vertical_range": {
+      "type": "integer"
+    },
+    "horizontal_radius": {
+      "type": "integer"
+    },
+    "surface": {
+      "type": "string",
+      "enum": ["floor", "ceiling"]
+    },
+    "extra_deep_block_chance": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "vegetation_chance": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "extra_edge_column_chance": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "waterlogged": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "replaceable_blocks",
+    "ground_block",
+    "places",
+    "depth",
+    "vertical_range",
+    "horizontal_radius"
+  ],
+  "additionalProperties": false
+}

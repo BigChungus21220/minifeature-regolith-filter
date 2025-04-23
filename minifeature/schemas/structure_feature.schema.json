@@ -1,0 +1,50 @@
+{
+  "type": "object",
+  "properties": {
+    "type": { "const": "structure" },
+    "places_structure": {
+      "type": "string"
+    },
+    "adjustment_radius": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 16
+    },
+    "facing_direction": {
+      "type": "string",
+      "enum": ["north", "south", "east", "west", "random"]
+    },
+    "constraints": {
+      "type": "object",
+      "properties": {
+        "grounded": {
+          "type": "object",
+          "additionalProperties": false
+        },
+        "unburied": {
+          "type": "object",
+          "additionalProperties": false
+        },
+        "block_intersection": {
+          "properties": {
+            "block_allowlist": {
+              "type": "array",
+              "items": {
+                "$ref": "block_ref.schema.json"
+              },
+              "minItems": 1
+            }
+          },
+          "required": ["block_allowlist"],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "places_structure",
+    "constraints"
+  ],
+  "additionalProperties": false
+}

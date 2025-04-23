@@ -16,10 +16,6 @@
     },
     "scatter_chance": {
       "anyOf": [
-        {
-          "type": "string",
-          "contentMediaType": "text/molang"
-        },
         { "type": "number" },
         {
           "type": "object",
