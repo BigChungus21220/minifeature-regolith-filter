@@ -21,6 +21,7 @@ const schema_dir = filter_dir + "/schemas";
 const path_pattern = new RegExp("^([a-z_][a-z0-9_]*):([a-z_][a-z0-9_]*/)*([a-z_][a-z0-9_]*)$");
 const simple_path_pattern = new RegExp("^([a-z_][a-z0-9_]*):([a-z_][a-z0-9_]*)/([a-z_][a-z0-9_]*)$");
 const ref_pattern = new RegExp("^(([a-z_][a-z0-9_]*)\\.)?([a-z_][a-z0-9_]*)$");
+const whitespace_pattern = new RegExp("(\\s+)|(\\\\n)", "g");
 
 const entrypoint = "feature_file.schema.json";
 
@@ -65,8 +66,7 @@ function write_path(base_dir, namespace, name, object) {
   let fd = fs.openSync(`${dir_path}/${name}.json`, 'w');
   fs.writeFileSync(fd, JSON.stringify(object, (_, value) => {
     if (typeof value === "string") {
-      console.log(value);
-      return value + " ";
+      return value.replaceAll(whitespace_pattern, " ");
     }
     return value;
   }, 4));
