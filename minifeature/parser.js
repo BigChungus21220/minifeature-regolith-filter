@@ -14,10 +14,6 @@ const minifeatures_dir = "./BP/minifeatures";
 const feature_rules_dir = "./BP/feature_rules";
 const schema_dir = filter_dir + "/schemas";
 
-let fd = fs.openSync(`${features_dir}/test.json`, 'w');
-fs.writeFileSync(fd, JSON.stringify({this: "shit"}, null, 4));
-fs.closeSync(fd);
-
 const path_pattern = new RegExp("^([a-z_][a-z0-9_]*):([a-z_][a-z0-9_]*/)*([a-z_][a-z0-9_]*)$");
 const simple_path_pattern = new RegExp("^([a-z_][a-z0-9_]*):([a-z_][a-z0-9_]*)/([a-z_][a-z0-9_]*)$");
 const ref_pattern = new RegExp("^(([a-z_][a-z0-9_]*)\\.)?([a-z_][a-z0-9_]*)$");
