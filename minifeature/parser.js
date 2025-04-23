@@ -9,6 +9,8 @@ if (filter_dir === undefined){
   throw new Error("FILTER_DIR not defined");
 }
 
+// constants
+
 const features_dir = "./BP/features";
 const minifeatures_dir = "./BP/minifeatures";
 const feature_rules_dir = "./BP/feature_rules";
@@ -19,6 +21,9 @@ const simple_path_pattern = new RegExp("^([a-z_][a-z0-9_]*):([a-z_][a-z0-9_]*)/(
 const ref_pattern = new RegExp("^(([a-z_][a-z0-9_]*)\\.)?([a-z_][a-z0-9_]*)$");
 
 const entrypoint = "feature_file.schema.json";
+
+
+
 let namespaces = {};
 
 // splits a feature path into its parts
