@@ -63,7 +63,7 @@ function write_path(base_dir, namespace, name, object) {
     fs.mkdirSync(dir_path);
   }
   let fd = fs.openSync(`${dir_path}/${name}.json`, 'w');
-  fs.writeFileSync(fd, JSON.stringify(object, (value) => {
+  fs.writeFileSync(fd, JSON.stringify(object, (_, value) => {
     if (typeof value === "string") {
       console.log(value);
       return value + " ";
