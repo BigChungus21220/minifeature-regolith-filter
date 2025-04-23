@@ -66,7 +66,7 @@ function write_path(base_dir, namespace, name, object) {
   fs.writeFileSync(fd, JSON.stringify(object, (value) => {
     if (typeof value === "string") {
       console.log(value);
-      return value.replaceAll("(\\s+)|(\\\\n)", " ");
+      return value + " ";
     }
     return value;
   }, 4));
