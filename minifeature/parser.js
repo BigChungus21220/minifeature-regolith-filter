@@ -229,11 +229,21 @@ function ref_normalize(ref, path, namespace, index=0) {
       logger.error(`Duplicate feature, ${child_path}`);
     } else {
       featureList.add(child_path);
-      featureRegistry[ref.type].flatten(ref, child_path);
+      getFeatureType(ref).flatten(ref, child_path);
     }
     return child_path;
   }
 }
+
+
+function getFeatureType(feature){
+  const featureType = featureRegistry[feature.type]
+  if (featureType){
+    return featureType;
+  }
+  throw new Error(`Feature type "${feature.type}" does not exist.`);
+}
+
 
 const featureRegistry = {
   rule: {
@@ -318,7 +328,7 @@ const featureRegistry = {
 
 for (const namespace in namespaces) {
   for (const key in namespaces[namespace]) {
-    const json = namespaces[namespace][key];
-    featureRegistry[json.type].flatten(json, key);
+    const feature = namespaces[namespace][key];
+    getFeatureType(feature).flatten(feature, key);
   }
 }
