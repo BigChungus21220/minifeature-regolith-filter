@@ -63,7 +63,13 @@ function write_path(base_dir, namespace, name, object) {
     fs.mkdirSync(dir_path);
   }
   let fd = fs.openSync(`${dir_path}/${name}.json`, 'w');
-  fs.writeFileSync(fd, JSON.stringify(object, null, 4));
+  fs.writeFileSync(fd, JSON.stringify(object, (value) => {
+    if (typeof value === "string") {
+      console.log(value);
+      return value.replaceAll("(\\s+)|(\\\\n)", " ");
+    }
+    return value;
+  }, 4));
   fs.closeSync(fd);
 }
 
@@ -81,24 +87,6 @@ function forEachFile(directory, fn, recursive=false){
       fn(data, file);
     }
   });
-}
-
-// makes all whitespace in an object's string single spaces
-function normalizeWhitespace(obj) {
-  if (typeof obj === 'string') {
-    //return obj.replaceAll(/(([\s\n])|(\\n))+/g, ' ');
-    return obj;
-  } else if (Array.isArray(obj)) {
-    return obj.map(normalizeWhitespace);
-  } else if (typeof obj === 'object' && obj !== null) {
-    const result = {};
-    for (const key in obj) {
-      result[key] = normalizeWhitespace(obj[key]);
-    }
-    return result;
-  } else {
-    return obj;
-  }
 }
 
 
@@ -187,10 +175,6 @@ forEachFile(minifeatures_dir, (data, filename) => {
     }
     namespaces[namespace][path] = feature[key];
   }
-
-  // remove excess whitespace and newlines in strings
-
-  //feature = normalizeWhitespace(feature);
 }, true);
 
 
