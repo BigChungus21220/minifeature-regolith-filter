@@ -210,7 +210,7 @@ if (!success){
 
 function ref_normalize(ref, path, namespace, index=0) {
   if (!ref.type){
-    console.log(`Feature ${path} has undefined type`);
+    console.log(`Feature ${JSON.stringify(ref, null, 4)} has undefined type`);
   }
   if (typeof ref === "string") {
     // convert reference to path
