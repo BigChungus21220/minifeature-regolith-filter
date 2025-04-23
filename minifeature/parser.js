@@ -369,4 +369,4 @@ for (const namespace in namespaces) {
 
 // remove minifeatures directory
 
-fs.rm(minifeatures_dir, {recursive: true});
+fs.rmsync(minifeatures_dir, {recursive: true});
