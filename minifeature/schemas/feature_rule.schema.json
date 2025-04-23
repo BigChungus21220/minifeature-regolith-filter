@@ -45,9 +45,9 @@
       "$ref": "distribution.schema.json"
     },
     "places": { 
-        "$ref": "feature_ref.schema.json"
+      "$ref": "feature_ref.schema.json"
     }
   },
-  "required": ["conditions", "places", "distribution"],
+  "required": ["conditions", "places", "distribution", "type"],
   "additionalProperties": false
 }
