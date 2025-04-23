@@ -38,12 +38,7 @@
       ]
     },
     "distribution": {
-      /* #molang
-      v.x = 1;
-      v.z = 256;
-      return v.x*v.z;
-      */
-      "iterations": "#molang",
+      "iterations": "2",
       "x": 0,
       "y": "5",
       "z": {
