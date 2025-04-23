@@ -86,7 +86,7 @@ function forEachFile(directory, fn, recursive=false){
 // makes all whitespace in an object's string single spaces
 function normalizeWhitespace(obj) {
   if (typeof obj === 'string') {
-    return obj.replaceAll(/([\s\n]|(\\n))+/g, ' ');
+    return obj.replaceAll(/(([\s\n])|(\\n))+/g, ' ');
   } else if (Array.isArray(obj)) {
     return obj.map(normalizeWhitespace);
   } else if (typeof obj === 'object' && obj !== null) {
