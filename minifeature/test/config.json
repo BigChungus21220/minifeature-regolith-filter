@@ -10,9 +10,9 @@
 		"dataPath": "./packs/data",
 		"filterDefinitions": {
 			"minifeature": {
+				"requirements": "../",
 				"runWith": "nodejs",
-				"script": "../parser.js",
-				"requirements": "../"
+				"script": "../parser.js"
 			}
 		},
 		"formatVersion": "1.4.0",
@@ -25,7 +25,7 @@
 				},
 				"filters": [
 					{
-						"filter":"minifeature"
+						"filter": "minifeature"
 					}
 				]
 			}

@@ -171,7 +171,7 @@ function addFeature(data, file){
   let identifier;
   for (const key in feature) {
     if (key !== 'format_version') {
-      const feature_def = obj[key];
+      const feature_def = feature[key];
       if (feature_def && typeof feature_def === 'object' && feature_def.description && typeof feature_def.description.identifier === 'string') {
         identifier = feature_def.description.identifier;
       } else {
