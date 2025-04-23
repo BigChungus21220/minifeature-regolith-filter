@@ -21,12 +21,14 @@ const ref_pattern = new RegExp("^(([a-z_][a-z0-9_]*)\\.)?([a-z_][a-z0-9_]*)$");
 const entrypoint = "feature_file.schema.json";
 let namespaces = {};
 
+// splits a feature path into its parts
 function path_split(path) {
   const match = path.match(simple_path_pattern);
   const [, pack, namespace, name] = match;
   return [pack, namespace, name];
 }
 
+// converts a feature reference to a feature path
 function ref_to_path(ref, namespace) {
   if (!path_pattern.test(ref)) {
     const match = ref.match(ref_pattern);
@@ -44,6 +46,7 @@ function ref_to_path(ref, namespace) {
   return [ref, "path"];
 }
 
+// writes a feature to its respective path
 function write_path(base_dir, namespace, name, object) {
   if (!fs.existsSync(base_dir)) {
     fs.mkdirSync(base_dir);
@@ -57,6 +60,7 @@ function write_path(base_dir, namespace, name, object) {
   fs.closeSync(fd);
 }
 
+// run a function on all file contents in a directory
 function forEachFile(directory, fn, recursive=false){
   let files = fs.readdirSync(directory);
   
@@ -70,6 +74,23 @@ function forEachFile(directory, fn, recursive=false){
       fn(data, file);
     }
   });
+}
+
+// makes all whitespace in an object's string single spaces
+function normalizeWhitespace(obj) {
+  if (typeof obj === 'string') {
+    return obj.replace(/\s+/g, ' ');
+  } else if (Array.isArray(obj)) {
+    return obj.map(normalizeWhitespace);
+  } else if (typeof obj === 'object' && obj !== null) {
+    const result = {};
+    for (const key in obj) {
+      result[key] = normalizeWhitespace(obj[key]);
+    }
+    return result;
+  } else {
+    return obj;
+  }
 }
 
 
@@ -103,7 +124,9 @@ if (!fs.existsSync(minifeatures_dir)){
 
 
 forEachFile(minifeatures_dir, (data, filename) => {
-  filetype = filename.split('.').pop();
+  const filetype = filename.split('.').pop();
+
+  // parse feature
 
   let feature;
   if (filetype === "yaml"){
@@ -127,6 +150,8 @@ forEachFile(minifeatures_dir, (data, filename) => {
     success = false;
     return;
   }
+
+  // validate feature
   
   const errors = val.validate(feature, schema).errors;
   if (errors.length != 0) {
@@ -137,6 +162,8 @@ forEachFile(minifeatures_dir, (data, filename) => {
     success = false;
     return;
   }
+
+  // register feature
   
   let namespace = feature.namespace;
   delete feature.namespace;
@@ -152,6 +179,10 @@ forEachFile(minifeatures_dir, (data, filename) => {
     }
     namespaces[namespace][path] = feature[key];
   }
+
+  // remove excess whitespace and newlines in strings
+
+  feature = normalizeWhitespace(feature);
 }, true);
 
 
@@ -168,6 +199,7 @@ function addFeature(data, file){
     return;
   }
 
+  // find the feature identifier
   let identifier;
   for (const key in feature) {
     if (key !== 'format_version') {
@@ -182,6 +214,7 @@ function addFeature(data, file){
     }
   }
 
+  // add the feature to the feature list
   if (identifier){
     if (featureList.has(identifier)){
       console.error(`Duplicate feature, ${identifier}`);
@@ -235,7 +268,7 @@ function ref_normalize(ref, path, namespace, index=0) {
   }
 }
 
-
+// returns the feature type of a feature from the registry
 function getFeatureType(feature){
   const featureType = featureRegistry[feature.type];
   if (featureType){
@@ -336,4 +369,4 @@ for (const namespace in namespaces) {
 
 // remove minifeatures directory
 
-fs.rmdir(minifeatures_dir, {recursive: true}, () => {});
+fs.rm(minifeatures_dir, {recursive: true});
