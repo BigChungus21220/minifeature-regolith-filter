@@ -1,15 +1,21 @@
 {
+  "description": "Ore feature - places a cluster of blocks",
   "type": "object",
   "properties": {
-    "type": { "const": "ore" },
+    "type": {
+      "const": "ore",
+      "description": "Ore feature - places a cluster of blocks"
+    },
     "count": {
       "type": "integer",
-      "minimum": 1
+      "minimum": 1,
+      "description": "Number of blocks to place"
     },
     "discard_chance_on_air_exposure": {
       "type": "number",
       "minimum": 0,
-      "maximum": 1
+      "maximum": 1,
+      "description": "Chance for placement to fail any block is exposed to air"
     },
     "replace_rules": {
       "type": "array",
@@ -17,14 +23,17 @@
         "type": "object",
         "properties": {
           "places_block": {
-            "$ref": "block_ref.schema.json"
+            "$ref": "block_ref.schema.json",
+            "description": "Block to place"
           },
           "may_replace": {
             "type": "array",
             "items": {
               "$ref": "block_ref.schema.json"
             },
-            "minItems": 1
+            "minItems": 1,
+            "description": "List of blocks that may be replaced",
+            "default": []
           }
         },
         "required": ["places_block"],

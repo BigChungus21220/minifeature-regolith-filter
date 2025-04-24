@@ -1,12 +1,18 @@
 {
+  "description": "Distribution on a coordinate axis",
   "anyOf": [
     {
       "type": "string",
-      "contentMediaType": "text/molang"
+      "contentMediaType": "text/molang",
+      "description": "Position relative to feature origin"
     },
-    { "type": "number" },
+    { 
+      "type": "number",
+      "description": "Position relative to feature origin" 
+    },
     {
       "type": "object",
+      "description": "Distribution of positions relative to feature origin",
       "properties": {
         "distribution": {
           "type": "string",
@@ -17,7 +23,8 @@
             "triangle",
             "fixed_grid",
             "jittered_grid"
-          ]
+          ],
+          "description": "The distribution to use"
         },
         "extent": {
           "type": "array",
@@ -31,13 +38,18 @@
             ]
           },
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 2,
+          "description": "The range to apply the distribution over"
         },
         "grid_offset": {
-          "type": "integer"
+          "type": "integer",
+          "description": "Offset applied in step calculations",
+          "default": 0
         },
         "step_size": {
-          "type": "integer"
+          "type": "integer",
+          "description": "Step size used between placement positions",
+          "default": 1
         }
       },
       "required": ["distribution", "extent"],

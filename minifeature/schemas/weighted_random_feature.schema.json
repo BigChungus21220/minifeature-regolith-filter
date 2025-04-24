@@ -1,19 +1,29 @@
 {
-  
+  "description": "Weighted random feature - places a feature at random from a list",
   "type": "object",
   "properties": {
-    "type": { "const": "weighted_random" },
+    "type": {
+      "const": "weighted_random",
+      "description": "Weighted random feature - places a feature at random from a list"
+    },
     "places": {
       "type": "array",
       "items": {
         "type": "array",
         "items": [
-          { "$ref": "feature_ref.schema.json" },
-          { "type": "number" }
+          {
+            "$ref": "feature_ref.schema.json",
+            "description": "Feature to place"
+          },
+          {
+            "type": "number",
+            "description": "Weight"
+          }
         ],
         "minItems": 2,
         "maxItems": 2
-      }
+      },
+      "description": "Features to select from"
     }
   },
   "required": ["places"],

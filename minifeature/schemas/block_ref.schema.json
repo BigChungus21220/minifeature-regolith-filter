@@ -1,19 +1,24 @@
 {
+  "description": "A reference to a block",
   "anyOf": [
     {
-      "type": "string"
+      "type": "string",
+      "description": "Block type. namespace:name"
     },
     {
       "type": "object",
       "properties": {
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "Block type. namespace:name"
         },
         "states": {
           "type": "object",
           "additionalProperties": {
             "type": "string"
-          }
+          },
+          "description": "States applied to the block",
+          "default": {}
         }
       },
       "required": ["name"],

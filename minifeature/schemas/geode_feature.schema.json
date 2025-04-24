@@ -1,31 +1,34 @@
 {
+  "description": "Geode feature - places a geode-like structure",
   "type": "object",
   "properties": {
-    "type": { "const": "geode" },
+    "type": {
+      "const": "geode",
+      "description": "Geode feature - places a geode-like structure"
+    },
     "max_radius": {
-      "type": "integer"
+      "type": "integer",
+      "description": "Maximum radius of generated geode"
     },
     "filler": {
-      "$ref": "block_ref.schema.json"
+      "$ref": "block_ref.schema.json",
+      "description": "Block to use as the geode's core"
     },
     "inner_layer": {
-      "$ref": "block_ref.schema.json"
+      "$ref": "block_ref.schema.json",
+      "description": "Block to surround the core with"
     },
     "alternate_inner_layer": {
-      "$ref": "block_ref.schema.json"
+      "$ref": "block_ref.schema.json",
+      "description": "Alternate block to surround the core with"
     },
     "middle_layer": {
-      "$ref": "block_ref.schema.json"
+      "$ref": "block_ref.schema.json",
+      "description": "Block to surround the inner layer with"
     },
     "outer_layer": {
-      "$ref": "block_ref.schema.json"
-    },
-    "inner_placements": {
-      "type": "array",
-      "items": {
-        "$ref": "block_ref.schema.json"
-      },
-      "minItems": 1
+      "$ref": "block_ref.schema.json",
+      "description": "Block to surround the middle layer with"
     },
     "min_outer_wall_distance": {
       "type": "integer",
@@ -57,15 +60,22 @@
       "minimum": 0,
       "maximum": 10
     },
+    "crack_point_offset": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10
+    },
     "generate_crack_chance": {
       "type": "number",
       "minimum": 0,
-      "maximum": 1
+      "maximum": 1,
+      "description": "Chance to generate a crack"
     },
     "base_crack_size": {
       "type": "number",
       "minimum": 0,
-      "maximum": 5
+      "maximum": 5,
+      "description": "How large the crack should be"
     },
     "noise_multiplier": {
       "type": "number"
@@ -73,18 +83,31 @@
     "use_potential_placements_chance": {
       "type": "number",
       "minimum": 0,
-      "maximum": 1
+      "maximum": 1,
+      "description": "Chance for a \"special block\" to be placed in the geode (Unclear what this does)"
     },
     "use_alternate_layer0_chance": {
       "type": "number",
       "minimum": 0,
-      "maximum": 1
-    },
-    "placements_require_layer0_alternate": {
-      "type": "boolean"
+      "maximum": 1,
+      "description": "Chance for an inner layer block to use the alternate inner layer block"
     },
     "invalid_blocks_threshold": {
-      "type": "integer"
+      "type": "integer",
+      "description": "Something to do with aborting generation"
+    },
+    "placements_require_layer0_alternate": {
+      "type": "boolean",
+      "description": "If true, inner placements only occur when the alternate inner layer is used"
+    },
+    "inner_placements": {
+      "type": "array",
+      "items": {
+        "$ref": "block_ref.schema.json"
+      },
+      "minItems": 1,
+      "description": "Blocks to distribute in the inner layer",
+      "default": []
     }
   },
   "required": [
@@ -100,6 +123,7 @@
     "max_distribution_points",
     "min_point_offset",
     "max_point_offset",
+    "crack_point_offset",
     "generate_crack_chance",
     "base_crack_size",
     "noise_multiplier",

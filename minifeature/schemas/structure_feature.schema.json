@@ -1,29 +1,40 @@
 {
+  "description": "Structure feature - places a structure",
   "type": "object",
   "properties": {
-    "type": { "const": "structure" },
+    "type": { 
+      "const": "structure",
+      "description": "Structure feature - places a structure"
+    },
     "places_structure": {
-      "type": "string"
+      "type": "string",
+      "description": "Structure to place"
     },
     "adjustment_radius": {
       "type": "integer",
       "minimum": 0,
-      "maximum": 16
+      "maximum": 16,
+      "description": "Square radius on the x-z plane to try placing the struture in",
+      "default": 0
     },
     "facing_direction": {
       "type": "string",
-      "enum": ["north", "south", "east", "west", "random"]
+      "enum": ["north", "south", "east", "west", "random"],
+      "description": "Direction to rotate the feature in. `south` is usually the most stable",
+      "default": "south"
     },
     "constraints": {
       "type": "object",
       "properties": {
         "grounded": {
           "type": "object",
-          "additionalProperties": false
+          "additionalProperties": false,
+          "description": "If included, all blocks directly below the feature's bottom layer's non-empty blocks may not be air, water, or lava"
         },
         "unburied": {
           "type": "object",
-          "additionalProperties": false
+          "additionalProperties": false,
+          "description": "If included, all blocks directly above the feature's top layer's non-empty blocks must be air"
         },
         "block_intersection": {
           "properties": {
@@ -32,7 +43,8 @@
               "items": {
                 "$ref": "block_ref.schema.json"
               },
-              "minItems": 1
+              "minItems": 1,
+              "description": "Blocks this feature may intersect"
             }
           },
           "required": ["block_allowlist"],

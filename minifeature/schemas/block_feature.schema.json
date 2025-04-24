@@ -1,7 +1,11 @@
 {
+  "description": "Block feature - places a single block. Corresponds to `minecraft:single_block_feature`",
   "type": "object",
   "properties": {
-    "type": { "const": "block" },
+    "type": { 
+      "const": "block",
+      "description": "Block feature - places a single block. Corresponds to `minecraft:single_block_feature`"
+    },
     "places_block": {
       "anyOf": [
         {
@@ -23,16 +27,21 @@
             "additionalProperties": false
           }
         }
-      ]
+      ],
+      "description": "Block to place"
     },
     "enforce_placement_rules": {
-      "type": "boolean"
+      "type": "boolean",
+      "description": "If true, placement rules are enforced. Eg: crops on farmland"
     },
     "enforce_survivability_rules": {
-      "type": "boolean"
+      "type": "boolean",
+      "description": "If true, survivability rules are enforced. Eg: coral in water"
     },
     "randomize_rotation": {
-      "type": "boolean"
+      "type": "boolean",
+      "description": "If true, a randomizes cardinal orientation",
+      "default": false
     },
     "may_attach_to": {
       "type": "object",
@@ -40,10 +49,12 @@
         "min_sides_must_attach": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 4
+          "maximum": 4,
+          "description": "Number of side directions which must be satisfied. Does not apply to `up` or `down`"
         },
         "auto_rotate": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "If true, directions are relative to block orientation"
         },
         "top": { "$ref": "face_attachment.schema.json" },
         "bottom": { "$ref": "face_attachment.schema.json" },
@@ -55,7 +66,9 @@
         "all": { "$ref": "face_attachment.schema.json" },
         "diagonal": { "$ref": "face_attachment.schema.json" }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "description": "Blocks this feature may be placed on. Omit to allow placement on any block",
+      "default": {}
     },
     "may_not_attach_to": {
       "type": "object",
@@ -70,14 +83,17 @@
         "all": { "$ref": "face_attachment.schema.json" },
         "diagonal": { "$ref": "face_attachment.schema.json" }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "description": "Blocks this feature may not be placed on. Omit to allow placement on any block",
+      "default": {}
     },
     "may_replace": {
       "type": "array",
       "items": {
         "$ref": "block_ref.schema.json"
       },
-      "minItems": 1
+      "minItems": 1,
+      "description": "Blocks this feature may replace. Omit to allow replacement of any block"
     }
   },
   "required": [

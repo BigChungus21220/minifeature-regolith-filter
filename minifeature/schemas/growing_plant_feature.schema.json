@@ -1,36 +1,58 @@
 {
+  "description": "Growing plant feature - places a column of blocks like vines or sugarcane",
   "type": "object",
   "properties": {
-    "type": { "const": "growing_plant" },
+    "type": {
+      "const": "growing_plant",
+      "description": "Growing plant feature - places a column of blocks like vines or sugarcane"
+    },
     "head_blocks": {
       "type": "array",
       "items": {
         "type": "array",
         "items": [
-          {"$ref": "block_ref.schema.json"},
-          {"type": "number"}
+          {
+            "$ref": "block_ref.schema.json",
+            "description": "Block to place"
+          },
+          {
+            "type": "number",
+            "description": "Weight"
+          }
         ]
-      }
+      },
+      "description": "Blocks to place as the head block of the feature"
     },
     "body_blocks": {
       "type": "array",
       "items": {
         "type": "array",
         "items": [
-          {"$ref": "block_ref.schema.json"},
-          {"type": "number"}
+          {
+            "$ref": "block_ref.schema.json",
+            "description": "Block to place"
+          },
+          {
+            "type": "number",
+            "description": "Weight"
+          }
         ]
-      }
+      },
+      "description": "Blocks to place in the middle of the feature"
     },
     "growth_direction": {
       "type": "string",
-      "enum": ["up", "down"]
+      "enum": ["up", "down"],
+      "description": "Direction for the feature to generate in"
     },
     "allow_water": {
-      "type": "boolean"
+      "type": "boolean",
+      "description": "If true, growth may start in water (this may be buggy)",
+      "default": false
     },
     "age": {
-      "$ref": "integer_range.schema.json"
+      "$ref": "integer_range.schema.json",
+      "description": "Sets the age state of the top block"
     },
     "height_distribution": {
       "type": "array",
@@ -38,9 +60,13 @@
         "type": "array",
         "items": [
           { 
-            "$ref": "integer_range.schema.json"
+            "$ref": "integer_range.schema.json",
+            "description": "Range"
           },
-          { "type": "number" }
+          {
+            "type": "number",
+            "description": "Weight"
+          }
         ],
         "minItems": 2,
         "maxItems": 2

@@ -1,4 +1,5 @@
 {
+  "description": "Blocks this feature may be placed on",
   "anyOf": [
     {
       "type": "array",

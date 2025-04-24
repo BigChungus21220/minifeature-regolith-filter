@@ -1,21 +1,24 @@
 {
-  
+  "description": "Biome filter",
   "type": "object",
   "properties": {
     "test": {
       "type": "string",
-      "enum": ["has_biome_tag"]
+      "enum": ["has_biome_tag"],
+      "description": "Test to evaluate"
     },
     "operator": {
       "type": "string",
-      "enum": ["!=", "<", "<=", "<>", "=", "==", ">", ">=", "equals", "not"]
+      "enum": ["!=", "<", "<=", "<>", "=", "==", ">", ">=", "equals", "not"],
+      "description": "Operator to test with"
     },
     "value": {
       "anyOf": [
         { "type": "boolean" },
         { "type": "number" },
         { "type": "string" }
-      ]
+      ],
+      "description": "Value to test against"
     },
     "subject": {
       "anyOf": [

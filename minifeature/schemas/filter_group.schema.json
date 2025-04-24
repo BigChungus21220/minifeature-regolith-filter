@@ -1,5 +1,4 @@
 {
-  
   "anyOf": [
     {
       "$ref": "filter_test.schema.json"
@@ -26,7 +25,8 @@
         "minItems": 1
       },
       "minProperties": 1,
-      "maxProperties": 1
+      "maxProperties": 1,
+      "description": "Group of biome filters"
     }
   ]
 }

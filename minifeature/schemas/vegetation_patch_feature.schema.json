@@ -1,50 +1,70 @@
 {
+  "description": "Vegetation patch feature - places a cluster of features",
   "type": "object",
   "properties": {
-    "type": { "const": "vegetation_patch" },
+    "type": {
+      "const": "vegetation_patch",
+      "description": "Vegetation patch feature - places a cluster of features"
+    },
     "places": {
-      "$ref": "feature_ref.schema.json"
+      "$ref": "feature_ref.schema.json",
+      "description": "Feature to place"
     },
     "replaceable_blocks": {
       "type": "array",
       "items": {
         "$ref": "block_ref.schema.json"
       },
-      "minItems": 1
+      "minItems": 1,
+      "description": "Blocks the base may replace"
     },
     "ground_block": {
-      "$ref": "block_ref.schema.json"
+      "$ref": "block_ref.schema.json",
+      "description": "Block this feature will use to build a platform out of"
     },
     "depth": {
-      "type": "integer"
+      "type": "integer",
+      "description": "Depth to construct the base to using ground_block. Set to 0 to place no base"
     },
     "vertical_range": {
-      "type": "integer"
+      "type": "integer",
+      "description": "Radius to search for placement surfaces on vertically"
     },
     "horizontal_radius": {
-      "type": "integer"
+      "type": "integer",
+      "description": "Square radius to place in"
     },
     "surface": {
       "type": "string",
-      "enum": ["floor", "ceiling"]
+      "enum": ["floor", "ceiling"],
+      "description": "Surface to place on",
+      "default": "floor"
     },
     "extra_deep_block_chance": {
       "type": "number",
       "minimum": 0,
-      "maximum": 1
+      "maximum": 1,
+      "description": "Chance to add one to the depth for columns of the base",
+      "default": 0
     },
     "vegetation_chance": {
       "type": "number",
       "minimum": 0,
-      "maximum": 1
+      "maximum": 1,
+      "description": "Chance that a surface block will have a vegetation feature placed on it",
+      "default": 0
     },
     "extra_edge_column_chance": {
       "type": "number",
       "minimum": 0,
-      "maximum": 1
+      "maximum": 1,
+      "description": "Chance to add columns on the edge of the placement range to the placement area",
+      "default": 0
     },
     "waterlogged": {
-      "type": "boolean"
+      "type": "boolean",
+      "description": "Do not set this to true, it's buggy. Use a scatter feature instead",
+      "default": false
     }
   },
   "required": [

@@ -1,8 +1,11 @@
 {
-  
+  "description": "Feature rule - places features in the world",
   "type": "object",
   "properties": {
-    "type": { "const": "rule" },
+    "type": {
+      "const": "rule",
+      "description": "Feature rule - places features in the world"
+    },
     "conditions": {
       "type": "object",
       "properties": {
@@ -21,7 +24,8 @@
             "sky_pass",
             "after_sky_pass",
             "final_pass"
-          ]
+          ],
+          "description": "Suggests when to run this feature during generation"
         },
         "minecraft:biome_filter": {
           "anyOf": [
@@ -35,17 +39,21 @@
               },
               "minItems": 1
             }
-          ]
+          ],
+          "description": "Biome filter this chunk must meet"
         }
       },
       "required": ["placement_pass"],
-      "additionalProperties": false
+      "additionalProperties": false,
+      "description": "Conditions for the feature to be placed in a given chunk"
     },
     "distribution": {
-      "$ref": "distribution.schema.json"
+      "$ref": "distribution.schema.json",
+      "description": "How the feature will be placed"
     },
     "places": { 
-      "$ref": "feature_ref.schema.json"
+      "$ref": "feature_ref.schema.json",
+      "description": "The feature to place"
     }
   },
   "required": ["conditions", "places", "distribution", "type"],

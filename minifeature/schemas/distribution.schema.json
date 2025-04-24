@@ -1,9 +1,12 @@
 {
   "type": "object",
+  "description": "How a feature will be placed",
   "properties": {
     "coordinate_eval_order": {
       "type": "string",
-      "enum": ["xyz", "xzy", "yxz", "yzx", "zxy", "zyx"]
+      "enum": ["xyz", "xzy", "yxz", "yzx", "zxy", "zyx"],
+      "description": "Order in which axis values are calculated in each iteration",
+      "default": "xzy"
     },
     "iterations": {
       "anyOf": [
@@ -12,11 +15,16 @@
           "contentMediaType": "text/molang"
         },
         { "type": "number" }
-      ]
+      ],
+      "description": "Number of times to place the feature. May be a number or molang expression"
     },
     "scatter_chance": {
       "anyOf": [
-        { "type": "number" },
+        { 
+          "type": "number",
+          "description": "Percent chance of placing feature (0-100)",
+          "default": 100
+        },
         {
           "type": "object",
           "properties": {
@@ -28,18 +36,27 @@
             }
           },
           "required": ["numerator", "denominator"],
-          "additionalProperties": false
+          "additionalProperties": false,
+          "description": "Probability of placing feature (0-1)",
+          "default": {
+            "numerator": 1,
+            "denominator": 1
+          }
         }
-      ]
+      ],
+      "description": "Percent chance or rational probability of placing feature on each iteration"
     },
     "x": {
-      "$ref": "coordinate_distribution.schema.json"
+      "$ref": "coordinate_distribution.schema.json",
+      "description": "Distribution on the x axis"
     },
     "y": {
-      "$ref": "coordinate_distribution.schema.json"
+      "$ref": "coordinate_distribution.schema.json",
+      "description": "Distribution on the y axis"
     },
     "z": {
-      "$ref": "coordinate_distribution.schema.json"
+      "$ref": "coordinate_distribution.schema.json",
+      "description": "Distribution on the z axis"
     }
   },
   "required": ["iterations", "x", "y", "z"],

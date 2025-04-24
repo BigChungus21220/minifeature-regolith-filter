@@ -1,30 +1,41 @@
 {
-  
+  "description": "Surface snap feature - places a feature on a surface",
   "type": "object",
   "properties": {
-    "type": { "const": "surface_snap" },
+    "type": { 
+      "const": "surface_snap",
+      "description": "Surface snap feature - places a feature on a surface"
+    },
     "places": {
-      "$ref": "feature_ref.schema.json"
+      "$ref": "feature_ref.schema.json",
+      "description": "Feature to place"
     },
     "vertical_search_range": {
-      "type": "integer"
+      "type": "integer",
+      "description": "Number of blocks in search direction to search in plus 2"
     },
     "surface": {
       "type": "string",
-      "enum": ["floor", "ceiling"]
+      "enum": ["floor", "ceiling"],
+      "description": "Surface to place on. Sets search direction, `ceiling` = up"
     },
     "allow_air_placement": {
-      "type": "boolean"
+      "type": "boolean",
+      "description": "Allows the feature to snap through air blocks",
+      "default": true
     },
     "allow_underwater_placement": {
-      "type": "boolean"
+      "type": "boolean",
+      "description": "Allows the feature to snap through water blocks",
+      "default": false
     },
     "allowed_surface_blocks": {
       "type": "array",
       "items": {
         "$ref": "block_ref.schema.json"
       },
-      "minItems": 1
+      "minItems": 1,
+      "description": "Blocks the feature may place on. Omit to allow placement on any solid block"
     }
   },
   "required": ["places", "vertical_search_range"],

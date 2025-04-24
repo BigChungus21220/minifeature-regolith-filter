@@ -1,16 +1,18 @@
 {
-    
     "anyOf": [
         {
-            "$ref": "feature.schema.json"
+            "$ref": "feature.schema.json",
+            "description": "Inline feature definition"
         },
         {
             "type": "string",
-            "pattern": "^(([a-z_][a-z0-9_]*\\.)?[a-z_][a-z0-9_]*)$"
+            "pattern": "^(([a-z_][a-z0-9_]*\\.)?[a-z_][a-z0-9_]*)$",
+            "description": "Minifeature reference"
         },
         {
             "type": "string",
-            "pattern": "^([a-z_][a-z0-9_]*):([a-z_][a-z0-9_]*/)*([a-z_][a-z0-9_]*)$"
+            "pattern": "^([a-z_][a-z0-9_]*):([a-z_][a-z0-9_]*/)*([a-z_][a-z0-9_]*)$",
+            "description": "Vanilla feature reference"
         }
     ]
 }

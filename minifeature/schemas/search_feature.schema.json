@@ -1,10 +1,14 @@
 {
-  
+  "description": "Search feature - attempts to place a number of features in an area",
   "type": "object",
   "properties": {
-    "type": { "const": "search" },
+    "type": {
+      "const": "search",
+      "description": "Search feature - attempts to place a number of features in an area"
+    },
     "places": {
-      "$ref": "feature_ref.schema.json"
+      "$ref": "feature_ref.schema.json",
+      "description": "Feature to place"
     },
     "search_volume": {
       "type": "object",
@@ -26,7 +30,9 @@
           "maxItems": 3
         }
       },
-      "required": ["min", "max"]
+      "required": ["min", "max"],
+      "additionalProperties": false,
+      "description": "Area to search"
     },
     "search_axis": {
       "type": "string",
@@ -34,7 +40,8 @@
     },
     "required_successes": {
       "type": "integer",
-      "minimum": 1
+      "minimum": 1,
+      "description": "Number of successful locations required for a placement to occur"
     }
   },
   "required": ["places", "search_volume", "search_axis"],
