@@ -1,4 +1,4 @@
-import { JsonSchemaViewer } from "@stoplight/json-schema-viewer";
+/*import { JsonSchemaViewer } from "@stoplight/json-schema-viewer";
 
 <JsonSchemaViewer
   name="Todos Model"
@@ -7,4 +7,6 @@ import { JsonSchemaViewer } from "@stoplight/json-schema-viewer";
   hideTopBar={false}
   emptyText="No schema defined"
   defaultExpandedDepth={0}
-/>;
+/>;*/
+
+<p>test</p>
