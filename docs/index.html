@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  :root {
+    --dark-text-bg: #e5e5e5
+  }
+
+  block {
+    background-color: var(--dark-text-bg);
+    padding: 3px;
+    border-radius: 2px;
+  }
+</style>
+</head>
+<body>
+
+<p id="schema_display"></p>
+
+<script>
+  const schema_prefix = "https://raw.githubusercontent.com/BigChungus21220/minifeature-regolith-filter/refs/heads/master/minifeature/schemas/";
+  const schema_entrypoint = "feature_file.schema.json";
+  const schema_display = document.getElementById("schema_display");
+  const tab_width = 4;
+
+  function tabs(n){
+    return "&nbsp;".repeat(n*tab_width);
+  }
+
+  function display_schema(schema, depth=0) {
+    switch (schema.type) {
+      case "object":
+        schema_display.innerHTML += `&lt;object&gt; ${(schema.description ? "// " + schema.description : "")}<br/>`;
+        depth ++;
+        for (const key in schema.properties) {
+          const is_opt = !(schema.required && schema.required.includes(key));
+          schema_display.innerHTML += `${tabs(depth)}<block>${key}</block>${is_opt ? "?" : ""}: `;
+          display_schema(schema.properties[key], depth + 1);
+        }
+        for (const key in schema.patternProperties) {
+          const is_opt = !(schema.required && schema.required.includes(key));
+          schema_display.innerHTML += `${tabs(depth)}<block>${key}</block>${is_opt ? "?" : ""}: `;
+          display_schema(schema.patternProperties[key], depth + 1);
+        }
+        break;
+      case "string":
+        schema_display.innerHTML += `&lt;string&gt; ${(schema_display.pattern ? schema_display.pattern : "")} ${(schema.description ? "// " + schema.description : "")}<br/>`;
+        break;
+      default:
+        break;
+    }
+  };
+
+  fetch(schema_prefix + schema_entrypoint).then(
+    (response) => response.json()
+  ).then(
+    (schema) => {
+      display_schema(schema);
+      // get type
+      // identify properties
+      // identify optional properties
+      /*
+      prop?: <type> // description
+      arr?: <array>[n], [0...], [n...m] 
+        <type>{
+          
+        }
+        i: <type>{
+          
+        }
+      */
+    }
+  )
+
+</script>
+
+</body>
+</html>

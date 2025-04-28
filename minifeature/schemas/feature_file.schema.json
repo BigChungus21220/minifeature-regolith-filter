@@ -11,14 +11,6 @@
   },
   "patternProperties": {
     "^(?!namespace$)([a-z_][a-z0-9_]*)$": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "description": "Type of feature"
-        }
-      },
-      "required": ["type"],
       "anyOf": [
         {
           "$ref": "feature.schema.json"
