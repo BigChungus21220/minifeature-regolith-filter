@@ -20,8 +20,7 @@
     "@stoplight/json-schema-viewer": "^4.16.4"
   },
   "devDependencies": {
-    "gh-pages": "^6.3.0",
-    "react-scripts": "^5.0.1"
+    "gh-pages": "^6.3.0"
   },
   "browserslist": {
     "production": [
