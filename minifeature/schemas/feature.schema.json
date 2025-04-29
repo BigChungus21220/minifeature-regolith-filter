@@ -1,12 +1,4 @@
 {
-    "type": "object",
-    "properties": {
-      "type": {
-        "type": "string",
-        "description": "Type of feature"
-      }
-    },
-    "required": ["type"],
     "anyOf": [
         {
             "$ref": "aggregate_feature.schema.json"

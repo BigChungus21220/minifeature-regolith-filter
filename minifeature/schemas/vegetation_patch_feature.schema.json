@@ -73,7 +73,8 @@
     "places",
     "depth",
     "vertical_range",
-    "horizontal_radius"
+    "horizontal_radius",
+    "type"
   ],
   "additionalProperties": false
 }

@@ -20,6 +20,6 @@
       "description": "Features to place"
     }
   },
-  "required": ["places"],
+  "required": ["places", "type"],
   "additionalProperties": false
 }

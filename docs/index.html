@@ -1,9 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <title>MiniFeature Docs</title>
+  <link rel="icon" type="image/x-icon" href="./favicon.ico">
 <style>
   :root {
     --dark-text-bg: #e5e5e5
+  }
+
+  schema {
+    border-bottom: 1px solid var(--dark-text-bg);;
+    font-family: monospace;
+    padding: 5px;
+    padding-bottom: 15px;
+    display: block;
+  }
+  
+  tree {
+    display: block;
+    margin-left: 2lh;
   }
 
   block {
@@ -17,60 +32,115 @@
 
 <p id="schema_display"></p>
 
-<script>
+<script type="module">
   const schema_prefix = "https://raw.githubusercontent.com/BigChungus21220/minifeature-regolith-filter/refs/heads/master/minifeature/schemas/";
   const schema_entrypoint = "feature_file.schema.json";
   const schema_display = document.getElementById("schema_display");
-  const tab_width = 4;
 
-  function tabs(n){
-    return "&nbsp;".repeat(n*tab_width);
+  let html = "";
+  let ref_queue = [];
+  let ref_registry = [];
+
+  function add_ref(ref){
+    if (!ref_registry.includes(ref)){
+      ref_queue.push(ref);
+      ref_registry.push(ref);
+    }
   }
 
-  function display_schema(schema, depth=0) {
+  function begin_tree(){
+    html += "<tree>"
+  }
+
+  async function document_ref(ref) {
+    const ref_name = ref.split(".")[0];
+    html += `<h2 id=${ref_name}>${ref_name}</h2>`
+    html += `<schema>`;
+    const data = await fetch(schema_prefix + ref);
+    const json = await data.json();
+    display_schema(json);
+    html += `</schema>`;
+  }
+
+  function display_schema(schema) {
     switch (schema.type) {
       case "object":
-        schema_display.innerHTML += `&lt;object&gt; ${(schema.description ? "// " + schema.description : "")}<br/>`;
-        depth ++;
+        html += `&lt;object&gt; ${(schema.description ? "// " + schema.description : "")}<tree>`;
         for (const key in schema.properties) {
           const is_opt = !(schema.required && schema.required.includes(key));
-          schema_display.innerHTML += `${tabs(depth)}<block>${key}</block>${is_opt ? "?" : ""}: `;
-          display_schema(schema.properties[key], depth + 1);
+          html += `<block>${key}</block>: ${is_opt ? "opt" : ""} `;
+          display_schema(schema.properties[key]);
         }
         for (const key in schema.patternProperties) {
           const is_opt = !(schema.required && schema.required.includes(key));
-          schema_display.innerHTML += `${tabs(depth)}<block>${key}</block>${is_opt ? "?" : ""}: `;
-          display_schema(schema.patternProperties[key], depth + 1);
+          html += `<block>${key}</block>+: ${is_opt ? "opt" : ""} `;
+          display_schema(schema.patternProperties[key]);
         }
+        html += `</tree>`;
         break;
       case "string":
-        schema_display.innerHTML += `&lt;string&gt; ${(schema_display.pattern ? schema_display.pattern : "")} ${(schema.description ? "// " + schema.description : "")}<br/>`;
+        html += `&lt;string${schema.contentMediaType === "text/molang" ? "/molang" : ""}&gt; ${(schema.pattern ? schema.pattern : "")} ${("description" in schema ? "// " + schema.description : "")}<br/>`;
+        break;
+      case "number":
+        html += `&lt;number&gt; ${("description" in schema ? "// " + schema.description : "")}<br/>`;
+        break;
+      case "array":
+        let count = "";
+        if ("minItems" in schema){
+          count += schema.minItems;
+        } else {
+          schema.minItems = 0;
+          count += "0";
+        }
+        if ("maxItems" in schema){
+          if (!(schema.maxItems === schema.minItems)){
+            count += `...${schema.maxItems}`;
+          }
+        } else {
+          count += `...`;
+        }
+
+        html += `&lt;array&gt;[${count}] ${(schema.description ? "// " + schema.description : "")}<tree>`;
+        if ("items" in schema){
+          if (Array.isArray(schema.items)){
+            console.log("ran");
+            for (let i = 0; i < schema.items.length; i++){
+              html += `(${i}): <tree>`;
+              display_schema(schema.items[i]);
+              html += `(${i}): </tree>`;
+            }
+          } else {
+            display_schema(schema.items);
+          }
+        }
+        html += `</tree>`;
         break;
       default:
+        if (schema.anyOf){
+          html += `${(schema.description ? "// " + schema.description : "")} <tree>`;
+          for (const option of schema.anyOf){
+            display_schema(option);
+          }
+          html += `</tree>`
+        } else if (schema["$ref"]){
+          const ref_name = schema["$ref"].split(".")[0];
+          html += `<a href="#${ref_name}">&lt;${ref_name}&gt;</a> ${(schema.description ? "// " + schema.description : "")}<br/>`;
+          add_ref(schema["$ref"]);
+        }
+        //if has any_of or has ref, use that
+        //todo: ensure any_of and other props are mutually exclusive
         break;
     }
   };
 
-  fetch(schema_prefix + schema_entrypoint).then(
-    (response) => response.json()
-  ).then(
-    (schema) => {
-      display_schema(schema);
-      // get type
-      // identify properties
-      // identify optional properties
-      /*
-      prop?: <type> // description
-      arr?: <array>[n], [0...], [n...m] 
-        <type>{
-          
-        }
-        i: <type>{
-          
-        }
-      */
-    }
-  )
+  add_ref(schema_entrypoint);
+
+  while (ref_queue.length !== 0){
+    const ref = ref_queue.shift();
+    await document_ref(ref);
+  }
+
+  schema_display.innerHTML = html;
 
 </script>
 

@@ -78,7 +78,8 @@
     "height_distribution",
     "growth_direction",
     "head_blocks",
-    "body_blocks"
+    "body_blocks",
+    "type"
   ],
   "additionalProperties": false
 }

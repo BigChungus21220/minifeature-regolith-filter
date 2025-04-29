@@ -130,7 +130,8 @@
     "use_potential_placements_chance",
     "use_alternate_layer0_chance",
     "placements_require_layer0_alternate",
-    "invalid_blocks_threshold"
+    "invalid_blocks_threshold",
+    "type"
   ],
   "additionalProperties": false
 }

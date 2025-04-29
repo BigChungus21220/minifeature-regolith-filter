@@ -38,6 +38,6 @@
       "description": "Blocks the feature may place on. Omit to allow placement on any solid block"
     }
   },
-  "required": ["places", "vertical_search_range"],
+  "required": ["places", "vertical_search_range", "type"],
   "additionalProperties": false
 }

@@ -23,7 +23,7 @@
                 "$ref": "block_ref.schema.json"
               }
             },
-            "required": ["weight", "block"],
+            "required": ["weight", "block", "type"],
             "additionalProperties": false
           }
         }

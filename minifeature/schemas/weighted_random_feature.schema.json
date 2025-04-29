@@ -26,6 +26,6 @@
       "description": "Features to select from"
     }
   },
-  "required": ["places"],
+  "required": ["places", "type"],
   "additionalProperties": false
 }

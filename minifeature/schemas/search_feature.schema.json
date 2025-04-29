@@ -44,6 +44,6 @@
       "description": "Number of successful locations required for a placement to occur"
     }
   },
-  "required": ["places", "search_volume", "search_axis"],
+  "required": ["places", "search_volume", "search_axis", "type"],
   "additionalProperties": false
 }

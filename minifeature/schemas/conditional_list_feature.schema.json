@@ -29,6 +29,6 @@
       }
     }
   },
-  "required": ["places"],
+  "required": ["places", "type"],
   "additionalProperties": false
 }

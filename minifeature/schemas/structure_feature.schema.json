@@ -56,7 +56,8 @@
   },
   "required": [
     "places_structure",
-    "constraints"
+    "constraints",
+    "type"
   ],
   "additionalProperties": false
 }
