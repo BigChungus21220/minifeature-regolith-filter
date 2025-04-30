@@ -17,7 +17,8 @@
     "surface": {
       "type": "string",
       "enum": ["floor", "ceiling"],
-      "description": "Surface to place on. Sets search direction, `ceiling` = up"
+      "description": "Surface to place on. Sets search direction, `ceiling` = up",
+      "default": "floor"
     },
     "allow_air_placement": {
       "type": "boolean",

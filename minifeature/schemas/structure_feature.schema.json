@@ -37,6 +37,7 @@
           "description": "If included, all blocks directly above the feature's top layer's non-empty blocks must be air"
         },
         "block_intersection": {
+          "type": "object",
           "properties": {
             "block_allowlist": {
               "type": "array",

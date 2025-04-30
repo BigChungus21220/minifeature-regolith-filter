@@ -15,7 +15,8 @@
       "type": "number",
       "minimum": 0,
       "maximum": 1,
-      "description": "Chance for placement to fail any block is exposed to air"
+      "description": "Chance for placement to fail any block is exposed to air",
+      "default": 1
     },
     "replace_rules": {
       "type": "array",
@@ -32,8 +33,7 @@
               "$ref": "block_ref.schema.json"
             },
             "minItems": 1,
-            "description": "List of blocks that may be replaced",
-            "default": []
+            "description": "List of blocks that may be replaced"
           }
         },
         "required": ["places_block"],

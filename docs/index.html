@@ -1,41 +1,283 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <title>MiniFeature Docs</title>
   <link rel="icon" type="image/x-icon" href="./favicon.ico">
-<style>
-  :root {
-    --dark-text-bg: #e5e5e5
-  }
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=close,keyboard_arrow_down,keyboard_arrow_right,link,menu" />
+  <style>
+    :root {
+      --dark-text-bg: #e5e5e5;
+      --extra-dark-text-bg: #a5a5a5;
 
-  schema {
-    border-bottom: 1px solid var(--dark-text-bg);;
-    font-family: monospace;
-    padding: 5px;
-    padding-bottom: 15px;
-    display: block;
-  }
-  
-  tree {
-    display: block;
-    margin-left: 2lh;
-  }
+      --link-color: #345fbd;
+      --link-pressed-color: #214798;
+      --link-visited-color: #aa75d3;
 
-  block {
-    background-color: var(--dark-text-bg);
-    padding: 3px;
-    border-radius: 2px;
-  }
-</style>
+      font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+    }
+
+    schema {
+      border-bottom: 1px solid var(--dark-text-bg);;
+      font-family: monospace;
+      padding: 5px;
+      width: calc(100vw - 50px - 17px - 15lh - var(--page-offset));
+      transition: width 0.3s ease;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding-bottom: 15px;
+      scrollbar-gutter: stable;
+      display: block;
+    }
+    
+    tree {
+      display: block;
+      margin-left: 2lh;
+    }
+
+    block {
+      background-color: var(--dark-text-bg);
+      padding-left: 3px;
+      padding-right: 3px;
+      border-radius: 3px;
+    }
+
+    a {
+      color: var(--link-color);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    a:active {
+      color: var(--link-pressed-color);
+    }
+
+    a:visited {
+      color: var(--link-visited-color);
+    }
+
+    l2 {
+      font-size: 12pt;
+    }
+
+    l3 {
+      font-size: 10pt;
+    }
+
+    button {
+      background-color: transparent;
+      margin: 5px;
+      border-radius: 3px;
+      outline: none;
+      border: none;
+    }
+
+    button:hover {
+      background-color: var(--dark-text-bg);
+      outline: 1px solid var(--extra-dark-text-bg);
+    }
+
+    button:active {
+      background-color: var(--extra-dark-text-bg);
+    }
+
+    button.icon-button {
+      aspect-ratio: 1;
+      width: 36px;
+      height: 36px;
+    }
+
+    h3 {
+      --show-section-link: hidden;
+    }
+
+    h3:hover {
+      --show-section-link: visible;
+    }
+
+    h2 {
+      --show-section-link: hidden;
+    }
+
+    h2:hover {
+      --show-section-link: visible;
+    }
+
+    ul {
+      list-style-type: none;
+      padding-left: 15px;
+    }
+
+    .material-symbols-outlined {
+      align-self: center;
+      vertical-align: middle;
+      font-variation-settings:
+      'FILL' 0,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 24
+    }
+
+    .github_link {
+      margin: 5px;
+      border-radius: 3px;
+      display: inline-block;
+      align-content: center;
+      text-align: center;
+      width: 36px;
+      height: 36px;
+    }
+
+    .github_link:hover {
+      background-color: var(--dark-text-bg);
+      outline: 1px solid var(--extra-dark-text-bg);
+    }
+
+    .github_link:active {
+      background-color: var(--extra-dark-text-bg);
+    }
+
+    .github_logo {
+      width: 25px;
+      height: 25px;
+      align-self: center;
+      vertical-align: middle;
+    }
+
+    .section_link {
+      padding-left: 5px;
+      visibility: var(--show-section-link);
+    }
+
+    .section_expand_button {
+      aspect-ratio: 1;
+      margin: 0;
+      padding: 0;
+    }
+
+    #page {
+      position: fixed;
+      top: 0;
+      display: flex;
+      --page-offset: -15lh;
+      left: var(--page-offset);
+      transition: left 0.3s ease;
+    }
+
+    #page.sidebar-open {
+      --page-offset: 0lh;
+    }
+
+    #sidebar {
+      height: 100vh;
+      background-color: white;
+      display: inline-block;
+      width: 15lh;
+      overflow-y: auto;
+      border-right: 1px solid var(--dark-text-bg);
+    }
+
+    #sidebar_close {
+      float: right;
+    }
+
+    #header {
+      align-content: center;
+      display: flex;
+      position: sticky;
+      top: 0;
+      background-color: white;
+      height: fit-content;
+      border-bottom: 1px solid var(--dark-text-bg);
+      width: 100%;
+    }
+
+    #scroll_content {
+      display: inline-block;
+      width: calc(100vw - 17px - 15lh - var(--page-offset));
+      transition: width 0.3s ease;
+      margin-left: 15px;
+      height: 100vh;
+      overflow-y: auto;
+      scroll-padding-top: 80px;
+    }
+
+    #schema_display {
+      margin-left: 15px;
+    }
+  </style>
 </head>
 <body>
+  <script>
+    function toggleExpand(button, target_id){
+      const target = document.getElementById(target_id);
+      if (target.style.display === "none"){
+        target.style.display = "block";
+        button.innerHTML = `<span class="material-symbols-outlined">keyboard_arrow_down</span>`;
+        button.name = "minimize section";
+      } else {
+        target.style.display = "none";
+        button.innerHTML = `<span class="material-symbols-outlined">keyboard_arrow_right</span>`;
+        button.name = "expand section";
+      }
+    }
+  </script>
 
-<p id="schema_display"></p>
+  <div id="page">
+    <div id=sidebar>
+      <button name="close menu" class="icon-button" id="sidebar_close">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+      <div id="sidebar_content">
+  
+      </div> 
+    </div>
+  
+    <div id="scroll_content">
+      <div id="header">
+        <button name="menu" class="icon-button" id="sidebar_open">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+        <a class="github_link" href="https://github.com/BigChungus21220/minifeature-regolith-filter" target="_blank">
+          <img id="github_logo" alt="Github Logo" width="25" height="25" src="./github-mark.svg"></img>
+        </a>
+      </div>
+      <div id="main_content">
+      </div>
+    </div>
+  </div>
 
 <script type="module">
+  const menu_open = document.getElementById("sidebar_open");
+  const menu_close = document.getElementById("sidebar_close");
+  const page = document.getElementById("page");
+  let focused = null;
+
+  menu_open.onclick = () => {
+    page.classList.add("sidebar-open");
+  };
+
+  menu_close.onclick = () => {
+    page.classList.remove("sidebar-open");
+  };
+
   const schema_prefix = "https://raw.githubusercontent.com/BigChungus21220/minifeature-regolith-filter/refs/heads/master/minifeature/schemas/";
   const schema_entrypoint = "feature_file.schema.json";
   const schema_display = document.getElementById("schema_display");
+  const main_content = document.getElementById("main_content");
+  const sidebar_content = document.getElementById("sidebar_content");
+  const base_url = window.location.pathname;
+
+  let sections = {
+    "Overview": [],
+    "Schemas": []
+  };
+  
+  function makeSectionLink(id){
+    return `<a class="section_link" href="${base_url}#${id}"><span class="material-symbols-outlined">link</span></a>`
+  }
 
   let html = "";
   let ref_queue = [];
@@ -54,7 +296,8 @@
 
   async function document_ref(ref) {
     const ref_name = ref.split(".")[0];
-    html += `<h2 id=${ref_name}>${ref_name}</h2>`
+    sections["Schemas"].push(ref_name);
+    html += `<h3 id=${ref_name}>${ref_name}${makeSectionLink(ref_name)}</h3>`
     html += `<schema>`;
     const data = await fetch(schema_prefix + ref);
     const json = await data.json();
@@ -65,10 +308,10 @@
   function display_schema(schema) {
     switch (schema.type) {
       case "object":
-        html += `&lt;object&gt; ${(schema.description ? "// " + schema.description : "")}<tree>`;
+        html += `${"default" in schema ? `${JSON.stringify(schema.default)} |` : ``} &lt;object&gt; ${(schema.description ? "// " + schema.description : "")}<tree>`;
         for (const key in schema.properties) {
           const is_opt = !(schema.required && schema.required.includes(key));
-          html += `<block>${key}</block>: ${is_opt ? "opt" : ""} `;
+          html += `<block>${key}</block>: ${is_opt ? `opt` : ""} `;
           display_schema(schema.properties[key]);
         }
         for (const key in schema.patternProperties) {
@@ -79,10 +322,53 @@
         html += `</tree>`;
         break;
       case "string":
-        html += `&lt;string${schema.contentMediaType === "text/molang" ? "/molang" : ""}&gt; ${(schema.pattern ? schema.pattern : "")} ${("description" in schema ? "// " + schema.description : "")}<br/>`;
+        html += `${"default" in schema ? `"${schema.default}" |` : ``} &lt;string${schema.contentMediaType === "text/molang" ? "/molang" : ""}&gt; ${(schema.pattern ? schema.pattern : "")} ${("description" in schema ? "// " + schema.description : "")}`;
+        if ("enum" in schema){
+          html += `<tree>`;
+          for (const option of schema.enum){
+            html += `"${option}"<br/>`
+          }
+          html += `</tree>`;
+        } else {
+          html += `<br/>`;
+        }
         break;
       case "number":
-        html += `&lt;number&gt; ${("description" in schema ? "// " + schema.description : "")}<br/>`;
+        let bounds = "";
+        if ("minimum" in schema || "maximum" in schema){
+          if ("minimum" in schema){
+            bounds += `${schema.minimum}—`;
+          } else {
+            bounds += `-∞—`;
+          }
+          if ("maximum" in schema){
+            bounds += `${schema.maximum}`;
+          } else {
+            bounds += `∞`;
+          }
+          bounds = `[${bounds}]`;
+        }
+        html += `${"default" in schema ? `${schema.default} |` : ``} &lt;number&gt;${bounds} ${("description" in schema ? "// " + schema.description : "")}<br/>`;
+        break;
+      case "integer":
+        let int_bounds = "";
+        if ("minimum" in schema || "maximum" in schema){
+          if ("minimum" in schema){
+            int_bounds += `${schema.minimum}—`;
+          } else {
+            int_bounds += `-∞—`;
+          }
+          if ("maximum" in schema){
+            int_bounds += `${schema.maximum}`;
+          } else {
+            int_bounds += `∞`;
+          }
+          int_bounds = `[${int_bounds}]`;
+        }
+        html += `${"default" in schema ? `${schema.default} |` : ``} &lt;integer&gt;${int_bounds} ${("description" in schema ? "// " + schema.description : "")}<br/>`;
+        break;
+      case "boolean":
+        html += `${"default" in schema ? `${schema.default} |` : ``} &lt;boolean&gt; ${("description" in schema ? "// " + schema.description : "")}<br/>`;
         break;
       case "array":
         let count = "";
@@ -100,14 +386,13 @@
           count += `...`;
         }
 
-        html += `&lt;array&gt;[${count}] ${(schema.description ? "// " + schema.description : "")}<tree>`;
+        html += `${"default" in schema ? `[${schema.default}] |` : ``} &lt;array&gt;[${count}] ${(schema.description ? "// " + schema.description : "")}<tree>`;
         if ("items" in schema){
           if (Array.isArray(schema.items)){
-            console.log("ran");
             for (let i = 0; i < schema.items.length; i++){
               html += `(${i}): <tree>`;
               display_schema(schema.items[i]);
-              html += `(${i}): </tree>`;
+              html += `</tree>`;
             }
           } else {
             display_schema(schema.items);
@@ -117,7 +402,7 @@
         break;
       default:
         if (schema.anyOf){
-          html += `${(schema.description ? "// " + schema.description : "")} <tree>`;
+          html += `${"default" in schema ? `${schema.default} |` : ``} ${(schema.description ? "// " + schema.description : "")} <tree>`;
           for (const option of schema.anyOf){
             display_schema(option);
           }
@@ -126,12 +411,29 @@
           const ref_name = schema["$ref"].split(".")[0];
           html += `<a href="#${ref_name}">&lt;${ref_name}&gt;</a> ${(schema.description ? "// " + schema.description : "")}<br/>`;
           add_ref(schema["$ref"]);
+        } else if ("const" in schema){
+          let value;
+          if (typeof schema.const === "string"){
+            value = `"${schema.const}"`;
+          } else {
+            value = `${schema.const}`;
+          }
+          html += `${value} ${("description" in schema ? "// " + schema.description : "")}<br/>`;
         }
         //if has any_of or has ref, use that
         //todo: ensure any_of and other props are mutually exclusive
         break;
     }
   };
+
+
+
+  html += `
+    <h1>MiniFeature Documentation</h1>
+    <h2 id="Overview">Overview${makeSectionLink("Overview")}</h2>
+    <h2 id="Schemas">Schemas${makeSectionLink("Schemas")}</h2>
+    <div id="schema_display">
+  `;
 
   add_ref(schema_entrypoint);
 
@@ -140,7 +442,26 @@
     await document_ref(ref);
   }
 
-  schema_display.innerHTML = html;
+  html += `</div>`;
+
+  main_content.innerHTML = html;
+
+
+
+  let sidebar_html = "<ul>";
+
+  for (const key in sections) {
+    sidebar_html += `<li><l2><a href="${base_url}#${key}">${key}</a></l2>
+      <button name="expand section" class="section_expand_button" onclick="toggleExpand( this, '${key}_subsections');"><span class="material-symbols-outlined">keyboard_arrow_down</span></button><ul id="${key}_subsections">`;
+    for (const subsection of sections[key]){
+      sidebar_html += `<li><l3><a href="${base_url}#${subsection}">${subsection}</a></l3></li>`
+    }
+    sidebar_html += `</ul></li>`;
+  }
+
+  sidebar_html += "</ul>";
+
+  sidebar_content.innerHTML = sidebar_html;
 
 </script>
 

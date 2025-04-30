@@ -50,11 +50,13 @@
           "type": "integer",
           "minimum": 1,
           "maximum": 4,
-          "description": "Number of side directions which must be satisfied. Does not apply to `up` or `down`"
+          "description": "Number of side directions which must be satisfied. Does not apply to `up` or `down`",
+          "default": 4
         },
         "auto_rotate": {
           "type": "boolean",
-          "description": "If true, directions are relative to block orientation"
+          "description": "If true, directions are relative to block orientation",
+          "default": false
         },
         "top": { "$ref": "face_attachment.schema.json" },
         "bottom": { "$ref": "face_attachment.schema.json" },
@@ -67,8 +69,7 @@
         "diagonal": { "$ref": "face_attachment.schema.json" }
       },
       "additionalProperties": false,
-      "description": "Blocks this feature may be placed on. Omit to allow placement on any block",
-      "default": {}
+      "description": "Blocks this feature may be placed on. Omit to allow placement on any block"
     },
     "may_not_attach_to": {
       "type": "object",
@@ -84,8 +85,7 @@
         "diagonal": { "$ref": "face_attachment.schema.json" }
       },
       "additionalProperties": false,
-      "description": "Blocks this feature may not be placed on. Omit to allow placement on any block",
-      "default": {}
+      "description": "Blocks this feature may not be placed on. Omit to allow placement on any block"
     },
     "may_replace": {
       "type": "array",
@@ -99,7 +99,8 @@
   "required": [
     "places_block",
     "enforce_placement_rules",
-    "enforce_survivability_rules"
+    "enforce_survivability_rules",
+    "type"
   ],
   "additionalProperties": false
 }

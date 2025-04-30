@@ -106,8 +106,7 @@
         "$ref": "block_ref.schema.json"
       },
       "minItems": 1,
-      "description": "Blocks to distribute in the inner layer",
-      "default": []
+      "description": "Blocks to distribute in the inner layer"
     }
   },
   "required": [

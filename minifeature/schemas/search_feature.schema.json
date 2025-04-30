@@ -41,7 +41,8 @@
     "required_successes": {
       "type": "integer",
       "minimum": 1,
-      "description": "Number of successful locations required for a placement to occur"
+      "description": "Number of successful locations required for a placement to occur",
+      "default": 1
     }
   },
   "required": ["places", "search_volume", "search_axis", "type"],

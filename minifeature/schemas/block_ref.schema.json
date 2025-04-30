@@ -17,8 +17,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "description": "States applied to the block",
-          "default": {}
+          "description": "States applied to the block"
         }
       },
       "required": ["name"],
