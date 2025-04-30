@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Documentation for the MiniFeature Regolith Filter for MCBE">
+  <meta name="keywords" content="MCBE, Minecraft, Regolith">
+  <meta name="author" content="BigChungus21220">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MiniFeature Docs</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
   <link rel="icon" type="image/x-icon" href="./favicon.ico">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=close,keyboard_arrow_down,keyboard_arrow_right,link,menu" />
+  <link rel="stylesheet" lazyload href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=close,keyboard_arrow_down,keyboard_arrow_right,link,menu"/>
   <style>
     :root {
       --dark-text-bg: #e5e5e5;
@@ -157,6 +163,10 @@
       padding: 0;
     }
 
+    .error {
+      color: red;
+    }
+
     #page {
       position: fixed;
       top: 0;
@@ -265,7 +275,6 @@
 
   const schema_prefix = "https://raw.githubusercontent.com/BigChungus21220/minifeature-regolith-filter/refs/heads/master/minifeature/schemas/";
   const schema_entrypoint = "feature_file.schema.json";
-  const schema_display = document.getElementById("schema_display");
   const main_content = document.getElementById("main_content");
   const sidebar_content = document.getElementById("sidebar_content");
   const base_url = window.location.pathname;
@@ -274,12 +283,15 @@
     "Overview": [],
     "Schemas": []
   };
+
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
   
   function makeSectionLink(id){
     return `<a class="section_link" href="${base_url}#${id}"><span class="material-symbols-outlined">link</span></a>`
   }
 
-  let html = "";
   let ref_queue = [];
   let ref_registry = [];
 
@@ -290,34 +302,37 @@
     }
   }
 
-  function begin_tree(){
-    html += "<tree>"
-  }
-
   async function document_ref(ref) {
+    let html = "";
     const ref_name = ref.split(".")[0];
     sections["Schemas"].push(ref_name);
     html += `<h3 id=${ref_name}>${ref_name}${makeSectionLink(ref_name)}</h3>`
-    html += `<schema>`;
-    const data = await fetch(schema_prefix + ref);
-    const json = await data.json();
-    display_schema(json);
-    html += `</schema>`;
+    try {
+      const data = await fetch(schema_prefix + ref);
+      const json = await data.json();
+      html += `<schema>`;
+      html += display_schema(json);
+      html += `</schema>`;
+    } catch {
+      html += `<p class="error">Failed to load resource: ${schema_prefix + ref}</p`;
+    }
+    return html;
   }
 
   function display_schema(schema) {
+    let html = "";
     switch (schema.type) {
       case "object":
         html += `${"default" in schema ? `${JSON.stringify(schema.default)} |` : ``} &lt;object&gt; ${(schema.description ? "// " + schema.description : "")}<tree>`;
         for (const key in schema.properties) {
           const is_opt = !(schema.required && schema.required.includes(key));
           html += `<block>${key}</block>: ${is_opt ? `opt` : ""} `;
-          display_schema(schema.properties[key]);
+          html += display_schema(schema.properties[key]);
         }
         for (const key in schema.patternProperties) {
           const is_opt = !(schema.required && schema.required.includes(key));
           html += `<block>${key}</block>+: ${is_opt ? "opt" : ""} `;
-          display_schema(schema.patternProperties[key]);
+          html += display_schema(schema.patternProperties[key]);
         }
         html += `</tree>`;
         break;
@@ -391,11 +406,11 @@
           if (Array.isArray(schema.items)){
             for (let i = 0; i < schema.items.length; i++){
               html += `(${i}): <tree>`;
-              display_schema(schema.items[i]);
+                html += display_schema(schema.items[i]);
               html += `</tree>`;
             }
           } else {
-            display_schema(schema.items);
+            html += display_schema(schema.items);
           }
         }
         html += `</tree>`;
@@ -404,7 +419,7 @@
         if (schema.anyOf){
           html += `${"default" in schema ? `${schema.default} |` : ``} ${(schema.description ? "// " + schema.description : "")} <tree>`;
           for (const option of schema.anyOf){
-            display_schema(option);
+            html += display_schema(option);
           }
           html += `</tree>`
         } else if (schema["$ref"]){
@@ -424,27 +439,27 @@
         //todo: ensure any_of and other props are mutually exclusive
         break;
     }
+    return html;
   };
 
 
 
-  html += `
+  main_content.innerHTML = `
     <h1>MiniFeature Documentation</h1>
     <h2 id="Overview">Overview${makeSectionLink("Overview")}</h2>
     <h2 id="Schemas">Schemas${makeSectionLink("Schemas")}</h2>
     <div id="schema_display">
   `;
 
+  const schema_display = document.getElementById("schema_display");
+
   add_ref(schema_entrypoint);
 
   while (ref_queue.length !== 0){
     const ref = ref_queue.shift();
-    await document_ref(ref);
+    //await sleep(25);
+    schema_display.innerHTML += await document_ref(ref);
   }
-
-  html += `</div>`;
-
-  main_content.innerHTML = html;
 
 
 

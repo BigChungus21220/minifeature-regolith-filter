@@ -327,6 +327,87 @@ const featureRegistry = {
     }
   },
 
+  conditional_list: {
+    // flattens the feature tree into a list of features
+    flatten: (feature, path) => {
+      const [, namespace, name] = path_split(path);
+      feature.features = [];
+      let i = 0;
+      feature.places.forEach(([ref, condition]) => {
+        const wrapper = {
+          type: "scatter",
+          places: ref,
+          distribution: {
+            iterations: condition,
+            x: 0,
+            y: 0,
+            z: 0
+          }
+        }
+        feature.features.push(ref_normalize(wrapper, path, namespace, i));
+        i++;
+      });
+      feature.description = {
+        identifier: path
+      };
+      delete feature.type;
+      delete feature.places;
+
+      write_path(features_dir, namespace, name, {
+        format_version: "1.13.0",
+        "minecraft:aggregate_feature": feature
+      });
+    }
+  },
+
+  geode: {
+    // flattens the feature tree into a list of features
+    flatten: (feature, path) => {
+      const [, namespace, name] = path_split(path);
+      feature.description = {
+        identifier: path
+      };
+      delete feature.type;
+
+      write_path(features_dir, namespace, name, {
+        format_version: "1.13.0",
+        "minecraft:geode_feature": feature
+      });
+    }
+  },
+
+  growing_plant: {
+    // flattens the feature tree into a list of features
+    flatten: (feature, path) => {
+      const [, namespace, name] = path_split(path);
+      feature.description = {
+        identifier: path
+      };
+      delete feature.type;
+
+      write_path(features_dir, namespace, name, {
+        format_version: "1.13.0",
+        "minecraft:growing_plant_feature": feature
+      });
+    }
+  },
+
+  ore: {
+    // flattens the feature tree into a list of features
+    flatten: (feature, path) => {
+      const [, namespace, name] = path_split(path);
+      feature.description = {
+        identifier: path
+      };
+      delete feature.type;
+
+      write_path(features_dir, namespace, name, {
+        format_version: "1.13.0",
+        "minecraft:ore_feature": feature
+      });
+    }
+  },
+
   scatter: {
     // flattens the feature tree into a list of features
     flatten: (feature, path) => {
@@ -341,6 +422,99 @@ const featureRegistry = {
       write_path(features_dir, namespace, name, {
         format_version: "1.13.0",
         "minecraft:scatter_feature": feature
+      });
+    }
+  },
+
+  search: {
+    // flattens the feature tree into a list of features
+    flatten: (feature, path) => {
+      const [, namespace, name] = path_split(path);
+      feature.places_feature = ref_normalize(feature.places, path, namespace);
+      feature.description = {
+        identifier: path
+      };
+      delete feature.type;
+      delete feature.places;
+
+      write_path(features_dir, namespace, name, {
+        format_version: "1.13.0",
+        "minecraft:search_feature": feature
+      });
+    }
+  },
+
+  structure: {
+    // flattens the feature tree into a list of features
+    flatten: (feature, path) => {
+      const [, namespace, name] = path_split(path);
+      feature.description = {
+        identifier: path
+      };
+      delete feature.type;
+
+      write_path(features_dir, namespace, name, {
+        format_version: "1.13.0",
+        "minecraft:structure_template_feature": feature
+      });
+    }
+  },
+
+  surface_snap: {
+    // flattens the feature tree into a list of features
+    flatten: (feature, path) => {
+      const [, namespace, name] = path_split(path);
+      feature.feature_to_snap = ref_normalize(feature.places, path, namespace);
+      feature.description = {
+        identifier: path
+      };
+      delete feature.type;
+      delete feature.places;
+
+      write_path(features_dir, namespace, name, {
+        format_version: "1.13.0",
+        "minecraft:snap_to_surface_feature": feature
+      });
+    }
+  },
+
+  vegetation_patch: {
+    // flattens the feature tree into a list of features
+    flatten: (feature, path) => {
+      const [, namespace, name] = path_split(path);
+      feature.vegetation_feature = ref_normalize(feature.places, path, namespace);
+      feature.description = {
+        identifier: path
+      };
+      delete feature.type;
+      delete feature.places;
+
+      write_path(features_dir, namespace, name, {
+        format_version: "1.13.0",
+        "minecraft:vegetation_patch_feature": feature
+      });
+    }
+  },
+
+  weighted_random: {
+    // flattens the feature tree into a list of features
+    flatten: (feature, path) => {
+      const [, namespace, name] = path_split(path);
+      feature.features = [];
+      let i = 0;
+      feature.places.forEach(([ref, weight]) => {
+        feature.features.push([ref_normalize(ref, path, namespace, i), weight]);
+        i++;
+      });
+      feature.description = {
+        identifier: path
+      };
+      delete feature.type;
+      delete feature.places;
+
+      write_path(features_dir, namespace, name, {
+        format_version: "1.13.0",
+        "minecraft:weighted_random_feature": feature
       });
     }
   }
