@@ -301,7 +301,7 @@ const featureRegistry = {
       const [, namespace, name] = path_split(path);
       feature.places = ref_normalize(feature.places, path, namespace);
       feature.description = {
-        identifier: path,
+        identifier: `minifeature:${name}`,
         places_feature: feature.places
       };
       delete feature.type;
