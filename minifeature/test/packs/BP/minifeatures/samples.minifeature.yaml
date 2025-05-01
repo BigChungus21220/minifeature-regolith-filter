@@ -1,0 +1,27 @@
+{
+  namespace: "samples",
+
+  sample0: {
+    type: "block",
+    places_block: "minecraft:grass",
+
+    enforce_placement_rules: false,
+    enforce_survivability_rules: false
+  },
+
+  sample1: {
+    type: "block",
+    places_block: "minecraft:dirt",
+
+    enforce_placement_rules: false,
+    enforce_survivability_rules: false
+  },
+
+  sample2: {
+    type: "block",
+    places_block: "minecraft:stone",
+
+    enforce_placement_rules: false,
+    enforce_survivability_rules: false
+  }
+}

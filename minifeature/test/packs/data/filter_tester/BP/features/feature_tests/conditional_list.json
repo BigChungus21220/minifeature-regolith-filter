@@ -1,0 +1,13 @@
+{
+  "format_version": "1.13.0",
+  "minecraft:aggregate_feature": {
+    "description": {
+      "identifier": "minifeature:feature_tests/conditional_list"
+    },
+    "features": [
+      "minifeature:feature_tests/conditional_list_0",
+      "minifeature:feature_tests/conditional_list_1",
+      "minifeature:feature_tests/conditional_list_2"
+    ]
+  }
+}

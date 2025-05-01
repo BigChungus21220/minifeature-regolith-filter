@@ -1,0 +1,14 @@
+{
+    "format_version": "1.13.0",
+    "minecraft:vegetation_patch_feature": {
+        "description": {
+            "identifier": "minifeature:feature_tests/vegetation_patch"
+        },
+        "vegetation_feature": "minifeature:samples/sample0",
+        "replaceable_blocks": ["minecraft:air"],
+        "ground_block": "minecraft:grass",
+        "depth": 1,
+        "vertical_range": 3,
+        "horizontal_radius": 7
+    }
+}

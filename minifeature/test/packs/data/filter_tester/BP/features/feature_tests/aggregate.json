@@ -1,0 +1,13 @@
+{
+  "format_version": "1.13.0",
+  "minecraft:aggregate_feature": {
+    "description": {
+      "identifier": "minifeature:feature_tests/aggregate"
+    },
+    "features": [
+      "minifeature:samples/sample0",
+      "minifeature:samples/sample1",
+      "minifeature:samples/sample2"
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+    "format_version": "1.13.0",
+    "minecraft:search_feature": {
+        "description": {
+            "identifier": "minifeature:feature_tests/search"
+        },
+        "places_feature": "minifeature:samples/sample0",
+        "search_volume": {
+            "min": [0, 0, 0],
+            "max": [5, 5, 5]
+        },
+        "search_axis": "+x"
+    }
+}

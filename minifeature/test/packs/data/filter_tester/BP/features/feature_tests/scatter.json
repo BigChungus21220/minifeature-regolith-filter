@@ -1,0 +1,16 @@
+{
+    "format_version": "1.13.0",
+    "minecraft:scatter_feature": {
+        "description": {
+            "identifier": "minifeature:feature_tests/scatter"
+        },
+        "places_feature": "minifeature:samples/sample0",
+        "distribution": {
+            "coordinate_eval_order": "xzy",
+            "iterations": 10,
+            "x": 20,
+            "y": 20,
+            "z": 20
+        }
+    }
+}

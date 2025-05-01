@@ -1,0 +1,173 @@
+{
+  namespace: "feature_tests",
+
+  rule: {
+    type: "rule",
+    places: "samples.sample0",
+    conditions: {
+      placement_pass: "first_pass",
+      minecraft:biome_filter: {
+        test: "has_biome_tag",
+        operator: "==",
+        value: "the_end"
+      }
+    },
+    distribution: {
+      coordinate_eval_order: "xzy",
+      iterations: 10,
+      x: 20,
+      y: 20,
+      z: 20
+    }
+  },
+
+  aggregate: {
+    type: "aggregate",
+    places: [
+      "samples.sample0",
+      "samples.sample1",
+      "samples.sample2"
+    ]
+  },
+
+  block: {
+    type: "block",
+    places_block: "minecraft:grass",
+    enforce_placement_rules: false,
+    enforce_survivability_rules: false
+  },
+
+  conditional_list: {
+    type: "conditional_list",
+    places: [
+      ["samples.sample0", "true"],
+      ["samples.sample1", "a b c"],
+      ["samples.sample2", "0"]
+    ]
+  },
+
+  geode: {
+    type: "geode",
+    filler: "minecraft:air",
+    inner_layer: "minecraft:diamond_block",
+    alternate_inner_layer: "minecraft:emerald_block",
+    middle_layer: "minecraft:calcite",
+    outer_layer: "minecraft:obsidian",
+    inner_placements: [
+      {
+        name: "minecraft:amethyst_cluster",
+        states: {
+          amethyst_cluster_type: "small"
+        }
+      }
+    ],
+    min_outer_wall_distance: 4,
+    max_outer_wall_distance: 7,
+    min_distribution_points: 3,
+    max_distribution_points: 5,
+    min_point_offset: 1,
+    max_point_offset: 3,
+    max_radius: 16,
+    crack_point_offset: 2,
+    generate_crack_chance: 0.95,
+    base_crack_size: 2.0,
+    noise_multiplier: 0.025,
+    use_potential_placements_chance: 0.35,
+    use_alternate_layer0_chance: 0.083,
+    placements_require_layer0_alternate: true,
+    invalid_blocks_threshold: 1
+  },
+
+  growing_plant: {
+    type: "growing_plant",
+    height_distribution:  [
+      [{range_min: 1, range_max: 13}, 2],
+      [{range_min: 1, range_max: 2}, 3],
+      [{range_min: 1, range_max: 7}, 10]
+    ],
+    growth_direction: "down",
+    age: {
+      range_min: 17, 
+      range_max: 26
+    },
+    body_blocks: [
+      ["minecraft:cave_vines", 4],
+      ["minecraft:cave_vines_body_with_berries", 1]
+    ],
+    head_blocks: [
+      ["minecraft:cave_vines", 4],
+      ["minecraft:cave_vines_head_with_berries", 1]
+    ],
+    allow_water: true
+  },
+
+  ore: {
+    type: "ore",
+    count: 10,
+    replace_rules: [
+      {
+        places_block: "minecraft:stone",
+        may_replace: ["minecraft:air"]
+      }
+    ]
+  },
+
+  scatter: {
+    type: "scatter",
+    places: "samples.sample0",
+    distribution: {
+      coordinate_eval_order: "xzy",
+      iterations: 10,
+      x: 20,
+      y: 20,
+      z: 20
+    }
+  },
+
+  search: {
+    type: "search",
+    places: "samples.sample0",
+    search_volume: {
+      min: [0, 0, 0],
+      max: [5, 5, 5]
+    },
+    search_axis: "+x"
+  },
+
+  structure: {
+    type: "structure",
+    places_structure: "some:structure",
+    constraints: {
+      block_intersection: {
+        block_allowlist: [
+          "minecraft:air"
+        ]
+      }
+    }
+  },
+
+  surface_snap: {
+    type: "surface_snap",
+    places: "samples.sample0",
+    vertical_search_range: 10
+  },
+
+  vegetation_patch: {
+    type: "vegetation_patch",
+    places: "samples.sample0",
+    replaceable_blocks: ["minecraft:air"],
+    ground_block: "minecraft:grass",
+    depth: 1,
+    vertical_range: 3,
+    horizontal_radius: 7
+  },
+
+  weighted_random: {
+    type: "weighted_random",
+    places: [
+      ["samples.sample0", 2],
+      ["samples.sample1", 3],
+      ["samples.sample2", 1]
+    ]
+  }
+}

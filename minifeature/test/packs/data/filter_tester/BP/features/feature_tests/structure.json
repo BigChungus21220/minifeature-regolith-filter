@@ -1,0 +1,14 @@
+{
+  "format_version": "1.13.0",
+  "minecraft:structure_template_feature": {
+    "description": {
+      "identifier": "minifeature:feature_tests/structure"
+    },
+    "structure_name": "some:structure",
+    "constraints": {
+      "block_intersection": {
+        "block_allowlist": ["minecraft:air"]
+      }
+    }
+  }
+}

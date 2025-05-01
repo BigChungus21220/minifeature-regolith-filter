@@ -1,0 +1,13 @@
+{
+  "format_version": "1.13.0",
+  "minecraft:weighted_random_feature": {
+    "description": {
+      "identifier": "minifeature:feature_tests/weighted_random"
+    },
+    "features": [
+      ["minifeature:samples/sample0", 2],
+      ["minifeature:samples/sample1", 3],
+      ["minifeature:samples/sample2", 1]
+    ]
+  }
+}

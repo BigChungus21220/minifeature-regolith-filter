@@ -1,0 +1,15 @@
+{
+  "format_version": "1.13.0",
+  "minecraft:scatter_feature": {
+    "description": {
+      "identifier": "minifeature:feature_tests/conditional_list_2"
+    },
+    "places_feature": "minifeature:samples/sample2",
+    "distribution": {
+      "iterations": "0",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    }
+  }
+}

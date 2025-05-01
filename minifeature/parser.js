@@ -40,10 +40,10 @@ function ref_to_path(ref, namespace) {
     const match = ref.match(ref_pattern);
     if (match) {
       const [, , ref_namespace, ref_name] = match;
-      if (ref_namespace === undefined) {
+      if (!ref_namespace) {
         return [`minifeature:${namespace}/${ref_name}`, "local"];
       } else {
-        return `minifeature:${ref_namespace}/${ref_name}`, "namespaced";
+        return [`minifeature:${ref_namespace}/${ref_name}`, "namespaced"];
       }
     } else {
       console.error(`Invalid feature reference: ${ref}`);
@@ -448,9 +448,11 @@ const featureRegistry = {
     // flattens the feature tree into a list of features
     flatten: (feature, path) => {
       const [, namespace, name] = path_split(path);
+      feature.structure_name = feature.places_structure;
       feature.description = {
         identifier: path
       };
+      delete feature.places_structure;
       delete feature.type;
 
       write_path(features_dir, namespace, name, {
