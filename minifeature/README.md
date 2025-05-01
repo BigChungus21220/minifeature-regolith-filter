@@ -1,5 +1,5 @@
 # MiniFeature
-![MiniFeatureLogo](./minifeature_logo.png "MiniFeature")
+![MiniFeatureLogo](/minifeature/minifeature_logo.png "MiniFeature")
 
 ## Overview
 MiniFeature is a preprocessor for MCBE world gen features.
