@@ -535,6 +535,21 @@
 }`, "myfeature.minifeature.yaml"
       )}
       <br/>
+      <h3 id="Editor-Setup">Editor Setup${makeSectionLink("Editor-Setup")}</h3>
+      <p>If using VSCode, you may enable schema validation by adding the following to your <block>settings.json</block>:</p>
+${makeSnippet(
+`"json.schemas": [
+  {
+    "fileMatch": [
+      "**/*.minifeature.json"
+    ],
+    "url": "https://raw.githubusercontent.com/BigChungus21220/minifeature-regolith-filter/refs/heads/master/minifeature/schemas/feature_file.schema.json"
+  }
+],
+"yaml.schemas": {
+  "https://raw.githubusercontent.com/BigChungus21220/minifeature-regolith-filter/refs/heads/master/minifeature/schemas/feature_file.schema.json": "**/*.minifeature.yaml"
+}`, ".vscode/settings.json"
+)}
     </div>
     <h2 id="Schemas">Schemas${makeSectionLink("Schemas")}</h2>
     <div id="schema_display" class="indent">
