@@ -62,22 +62,39 @@ function ref_to_path(ref, namespace) {
 }
 
 // writes a feature to its respective path
-function write_path(base_dir, namespace, name, object) {
+function write_path(base_dir, namespace, name, object, is_rule=false) {
   if (!fs.existsSync(base_dir)) {
     fs.mkdirSync(base_dir);
   }
-  const dir_path = `${base_dir}/${namespace}`;
-  if (!fs.existsSync(dir_path)) {
-    fs.mkdirSync(dir_path);
-  }
-  let fd = fs.openSync(`${dir_path}/${name}.json`, 'w');
-  fs.writeFileSync(fd, JSON.stringify(object, (_, value) => {
-    if (typeof value === "string") {
-      return value.replaceAll(whitespace_pattern, " ");
+  if (is_rule) {
+    if (fs.existsSync(`${base_dir}/${name}.json`)){
+      throw new Error(`File Conflict: "${base_dir}/${name}.json" already exists. Ensure all feature rules have unique names.`);
     }
-    return value;
-  }, 4));
-  fs.closeSync(fd);
+    let fd = fs.openSync(`${base_dir}/${name}.json`, 'w');
+    fs.writeFileSync(fd, JSON.stringify(object, (_, value) => {
+      if (typeof value === "string") {
+        return value.replaceAll(whitespace_pattern, " ");
+      }
+      return value;
+    }, 4));
+    fs.closeSync(fd);
+  } else {
+    const dir_path = `${base_dir}/${namespace}`;
+    if (!fs.existsSync(dir_path)) {
+      fs.mkdirSync(dir_path);
+    }
+    if (fs.existsSync(`${dir_path}/${name}.json`)){
+      throw new Error(`File Conflict: "${dir_path}/${name}.json" already exists`);
+    }
+    let fd = fs.openSync(`${dir_path}/${name}.json`, 'w');
+    fs.writeFileSync(fd, JSON.stringify(object, (_, value) => {
+      if (typeof value === "string") {
+        return value.replaceAll(whitespace_pattern, " ");
+      }
+      return value;
+    }, 4));
+    fs.closeSync(fd);
+  }
 }
 
 // run a function on all file contents in a directory
@@ -293,7 +310,7 @@ const featureRegistry = {
       write_path(feature_rules_dir, namespace, name, {
         format_version: "1.13.0",
         "minecraft:feature_rules": feature
-      });
+      }, true);
     }
   },
 
