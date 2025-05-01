@@ -5,11 +5,9 @@
       "identifier": "minifeature:feature_tests/conditional_list_2"
     },
     "places_feature": "minifeature:samples/sample2",
-    "distribution": {
-      "iterations": "0",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    }
+    "iterations": "0",
+    "x": 0,
+    "y": 0,
+    "z": 0
   }
 }

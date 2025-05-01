@@ -442,6 +442,8 @@ const featureRegistry = {
       feature.description = {
         identifier: path
       };
+      feature = structuredClone({...feature, ...feature.distribution});
+      delete feature.distribution;
       delete feature.type;
       delete feature.places;
 
