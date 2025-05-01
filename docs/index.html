@@ -12,6 +12,7 @@
   <link rel="stylesheet" lazyload href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=close,keyboard_arrow_down,keyboard_arrow_right,link,menu"/>
   <style>
     :root {
+      --light-text-bg: #f0f0f0;
       --dark-text-bg: #e5e5e5;
       --extra-dark-text-bg: #a5a5a5;
 
@@ -42,6 +43,7 @@
 
     block {
       background-color: var(--dark-text-bg);
+      font-family: monospace;
       padding-left: 3px;
       padding-right: 3px;
       border-radius: 3px;
@@ -126,6 +128,18 @@
       'opsz' 24
     }
 
+    .snippet {
+      background-color: var(--light-text-bg);
+      font-family: monospace;
+      white-space: pre;
+      width: calc(100vw - 50px - 17px - 15lh - var(--page-offset));
+      transition: width 0.3s ease;
+      overflow-x: auto;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      display: block;
+    }
+
     .github_link {
       margin: 5px;
       border-radius: 3px;
@@ -165,6 +179,17 @@
 
     .error {
       color: red;
+    }
+
+    .indent {
+      margin-left: 15px;
+    }
+
+    .snippet_header {
+      padding-left: 5px;
+      font-style: italic;
+      background-color: var(--dark-text-bg);
+      border-bottom: var(--extra-dark-text-bg);
     }
 
     #page {
@@ -212,10 +237,6 @@
       height: 100vh;
       overflow-y: auto;
       scroll-padding-top: 80px;
-    }
-
-    #schema_display {
-      margin-left: 15px;
     }
   </style>
 </head>
@@ -442,13 +463,81 @@
     return html;
   };
 
+  function makeSnippet(text, filename){
+    let html = `<div class="snippet"><div class="snippet_header">${filename}</div>`;
+    const lines = text.split("\n");
+    for (const line of lines){
+      html += line + "<br/>";
+    }
+    return html + `</div>`;
+  }
+
 
 
   main_content.innerHTML = `
     <h1>MiniFeature Documentation</h1>
     <h2 id="Overview">Overview${makeSectionLink("Overview")}</h2>
+    <div class="indent">
+      <p>MiniFeature is a preprocessor for <a href="https://wiki.bedrock.dev/world-generation/world-generation-intro">MCBE world gen features</a>.</p>
+      <p>The MiniFeature format allows for inline feature definition, namespacing, and defining multiple features in one file.</p>
+      
+      <h3 id="Prerequisites">Prerequisites${makeSectionLink("Prerequisites")}</h3>
+      <p>This documentation assumes you are familiar with <a href="https://wiki.bedrock.dev/guide/introduction">Minecraft Bedrock Edition addons</a>, <a href="https://wiki.bedrock.dev/world-generation/feature-types">vanilla world generation feature types</a>, and <a href="https://regolith-docs.readthedocs.io/en/latest/introduction/getting-started/">Regolith usage</a>.</p>
+
+      <h3 id="Installation">Installation${makeSectionLink("Installation")}</h3>
+      To install MiniFeature to a Regolith project, run <block>regolith install minifeature --profile=default</block> or <block>regolith install github.com/BigChungus21220/minifeature-regolith-filter/minifeature --profile=default</block>.
+
+      <h3 id="Usage">Usage${makeSectionLink("Usage")}</h3>
+      <p>MiniFeatures should be placed in <block>BP/minifeatures/</block> and should have the extension <block>.yaml</block>, <block>.json</block>, or <block>.jsonc</block>.&emsp;<block>.yaml</block> is recommended as it supports multiline strings, allowing for clean inline molang.</p>
+      MiniFeature files start with a namespace for all features within the file. Multiple files may share the same namespace.
+      <br/>
+      ${makeSnippet(
+`{
+  namespace: "myfeature"
+  ...
+}`, "myfeature.minifeature.yaml"
+      )}
+      <br/>
+      Features start with a name which must be lowercase and start with a letter or underscore. Following characters may include numbers.<br/>
+      Features contain a type which specifies the type of feature defined.
+      ${makeSnippet(
+`{
+  namespace: "myfeature",
+
+  my_rule0: {
+    type: "rule",
+    ...
+  }
+}`, "myfeature.minifeature.yaml"
+      )}
+      <br/>
+      Features may place other features, either through an inline definition, local reference, namespaced reference, or vanilla feature reference.
+      ${makeSnippet(
+`{
+  namespace: "myfeature",
+
+  my_rule0: {
+    type: "rule",
+    places: { # inline definition
+      type: "aggregate",
+      places: [
+        "my_scatter", # local reference
+        "myotherfeature.myblock", # namespaced reference
+        "minecraft:oak_tree_feature" # vanilla reference
+      ]
+    },
+    ...
+  }
+
+  my_scatter: {
+    ...
+  }
+}`, "myfeature.minifeature.yaml"
+      )}
+      <br/>
+    </div>
     <h2 id="Schemas">Schemas${makeSectionLink("Schemas")}</h2>
-    <div id="schema_display">
+    <div id="schema_display" class="indent">
   `;
 
   const schema_display = document.getElementById("schema_display");

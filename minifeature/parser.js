@@ -9,6 +9,15 @@ if (filter_dir === undefined){
   throw new Error("FILTER_DIR not defined");
 }
 
+/*
+High-level Procedure:
+- load schemas
+- load, parse, validate, and register features
+- register vanilla features
+- recursively split features into separate files and to correct format
+- delete minifeatures folder
+*/
+
 // constants
 
 const features_dir = "./BP/features";

@@ -1,27 +1,22 @@
-features:
+# MiniFeature
+![MiniFeatureLogo](./minifeature_logo.png "MiniFeature")
+
+## Overview
+MiniFeature is a preprocessor for MCBE world gen features.
+
+The MiniFeature format allows for inline feature definition, namespacing, and defining multiple features in one file.
+
+## Installation
+To install MiniFeature to a Regolith project, run ```regolith install minifeature --profile=default``` or ```regolith install github.com/BigChungus21220 minifeature-regolith-filter/minifeature --profile=default```.
+
+## Features
 - feature file generation
 - inline features
-- backwards compatability with vanilla features
 - easily extendable feature set
 
-bugs:
-- feature rules are placed in folders (test if this works)
+## Documentation
+[MiniFeature Docs](https://bigchungus21220.github.io/minifeature-regolith-filter/)
 
-planned features:
-- more vanilla feature types
-    - ore - done
-    - structure - done
-    - growing plant - done
-    - trees (maybe)
-    - geode
-    - vegetation patch
-    - carvers
-- conditional_list feature type
-- block test feature (maybe)
-- dependency tree analysis for error recovery / more warnings
-    - if not a dependency of a feature rule, don't build (probably want some way to allow building with some config)
-
-future features:
-- json-ui like inheritance
-- json-ui like variables
-- advanced molang support
+## Reporting Bugs & Contributing
+Please use Github issues to report any bugs
+Feel free to suggest changes through a fork or message me on discord @bigchungus21220
