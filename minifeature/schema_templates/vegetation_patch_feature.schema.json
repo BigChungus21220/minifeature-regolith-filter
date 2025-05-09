@@ -1,0 +1,98 @@
+{
+  "description": "Vegetation patch feature - places a cluster of features",
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "vegetation_patch",
+      "description": "Vegetation patch feature - places a cluster of features"
+    },
+    "places": {
+      "$ref": "feature_ref.schema.json",
+      "variable": true,
+      "description": "Feature to place"
+    },
+    "replaceable_blocks": {
+      "type": "array",
+      "items": {
+        "$ref": "block_ref.schema.json",
+        "variable": true
+      },
+      "minItems": 1,
+      "variable": true,
+      "description": "Blocks the base may replace"
+    },
+    "ground_block": {
+      "$ref": "block_ref.schema.json",
+      "variable": true,
+      "description": "Block this feature will use to build a platform out of"
+    },
+    "depth": {
+      "type": "integer",
+      "variable": true,
+      "description": "Depth to construct the base to using ground_block. Set to 0 to place no base"
+    },
+    "vertical_range": {
+      "type": "integer",
+      "variable": true,
+      "description": "Radius to search for placement surfaces on vertically"
+    },
+    "horizontal_radius": {
+      "type": "integer",
+      "variable": true,
+      "description": "Square radius to place in"
+    },
+    "surface": {
+      "type": "string",
+      "enum": ["floor", "ceiling"],
+      "variable": true,
+      "description": "Surface to place on",
+      "default": "floor"
+    },
+    "extra_deep_block_chance": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": true,
+      "description": "Chance to add one to the depth for columns of the base",
+      "default": 0
+    },
+    "vegetation_chance": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": true,
+      "description": "Chance that a surface block will have a vegetation feature placed on it",
+      "default": 0
+    },
+    "extra_edge_column_chance": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": true,
+      "description": "Chance to add columns on the edge of the placement range to the placement area",
+      "default": 0
+    },
+    "waterlogged": {
+      "type": "boolean",
+      "variable": true,
+      "description": "Do not set this to true, it's buggy. Use a scatter feature instead",
+      "default": false
+    }
+  },
+  "patternProperties": {
+    "^\\$[a-z_][a-z0-9_]*\\$$": {
+      "$ref": "variable_assignment.schema.json",
+      "description": "Variable assignment"
+    }
+  },
+  "required": [
+    "replaceable_blocks",
+    "ground_block",
+    "places",
+    "depth",
+    "vertical_range",
+    "horizontal_radius",
+    "type"
+  ],
+  "additionalProperties": false
+}

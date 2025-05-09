@@ -1,44 +1,113 @@
 {
-  "description": "Surface snap feature - places a feature on a surface",
-  "type": "object",
-  "properties": {
-    "type": { 
-      "const": "surface_snap",
-      "description": "Surface snap feature - places a feature on a surface"
+    "description": "Surface snap feature - places a feature on a surface",
+    "type": "object",
+    "properties": {
+        "type": {
+            "const": "surface_snap",
+            "description": "Surface snap feature - places a feature on a surface"
+        },
+        "places": {
+            "anyOf": [
+                {
+                    "$ref": "feature_ref.schema.json",
+                    "variable": true,
+                    "description": "Feature to place"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "vertical_search_range": {
+            "anyOf": [
+                {
+                    "type": "integer",
+                    "variable": true,
+                    "description": "Number of blocks in search direction to search in plus 2"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "surface": {
+            "anyOf": [
+                {
+                    "type": "string",
+                    "enum": [
+                        "floor",
+                        "ceiling"
+                    ],
+                    "variable": true,
+                    "description": "Surface to place on. Sets search direction, `ceiling` = up",
+                    "default": "floor"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "allow_air_placement": {
+            "anyOf": [
+                {
+                    "type": "boolean",
+                    "variable": true,
+                    "description": "Allows the feature to snap through air blocks",
+                    "default": true
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "allow_underwater_placement": {
+            "anyOf": [
+                {
+                    "type": "boolean",
+                    "variable": true,
+                    "description": "Allows the feature to snap through water blocks",
+                    "default": false
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "allowed_surface_blocks": {
+            "anyOf": [
+                {
+                    "type": "array",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "block_ref.schema.json",
+                                "variable": true
+                            },
+                            {
+                                "$ref": "variable.schema.json"
+                            }
+                        ]
+                    },
+                    "minItems": 1,
+                    "variable": true,
+                    "description": "Blocks the feature may place on. Omit to allow placement on any solid block"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        }
     },
-    "places": {
-      "$ref": "feature_ref.schema.json",
-      "description": "Feature to place"
+    "patternProperties": {
+        "^\\$[a-z_][a-z0-9_]*\\$$": {
+            "$ref": "variable_assignment.schema.json",
+            "description": "Variable assignment"
+        }
     },
-    "vertical_search_range": {
-      "type": "integer",
-      "description": "Number of blocks in search direction to search in plus 2"
-    },
-    "surface": {
-      "type": "string",
-      "enum": ["floor", "ceiling"],
-      "description": "Surface to place on. Sets search direction, `ceiling` = up",
-      "default": "floor"
-    },
-    "allow_air_placement": {
-      "type": "boolean",
-      "description": "Allows the feature to snap through air blocks",
-      "default": true
-    },
-    "allow_underwater_placement": {
-      "type": "boolean",
-      "description": "Allows the feature to snap through water blocks",
-      "default": false
-    },
-    "allowed_surface_blocks": {
-      "type": "array",
-      "items": {
-        "$ref": "block_ref.schema.json"
-      },
-      "minItems": 1,
-      "description": "Blocks the feature may place on. Omit to allow placement on any solid block"
-    }
-  },
-  "required": ["places", "vertical_search_range", "type"],
-  "additionalProperties": false
+    "required": [
+        "places",
+        "vertical_search_range",
+        "type"
+    ],
+    "additionalProperties": false
 }

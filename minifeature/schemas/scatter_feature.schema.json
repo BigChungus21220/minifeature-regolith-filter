@@ -1,26 +1,59 @@
 {
-    
     "type": "object",
     "description": "Scatter feature - places a child feature following a distribution. Corresponds to `minecraft:scatter_feature`",
     "properties": {
-        "type": { 
+        "type": {
             "const": "scatter",
             "description": "Scatter feature - places a child feature following a distribution. Corresponds to `minecraft:scatter_feature`"
         },
         "places": {
-            "$ref": "feature_ref.schema.json",
-            "description": "The feature to place"
+            "anyOf": [
+                {
+                    "$ref": "feature_ref.schema.json",
+                    "variable": true,
+                    "description": "The feature to place"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
         },
         "project_input_to_floor": {
-            "type": "boolean",
-            "description": "If true, sets the feature's origin on the y axis to the heightmap value (`q.heightmap`)",
-            "default": false
+            "anyOf": [
+                {
+                    "type": "boolean",
+                    "variable": true,
+                    "description": "If true, sets the feature's origin on the y axis to the heightmap value (`q.heightmap`)",
+                    "default": false
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
         },
         "distribution": {
-            "$ref": "distribution.schema.json",
-            "description": "How the feature will be placed"
+            "anyOf": [
+                {
+                    "$ref": "distribution.schema.json",
+                    "variable": true,
+                    "description": "How the feature will be placed"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
         }
     },
-    "required": ["places", "distribution", "type"],
+    "patternProperties": {
+        "^\\$[a-z_][a-z0-9_]*\\$$": {
+            "$ref": "variable_assignment.schema.json",
+            "description": "Variable assignment"
+        }
+    },
+    "required": [
+        "places",
+        "distribution",
+        "type"
+    ],
     "additionalProperties": false
 }

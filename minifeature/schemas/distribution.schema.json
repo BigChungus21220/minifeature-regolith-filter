@@ -1,60 +1,149 @@
 {
-  "type": "object",
-  "description": "How a feature will be placed",
-  "properties": {
-    "coordinate_eval_order": {
-      "type": "string",
-      "enum": ["xyz", "xzy", "yxz", "yzx", "zxy", "zyx"],
-      "description": "Order in which axis values are calculated in each iteration",
-      "default": "xzy"
-    },
-    "iterations": {
-      "anyOf": [
-        {
-          "type": "string",
-          "contentMediaType": "text/molang"
+    "type": "object",
+    "description": "How a feature will be placed",
+    "properties": {
+        "coordinate_eval_order": {
+            "anyOf": [
+                {
+                    "type": "string",
+                    "enum": [
+                        "xyz",
+                        "xzy",
+                        "yxz",
+                        "yzx",
+                        "zxy",
+                        "zyx"
+                    ],
+                    "variable": true,
+                    "description": "Order in which axis values are calculated in each iteration",
+                    "default": "xzy"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
         },
-        { "type": "number" }
-      ],
-      "description": "Number of times to place the feature. May be a number or molang expression"
-    },
-    "scatter_chance": {
-      "anyOf": [
-        { 
-          "type": "number",
-          "description": "Percent chance of placing feature (0-100)"
+        "iterations": {
+            "anyOf": [
+                {
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "contentMediaType": "text/molang"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ],
+                    "variable": true,
+                    "description": "Number of times to place the feature. May be a number or molang expression"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
         },
-        {
-          "type": "object",
-          "properties": {
-            "numerator": {
-              "type": "integer"
-            },
-            "denominator": {
-              "type": "integer"
-            }
-          },
-          "required": ["numerator", "denominator"],
-          "additionalProperties": false,
-          "description": "Probability of placing feature (0-1)"
+        "scatter_chance": {
+            "anyOf": [
+                {
+                    "anyOf": [
+                        {
+                            "type": "number",
+                            "description": "Percent chance of placing feature (0-100)"
+                        },
+                        {
+                            "anyOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "numerator": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "integer",
+                                                    "variable": true
+                                                },
+                                                {
+                                                    "$ref": "variable.schema.json"
+                                                }
+                                            ]
+                                        },
+                                        "denominator": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "integer",
+                                                    "variable": true
+                                                },
+                                                {
+                                                    "$ref": "variable.schema.json"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "numerator",
+                                        "denominator"
+                                    ],
+                                    "additionalProperties": false,
+                                    "variable": true,
+                                    "description": "Probability of placing feature (0-1)"
+                                },
+                                {
+                                    "$ref": "variable.schema.json"
+                                }
+                            ]
+                        }
+                    ],
+                    "variable": true,
+                    "description": "Percent chance or rational probability of placing feature on each iteration",
+                    "default": 100
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "x": {
+            "anyOf": [
+                {
+                    "$ref": "coordinate_distribution.schema.json",
+                    "variable": true,
+                    "description": "Distribution on the x axis"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "y": {
+            "anyOf": [
+                {
+                    "$ref": "coordinate_distribution.schema.json",
+                    "variable": true,
+                    "description": "Distribution on the y axis"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "z": {
+            "anyOf": [
+                {
+                    "$ref": "coordinate_distribution.schema.json",
+                    "variable": true,
+                    "description": "Distribution on the z axis"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
         }
-      ],
-      "description": "Percent chance or rational probability of placing feature on each iteration",
-      "default": 100
     },
-    "x": {
-      "$ref": "coordinate_distribution.schema.json",
-      "description": "Distribution on the x axis"
-    },
-    "y": {
-      "$ref": "coordinate_distribution.schema.json",
-      "description": "Distribution on the y axis"
-    },
-    "z": {
-      "$ref": "coordinate_distribution.schema.json",
-      "description": "Distribution on the z axis"
-    }
-  },
-  "required": ["iterations", "x", "y", "z"],
-  "additionalProperties": false
+    "required": [
+        "iterations",
+        "x",
+        "y",
+        "z"
+    ],
+    "additionalProperties": false
 }

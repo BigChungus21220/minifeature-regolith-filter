@@ -1,26 +1,38 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-
-  "type": "object",
-  "properties": {
-    "namespace": {
-      "type": "string",
-      "pattern": "^([a-z_][a-z0-9_]*)$",
-      "description": "Namespace of features in this file"
-    }
-  },
-  "patternProperties": {
-    "^(?!namespace$)([a-z_][a-z0-9_]*)$": {
-      "anyOf": [
-        {
-          "$ref": "feature.schema.json"
-        },
-        {
-          "$ref": "feature_rule.schema.json"
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "namespace": {
+            "type": "string",
+            "pattern": "^([a-z_][a-z0-9_]*)$",
+            "description": "Namespace of features in this file"
         }
-      ]
-    }
-  },
-  "required": ["namespace"],
-  "additionalProperties": false
+    },
+    "patternProperties": {
+        "^(?!namespace$)([a-z_][a-z0-9_]*)$": {
+            "anyOf": [
+                {
+                    "$ref": "feature.schema.json"
+                },
+                {
+                    "$ref": "feature_rule.schema.json"
+                }
+            ]
+        },
+        "^(?!namespace$)(<[a-z_][a-z0-9_]*>)$": {
+            "$ref": "cond_ignore.schema.json",
+            "anyOf": [
+                {
+                    "$ref": "feature.schema.json"
+                },
+                {
+                    "$ref": "feature_rule.schema.json"
+                }
+            ]
+        }
+    },
+    "required": [
+        "namespace"
+    ],
+    "additionalProperties": false
 }

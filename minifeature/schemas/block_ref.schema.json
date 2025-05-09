@@ -1,27 +1,46 @@
 {
-  "description": "A reference to a block",
-  "anyOf": [
-    {
-      "type": "string",
-      "description": "Block type. namespace:name"
-    },
-    {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string",
-          "description": "Block type. namespace:name"
+    "description": "A reference to a block",
+    "anyOf": [
+        {
+            "type": "string",
+            "description": "Block type. namespace:name"
         },
-        "states": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          },
-          "description": "States applied to the block"
+        {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "variable": true,
+                            "description": "Block type. namespace:name"
+                        },
+                        {
+                            "$ref": "variable.schema.json"
+                        }
+                    ]
+                },
+                "states": {
+                    "anyOf": [
+                        {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string",
+                                "variable": true
+                            },
+                            "variable": true,
+                            "description": "States applied to the block"
+                        },
+                        {
+                            "$ref": "variable.schema.json"
+                        }
+                    ]
+                }
+            },
+            "required": [
+                "name"
+            ],
+            "additionalProperties": false
         }
-      },
-      "required": ["name"],
-      "additionalProperties": false
-    }
-  ]
+    ]
 }

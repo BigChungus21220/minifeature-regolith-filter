@@ -1,32 +1,35 @@
 {
-  "anyOf": [
-    {
-      "$ref": "filter_test.schema.json"
-    },
-    {
-      "type": "object",
-      "propertyNames": {
-        "enum": [
-          "AND",
-          "NOT",
-          "OR",
-          "all",
-          "all_of",
-          "any",
-          "any_of",
-          "none_of"
-        ]
-      },
-      "additionalProperties": {
-        "type": "array",
-        "items": {
-            "$ref": "filter_group.schema.json"
+    "anyOf": [
+        {
+            "$ref": "filter_test.schema.json"
         },
-        "minItems": 1
-      },
-      "minProperties": 1,
-      "maxProperties": 1,
-      "description": "Group of biome filters"
-    }
-  ]
+        {
+            "type": "object",
+            "propertyNames": {
+                "enum": [
+                    "AND",
+                    "NOT",
+                    "OR",
+                    "all",
+                    "all_of",
+                    "any",
+                    "any_of",
+                    "none_of"
+                ],
+                "variable": true
+            },
+            "additionalProperties": {
+                "type": "array",
+                "items": {
+                    "$ref": "filter_group.schema.json",
+                    "variable": true
+                },
+                "minItems": 1,
+                "variable": true
+            },
+            "minProperties": 1,
+            "maxProperties": 1,
+            "description": "Group of biome filters"
+        }
+    ]
 }

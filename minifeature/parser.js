@@ -1,4 +1,4 @@
-let Validator = require("jsonschema").Validator;
+const Ajv = require('ajv');
 const fs = require("fs");
 const path = require("path");
 const jsonc = require("jsonc");
@@ -12,7 +12,7 @@ if (filter_dir === undefined){
 /*
 High-level Procedure:
 - load schemas
-- load, parse, validate, and register features
+- load, parse, validate, and register features & templates
 - register vanilla features
 - recursively split features into separate files and to correct format
 - delete minifeatures folder
@@ -29,12 +29,17 @@ const path_pattern = new RegExp("^([a-z_][a-z0-9_]*):([a-z_][a-z0-9_]*/)*([a-z_]
 const simple_path_pattern = new RegExp("^([a-z_][a-z0-9_]*):([a-z_][a-z0-9_]*)/([a-z_][a-z0-9_]*)$");
 const ref_pattern = new RegExp("^(([a-z_][a-z0-9_]*)\\.)?([a-z_][a-z0-9_]*)$");
 const whitespace_pattern = new RegExp("(\\s+)|(\\\\n)", "g");
+const var_pattern = /^\$[a-z_][a-z_0-9]*\$$/;
+const inner_var_pattern = /\$[a-z_][a-z_0-9]*\$/g;
+const template_name_pattern = /^<[a-z_][a-z0-9_]*>$/;
+const template_ref_pattern = /^(([a-z_][a-z0-9_]*)\.)?(<[a-z_][a-z0-9_]*>)$/;
 
 const entrypoint = "feature_file.schema.json";
 
 
 
 let namespaces = {};
+let templates = {};
 
 // splits a feature path into its parts
 function path_split(path) {
@@ -116,17 +121,15 @@ function forEachFile(directory, fn, recursive=false){
 
 // load schema files & locate schema entrypoint
 
-let val = new Validator();
-
-let schema = undefined;
+const ajv = new Ajv({strict: false});
 
 forEachFile(schema_dir, (data, filename) => {
   let json = JSON.parse(data);
   json["$id"] = filename;
-  val.addSchema(json, filename);
-  if (filename === entrypoint) {
+  ajv.addSchema(json);
+  /*if (filename === entrypoint) {
     schema = json;
-  }
+  }*/
 }, true);
 
 
@@ -173,8 +176,8 @@ forEachFile(minifeatures_dir, (data, filename) => {
 
   // validate feature
   
-  const errors = val.validate(feature, schema).errors;
-  if (errors.length != 0) {
+  const errors = ajv.validate(entrypoint, feature).errors;
+  if (errors) {
     console.error(`Schema validation failed on ${filename}. Error(s):`);
     errors.forEach((error) => {
       console.error(error.stack);
@@ -188,19 +191,26 @@ forEachFile(minifeatures_dir, (data, filename) => {
   let namespace = feature.namespace;
   delete feature.namespace;
   namespaces[namespace] = {};
+  templates[namespace] = {};
   
   for (const key in feature) {
-    const [path, ] = ref_to_path(key, namespace);
-    if (featureList.has(path)) {
-      console.error(`Duplicate feature, ${child_path}`);
-      success = false;
+    if (template_name_pattern.test(key)){
+      if (key in templates[namespace]){
+        console.error(`Duplicate template, ${namespace}.${key}`);
+      }
+      templates[namespace][key] = feature[key];
     } else {
-      featureList.add(path);
+      const [path, ] = ref_to_path(key, namespace);
+      if (featureList.has(path)) {
+        console.error(`Duplicate feature, ${path}`);
+        success = false;
+      } else {
+        featureList.add(path);
+      }
+      namespaces[namespace][path] = feature[key];
     }
-    namespaces[namespace][path] = feature[key];
   }
 }, true);
-
 
 // scan vanilla features & rules in this pack
 
@@ -248,7 +258,6 @@ if (fs.existsSync(features_dir)){
 if (fs.existsSync(feature_rules_dir)){
   forEachFile(feature_rules_dir, addFeature, true);
 }
-
 
 if (!success){
   throw new Error("Error(s) encountered while reading features, exiting.");
@@ -311,6 +320,10 @@ const featureRegistry = {
         format_version: "1.13.0",
         "minecraft:feature_rules": feature
       }, true);
+    },
+
+    forPlaces: (feature, func) => {
+      func(feature.places);
     }
   },
 
@@ -334,6 +347,12 @@ const featureRegistry = {
         format_version: "1.13.0",
         "minecraft:aggregate_feature": feature
       });
+    },
+
+    forPlaces: (feature, func) => {
+      for (let ref of feature.places){
+        func(ref);
+      }
     }
   },
 
@@ -350,7 +369,9 @@ const featureRegistry = {
         format_version: "1.13.0",
         "minecraft:single_block_feature": feature
       });
-    }
+    },
+
+    forPlaces: (feature, func) => {}
   },
 
   conditional_list: {
@@ -383,6 +404,12 @@ const featureRegistry = {
         format_version: "1.13.0",
         "minecraft:aggregate_feature": feature
       });
+    },
+
+    forPlaces: (feature, func) => {
+      for (let [ref, _] of feature.places){
+        func(ref);
+      }
     }
   },
 
@@ -399,7 +426,9 @@ const featureRegistry = {
         format_version: "1.13.0",
         "minecraft:geode_feature": feature
       });
-    }
+    },
+
+    forPlaces: (feature, func) => {}
   },
 
   growing_plant: {
@@ -415,7 +444,9 @@ const featureRegistry = {
         format_version: "1.13.0",
         "minecraft:growing_plant_feature": feature
       });
-    }
+    },
+
+    forPlaces: (feature, func) => {}
   },
 
   ore: {
@@ -431,7 +462,9 @@ const featureRegistry = {
         format_version: "1.13.0",
         "minecraft:ore_feature": feature
       });
-    }
+    },
+
+    forPlaces: (feature, func) => {}
   },
 
   scatter: {
@@ -451,6 +484,10 @@ const featureRegistry = {
         format_version: "1.13.0",
         "minecraft:scatter_feature": feature
       });
+    },
+
+    forPlaces: (feature, func) => {
+      func(feature.places);
     }
   },
 
@@ -469,6 +506,10 @@ const featureRegistry = {
         format_version: "1.13.0",
         "minecraft:search_feature": feature
       });
+    },
+
+    forPlaces: (feature, func) => {
+      func(feature.places);
     }
   },
 
@@ -487,7 +528,9 @@ const featureRegistry = {
         format_version: "1.13.0",
         "minecraft:structure_template_feature": feature
       });
-    }
+    },
+
+    forPlaces: (feature, func) => {}
   },
 
   surface_snap: {
@@ -505,6 +548,10 @@ const featureRegistry = {
         format_version: "1.13.0",
         "minecraft:snap_to_surface_feature": feature
       });
+    },
+
+    forPlaces: (feature, func) => {
+      func(feature.places);
     }
   },
 
@@ -523,6 +570,10 @@ const featureRegistry = {
         format_version: "1.13.0",
         "minecraft:vegetation_patch_feature": feature
       });
+    },
+
+    forPlaces: (feature, func) => {
+      func(feature.places);
     }
   },
 
@@ -546,10 +597,138 @@ const featureRegistry = {
         format_version: "1.13.0",
         "minecraft:weighted_random_feature": feature
       });
+    },
+
+    forPlaces: (feature, func) => {
+      for (let [ref, _] of feature.places){
+        func(ref);
+      }
     }
   }
 };
 
+
+// resolve templates & variables
+
+// resolves variables (recursively)
+function resolveVars(value, vars) {
+  if (typeof value === 'string') {
+    if (var_pattern.test(value)) {
+      if (value in vars) {
+        return vars[value];
+      } else {
+        console.warn(`Unresolved variable "${value}"`);
+        return value;
+      }
+    }
+
+    return value.replace(inner_var_pattern, (match) => {
+      if (match in vars) {
+        return vars[match];
+      } else {
+        console.warn(`Unresolved variable "${value}"`);
+        return value;
+      }
+    });
+  } else if (Array.isArray(value)) {
+    const resolved = [];
+    for (const val of value){
+      resolved.push(resolveVars(val, vars));
+    }
+    return resolved;
+  } else if (value !== null && typeof value === 'object') {
+    const resolved = {};
+    for (const [key, val] of Object.entries(value)) {
+      if (var_pattern.test(key)){
+        if (!(key in vars)) {
+          vars[key] = resolveVars(val, vars);
+        }
+      } else {
+        resolved[key] = resolveVars(val, structuredClone(vars));
+      }
+    }
+    return resolved;
+  } else {
+    return value;
+  }
+}
+
+// resolves templates and variables
+function resolve(feature, feature_namespace, vars){
+  // update variable list
+  for (prop in feature){
+    if (var_pattern.test(prop)){
+      if (!(prop in vars)) {
+        vars[prop] = feature[prop];
+      }
+      delete feature[prop];
+    }
+  }
+  feature = resolveVars(feature, vars);
+  
+  // resolve templates
+  if ("type" in feature){
+    getFeatureType(feature).forPlaces(feature, (subfeature) => {
+      if (typeof subfeature == "object"){
+        subfeature = resolve(subfeature, feature_namespace, structuredClone(vars));
+      }
+    });
+
+  } else {
+    const match = feature.inherits.match(template_ref_pattern);
+
+    if (match){
+      let namespace = match[2];
+      if (!namespace){
+        namespace = feature_namespace;
+      }
+      let name = match[3];
+      feature = resolve(templates[namespace][name], feature_namespace, structuredClone(vars));
+    } else {
+      console.error("feature.inherits does not meet expected pattern. (This state should be unreachable)");
+    }
+  }
+  return feature;
+}
+
+for (const namespace in namespaces){
+  for (const key in namespaces[namespace]){
+    namespaces[namespace][key] = resolve(namespaces[namespace][key], namespace, []);
+  }
+}
+
+// re-validate schemas without vars or templates
+
+// toggle templates & vars
+function disableSchema(id){
+  ajv.removeSchema(id);
+  ajv.addSchema({ "$id": id, "not": {} });
+}
+
+disableSchema("template_ref.schema.json");
+disableSchema("variable.schema.json");
+disableSchema("variable_assignment.schema.json");
+disableSchema("cond_ignore.schema.json");
+
+// re-validate
+for (const namespace in namespaces) {
+  for (const key in namespaces[namespace]) {
+    const feature = namespaces[namespace][key];
+    const errors = ajv.validate(entrypoint, feature).errors;
+    if (errors){
+      console.error(`Schema validation failed on ${namespace}.${key} after template resolution. Error(s):`);
+      errors.forEach((error) => {
+        console.error(error.stack);
+      });
+      success = false;
+      return;
+    }
+  }
+}
+
+if (!success){
+  throw new Error("Error(s) encountered while expanding features, exiting.");
+}
 
 // split features into files & convert to correct format
 

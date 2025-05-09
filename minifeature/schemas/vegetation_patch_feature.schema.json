@@ -1,80 +1,185 @@
 {
-  "description": "Vegetation patch feature - places a cluster of features",
-  "type": "object",
-  "properties": {
-    "type": {
-      "const": "vegetation_patch",
-      "description": "Vegetation patch feature - places a cluster of features"
+    "description": "Vegetation patch feature - places a cluster of features",
+    "type": "object",
+    "properties": {
+        "type": {
+            "const": "vegetation_patch",
+            "description": "Vegetation patch feature - places a cluster of features"
+        },
+        "places": {
+            "anyOf": [
+                {
+                    "$ref": "feature_ref.schema.json",
+                    "variable": true,
+                    "description": "Feature to place"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "replaceable_blocks": {
+            "anyOf": [
+                {
+                    "type": "array",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "block_ref.schema.json",
+                                "variable": true
+                            },
+                            {
+                                "$ref": "variable.schema.json"
+                            }
+                        ]
+                    },
+                    "minItems": 1,
+                    "variable": true,
+                    "description": "Blocks the base may replace"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "ground_block": {
+            "anyOf": [
+                {
+                    "$ref": "block_ref.schema.json",
+                    "variable": true,
+                    "description": "Block this feature will use to build a platform out of"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "depth": {
+            "anyOf": [
+                {
+                    "type": "integer",
+                    "variable": true,
+                    "description": "Depth to construct the base to using ground_block. Set to 0 to place no base"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "vertical_range": {
+            "anyOf": [
+                {
+                    "type": "integer",
+                    "variable": true,
+                    "description": "Radius to search for placement surfaces on vertically"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "horizontal_radius": {
+            "anyOf": [
+                {
+                    "type": "integer",
+                    "variable": true,
+                    "description": "Square radius to place in"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "surface": {
+            "anyOf": [
+                {
+                    "type": "string",
+                    "enum": [
+                        "floor",
+                        "ceiling"
+                    ],
+                    "variable": true,
+                    "description": "Surface to place on",
+                    "default": "floor"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "extra_deep_block_chance": {
+            "anyOf": [
+                {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "variable": true,
+                    "description": "Chance to add one to the depth for columns of the base",
+                    "default": 0
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "vegetation_chance": {
+            "anyOf": [
+                {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "variable": true,
+                    "description": "Chance that a surface block will have a vegetation feature placed on it",
+                    "default": 0
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "extra_edge_column_chance": {
+            "anyOf": [
+                {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "variable": true,
+                    "description": "Chance to add columns on the edge of the placement range to the placement area",
+                    "default": 0
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "waterlogged": {
+            "anyOf": [
+                {
+                    "type": "boolean",
+                    "variable": true,
+                    "description": "Do not set this to true, it's buggy. Use a scatter feature instead",
+                    "default": false
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        }
     },
-    "places": {
-      "$ref": "feature_ref.schema.json",
-      "description": "Feature to place"
+    "patternProperties": {
+        "^\\$[a-z_][a-z0-9_]*\\$$": {
+            "$ref": "variable_assignment.schema.json",
+            "description": "Variable assignment"
+        }
     },
-    "replaceable_blocks": {
-      "type": "array",
-      "items": {
-        "$ref": "block_ref.schema.json"
-      },
-      "minItems": 1,
-      "description": "Blocks the base may replace"
-    },
-    "ground_block": {
-      "$ref": "block_ref.schema.json",
-      "description": "Block this feature will use to build a platform out of"
-    },
-    "depth": {
-      "type": "integer",
-      "description": "Depth to construct the base to using ground_block. Set to 0 to place no base"
-    },
-    "vertical_range": {
-      "type": "integer",
-      "description": "Radius to search for placement surfaces on vertically"
-    },
-    "horizontal_radius": {
-      "type": "integer",
-      "description": "Square radius to place in"
-    },
-    "surface": {
-      "type": "string",
-      "enum": ["floor", "ceiling"],
-      "description": "Surface to place on",
-      "default": "floor"
-    },
-    "extra_deep_block_chance": {
-      "type": "number",
-      "minimum": 0,
-      "maximum": 1,
-      "description": "Chance to add one to the depth for columns of the base",
-      "default": 0
-    },
-    "vegetation_chance": {
-      "type": "number",
-      "minimum": 0,
-      "maximum": 1,
-      "description": "Chance that a surface block will have a vegetation feature placed on it",
-      "default": 0
-    },
-    "extra_edge_column_chance": {
-      "type": "number",
-      "minimum": 0,
-      "maximum": 1,
-      "description": "Chance to add columns on the edge of the placement range to the placement area",
-      "default": 0
-    },
-    "waterlogged": {
-      "type": "boolean",
-      "description": "Do not set this to true, it's buggy. Use a scatter feature instead",
-      "default": false
-    }
-  },
-  "required": [
-    "replaceable_blocks",
-    "ground_block",
-    "places",
-    "depth",
-    "vertical_range",
-    "horizontal_radius",
-    "type"
-  ],
-  "additionalProperties": false
+    "required": [
+        "replaceable_blocks",
+        "ground_block",
+        "places",
+        "depth",
+        "vertical_range",
+        "horizontal_radius",
+        "type"
+    ],
+    "additionalProperties": false
 }

@@ -1,0 +1,63 @@
+{
+  "description": "Ore feature - places a cluster of blocks",
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "ore",
+      "description": "Ore feature - places a cluster of blocks"
+    },
+    "count": {
+      "type": "integer",
+      "minimum": 1,
+      "variable": true,
+      "description": "Number of blocks to place"
+    },
+    "discard_chance_on_air_exposure": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": true,
+      "description": "Chance for placement to fail any block is exposed to air",
+      "default": 1
+    },
+    "replace_rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "places_block": {
+            "$ref": "block_ref.schema.json",
+            "variable": true,
+            "description": "Block to place"
+          },
+          "may_replace": {
+            "type": "array",
+            "items": {
+              "$ref": "block_ref.schema.json",
+              "variable": true
+            },
+            "minItems": 1,
+            "variable": true,
+            "description": "List of blocks that may be replaced"
+          }
+        },
+        "required": ["places_block"],
+        "additionalProperties": false,
+        "variable": true
+      },
+      "minItems": 1,
+      "variable": true
+    }
+  },
+  "patternProperties": {
+    "^\\$[a-z_][a-z0-9_]*\\$$": {
+      "$ref": "variable_assignment.schema.json",
+      "description": "Variable assignment"
+    }
+  },
+  "required": [
+    "count",
+    "type"
+  ],
+  "additionalProperties": false
+}

@@ -1,85 +1,214 @@
 {
-  "description": "Growing plant feature - places a column of blocks like vines or sugarcane",
-  "type": "object",
-  "properties": {
-    "type": {
-      "const": "growing_plant",
-      "description": "Growing plant feature - places a column of blocks like vines or sugarcane"
+    "description": "Growing plant feature - places a column of blocks like vines or sugarcane",
+    "type": "object",
+    "properties": {
+        "type": {
+            "const": "growing_plant",
+            "description": "Growing plant feature - places a column of blocks like vines or sugarcane"
+        },
+        "head_blocks": {
+            "anyOf": [
+                {
+                    "type": "array",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "type": "array",
+                                "items": [
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "$ref": "block_ref.schema.json",
+                                                "variable": true,
+                                                "description": "Block to place"
+                                            },
+                                            {
+                                                "$ref": "variable.schema.json"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "type": "number",
+                                                "variable": true,
+                                                "description": "Weight"
+                                            },
+                                            {
+                                                "$ref": "variable.schema.json"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "variable": true
+                            },
+                            {
+                                "$ref": "variable.schema.json"
+                            }
+                        ]
+                    },
+                    "variable": true,
+                    "description": "Blocks to place as the head block of the feature"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "body_blocks": {
+            "anyOf": [
+                {
+                    "type": "array",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "type": "array",
+                                "items": [
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "$ref": "block_ref.schema.json",
+                                                "variable": true,
+                                                "description": "Block to place"
+                                            },
+                                            {
+                                                "$ref": "variable.schema.json"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "type": "number",
+                                                "variable": true,
+                                                "description": "Weight"
+                                            },
+                                            {
+                                                "$ref": "variable.schema.json"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "variable": true
+                            },
+                            {
+                                "$ref": "variable.schema.json"
+                            }
+                        ]
+                    },
+                    "variable": true,
+                    "description": "Blocks to place in the middle of the feature"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "growth_direction": {
+            "anyOf": [
+                {
+                    "type": "string",
+                    "enum": [
+                        "up",
+                        "down"
+                    ],
+                    "variable": true,
+                    "description": "Direction for the feature to generate in"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "allow_water": {
+            "anyOf": [
+                {
+                    "type": "boolean",
+                    "variable": true,
+                    "description": "If true, growth may start in water (this may be buggy)",
+                    "default": false
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "age": {
+            "anyOf": [
+                {
+                    "$ref": "integer_range.schema.json",
+                    "variable": true,
+                    "description": "Sets the age state of the top block"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "height_distribution": {
+            "anyOf": [
+                {
+                    "type": "array",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "type": "array",
+                                "items": [
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "$ref": "integer_range.schema.json",
+                                                "variable": true,
+                                                "description": "Range"
+                                            },
+                                            {
+                                                "$ref": "variable.schema.json"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "type": "number",
+                                                "variable": true,
+                                                "description": "Weight"
+                                            },
+                                            {
+                                                "$ref": "variable.schema.json"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "minItems": 2,
+                                "maxItems": 2,
+                                "variable": true
+                            },
+                            {
+                                "$ref": "variable.schema.json"
+                            }
+                        ]
+                    },
+                    "minItems": 1,
+                    "variable": true
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        }
     },
-    "head_blocks": {
-      "type": "array",
-      "items": {
-        "type": "array",
-        "items": [
-          {
-            "$ref": "block_ref.schema.json",
-            "description": "Block to place"
-          },
-          {
-            "type": "number",
-            "description": "Weight"
-          }
-        ]
-      },
-      "description": "Blocks to place as the head block of the feature"
+    "patternProperties": {
+        "^\\$[a-z_][a-z0-9_]*\\$$": {
+            "$ref": "variable_assignment.schema.json",
+            "description": "Variable assignment"
+        }
     },
-    "body_blocks": {
-      "type": "array",
-      "items": {
-        "type": "array",
-        "items": [
-          {
-            "$ref": "block_ref.schema.json",
-            "description": "Block to place"
-          },
-          {
-            "type": "number",
-            "description": "Weight"
-          }
-        ]
-      },
-      "description": "Blocks to place in the middle of the feature"
-    },
-    "growth_direction": {
-      "type": "string",
-      "enum": ["up", "down"],
-      "description": "Direction for the feature to generate in"
-    },
-    "allow_water": {
-      "type": "boolean",
-      "description": "If true, growth may start in water (this may be buggy)",
-      "default": false
-    },
-    "age": {
-      "$ref": "integer_range.schema.json",
-      "description": "Sets the age state of the top block"
-    },
-    "height_distribution": {
-      "type": "array",
-      "items": {
-        "type": "array",
-        "items": [
-          { 
-            "$ref": "integer_range.schema.json",
-            "description": "Range"
-          },
-          {
-            "type": "number",
-            "description": "Weight"
-          }
-        ],
-        "minItems": 2,
-        "maxItems": 2
-      },
-      "minItems": 1
-    }
-  },
-  "required": [
-    "height_distribution",
-    "growth_direction",
-    "head_blocks",
-    "body_blocks",
-    "type"
-  ],
-  "additionalProperties": false
+    "required": [
+        "height_distribution",
+        "growth_direction",
+        "head_blocks",
+        "body_blocks",
+        "type"
+    ],
+    "additionalProperties": false
 }

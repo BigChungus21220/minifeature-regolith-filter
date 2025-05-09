@@ -1,106 +1,247 @@
 {
-  "description": "Block feature - places a single block. Corresponds to `minecraft:single_block_feature`",
-  "type": "object",
-  "properties": {
-    "type": { 
-      "const": "block",
-      "description": "Block feature - places a single block. Corresponds to `minecraft:single_block_feature`"
-    },
-    "places_block": {
-      "anyOf": [
-        {
-          "$ref": "block_ref.schema.json"
+    "description": "Block feature - places a single block. Corresponds to `minecraft:single_block_feature`",
+    "type": "object",
+    "properties": {
+        "type": {
+            "const": "block",
+            "description": "Block feature - places a single block. Corresponds to `minecraft:single_block_feature`"
         },
-        {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "weight": {
-                "type": "number"
-              },
-              "block": {
-                "$ref": "block_ref.schema.json"
-              }
-            },
-            "required": ["weight", "block", "type"],
-            "additionalProperties": false
-          }
+        "places_block": {
+            "anyOf": [
+                {
+                    "anyOf": [
+                        {
+                            "$ref": "block_ref.schema.json"
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "weight": {
+                                        "anyOf": [
+                                            {
+                                                "type": "number",
+                                                "variable": true
+                                            },
+                                            {
+                                                "$ref": "variable.schema.json"
+                                            }
+                                        ]
+                                    },
+                                    "block": {
+                                        "anyOf": [
+                                            {
+                                                "$ref": "block_ref.schema.json",
+                                                "variable": true
+                                            },
+                                            {
+                                                "$ref": "variable.schema.json"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "weight",
+                                    "block"
+                                ],
+                                "additionalProperties": false
+                            }
+                        }
+                    ],
+                    "variable": true,
+                    "description": "Block to place"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "enforce_placement_rules": {
+            "anyOf": [
+                {
+                    "type": "boolean",
+                    "variable": true,
+                    "description": "If true, placement rules are enforced. Eg: crops on farmland"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "enforce_survivability_rules": {
+            "anyOf": [
+                {
+                    "type": "boolean",
+                    "variable": true,
+                    "description": "If true, survivability rules are enforced. Eg: coral in water"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "randomize_rotation": {
+            "anyOf": [
+                {
+                    "type": "boolean",
+                    "variable": true,
+                    "description": "If true, a randomizes cardinal orientation",
+                    "default": false
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "may_attach_to": {
+            "anyOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "min_sides_must_attach": {
+                            "anyOf": [
+                                {
+                                    "type": "integer",
+                                    "minimum": 1,
+                                    "maximum": 4,
+                                    "variable": true,
+                                    "description": "Number of side directions which must be satisfied. Does not apply to `up` or `down`",
+                                    "default": 4
+                                },
+                                {
+                                    "$ref": "variable.schema.json"
+                                }
+                            ]
+                        },
+                        "auto_rotate": {
+                            "anyOf": [
+                                {
+                                    "type": "boolean",
+                                    "variable": true,
+                                    "description": "If true, directions are relative to block orientation",
+                                    "default": false
+                                },
+                                {
+                                    "$ref": "variable.schema.json"
+                                }
+                            ]
+                        },
+                        "top": {
+                            "$ref": "face_attachment.schema.json"
+                        },
+                        "bottom": {
+                            "$ref": "face_attachment.schema.json"
+                        },
+                        "north": {
+                            "$ref": "face_attachment.schema.json"
+                        },
+                        "south": {
+                            "$ref": "face_attachment.schema.json"
+                        },
+                        "east": {
+                            "$ref": "face_attachment.schema.json"
+                        },
+                        "west": {
+                            "$ref": "face_attachment.schema.json"
+                        },
+                        "sides": {
+                            "$ref": "face_attachment.schema.json"
+                        },
+                        "all": {
+                            "$ref": "face_attachment.schema.json"
+                        },
+                        "diagonal": {
+                            "$ref": "face_attachment.schema.json"
+                        }
+                    },
+                    "variable": true,
+                    "additionalProperties": false,
+                    "description": "Blocks this feature may be placed on. Omit to allow placement on any block"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "may_not_attach_to": {
+            "anyOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "top": {
+                            "$ref": "face_attachment.schema.json"
+                        },
+                        "bottom": {
+                            "$ref": "face_attachment.schema.json"
+                        },
+                        "north": {
+                            "$ref": "face_attachment.schema.json"
+                        },
+                        "south": {
+                            "$ref": "face_attachment.schema.json"
+                        },
+                        "east": {
+                            "$ref": "face_attachment.schema.json"
+                        },
+                        "west": {
+                            "$ref": "face_attachment.schema.json"
+                        },
+                        "sides": {
+                            "$ref": "face_attachment.schema.json"
+                        },
+                        "all": {
+                            "$ref": "face_attachment.schema.json"
+                        },
+                        "diagonal": {
+                            "$ref": "face_attachment.schema.json"
+                        }
+                    },
+                    "variable": true,
+                    "additionalProperties": false,
+                    "description": "Blocks this feature may not be placed on. Omit to allow placement on any block"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "may_replace": {
+            "anyOf": [
+                {
+                    "type": "array",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "block_ref.schema.json",
+                                "variable": true
+                            },
+                            {
+                                "$ref": "variable.schema.json"
+                            }
+                        ]
+                    },
+                    "minItems": 1,
+                    "variable": true,
+                    "description": "Blocks this feature may replace. Omit to allow replacement of any block"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
         }
-      ],
-      "description": "Block to place"
     },
-    "enforce_placement_rules": {
-      "type": "boolean",
-      "description": "If true, placement rules are enforced. Eg: crops on farmland"
+    "patternProperties": {
+        "^\\$[a-z_][a-z0-9_]*\\$$": {
+            "$ref": "variable_assignment.schema.json",
+            "description": "Variable assignment"
+        }
     },
-    "enforce_survivability_rules": {
-      "type": "boolean",
-      "description": "If true, survivability rules are enforced. Eg: coral in water"
-    },
-    "randomize_rotation": {
-      "type": "boolean",
-      "description": "If true, a randomizes cardinal orientation",
-      "default": false
-    },
-    "may_attach_to": {
-      "type": "object",
-      "properties": {
-        "min_sides_must_attach": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 4,
-          "description": "Number of side directions which must be satisfied. Does not apply to `up` or `down`",
-          "default": 4
-        },
-        "auto_rotate": {
-          "type": "boolean",
-          "description": "If true, directions are relative to block orientation",
-          "default": false
-        },
-        "top": { "$ref": "face_attachment.schema.json" },
-        "bottom": { "$ref": "face_attachment.schema.json" },
-        "north": { "$ref": "face_attachment.schema.json" },
-        "south": { "$ref": "face_attachment.schema.json" },
-        "east": { "$ref": "face_attachment.schema.json" },
-        "west": { "$ref": "face_attachment.schema.json" },
-        "sides": { "$ref": "face_attachment.schema.json" },
-        "all": { "$ref": "face_attachment.schema.json" },
-        "diagonal": { "$ref": "face_attachment.schema.json" }
-      },
-      "additionalProperties": false,
-      "description": "Blocks this feature may be placed on. Omit to allow placement on any block"
-    },
-    "may_not_attach_to": {
-      "type": "object",
-      "properties": {
-        "top": { "$ref": "face_attachment.schema.json" },
-        "bottom": { "$ref": "face_attachment.schema.json" },
-        "north": { "$ref": "face_attachment.schema.json" },
-        "south": { "$ref": "face_attachment.schema.json" },
-        "east": { "$ref": "face_attachment.schema.json" },
-        "west": { "$ref": "face_attachment.schema.json" },
-        "sides": { "$ref": "face_attachment.schema.json" },
-        "all": { "$ref": "face_attachment.schema.json" },
-        "diagonal": { "$ref": "face_attachment.schema.json" }
-      },
-      "additionalProperties": false,
-      "description": "Blocks this feature may not be placed on. Omit to allow placement on any block"
-    },
-    "may_replace": {
-      "type": "array",
-      "items": {
-        "$ref": "block_ref.schema.json"
-      },
-      "minItems": 1,
-      "description": "Blocks this feature may replace. Omit to allow replacement of any block"
-    }
-  },
-  "required": [
-    "places_block",
-    "enforce_placement_rules",
-    "enforce_survivability_rules",
-    "type"
-  ],
-  "additionalProperties": false
+    "required": [
+        "places_block",
+        "enforce_placement_rules",
+        "enforce_survivability_rules",
+        "type"
+    ],
+    "additionalProperties": false
 }

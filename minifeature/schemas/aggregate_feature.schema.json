@@ -1,25 +1,62 @@
 {
-  "description": "Aggregate feature - places multiple features in order",
-  "type": "object",
-  "properties": {
-    "type": { 
-      "const": "aggregate",
-      "description": "Aggregate feature - places multiple features in order"
+    "description": "Aggregate feature - places multiple features in order",
+    "type": "object",
+    "properties": {
+        "type": {
+            "const": "aggregate",
+            "description": "Aggregate feature - places multiple features in order"
+        },
+        "early_out": {
+            "anyOf": [
+                {
+                    "type": "string",
+                    "enum": [
+                        "none",
+                        "first_success",
+                        "first_failure"
+                    ],
+                    "variable": true,
+                    "description": "If set to first_success or first_failure, placement ends when the condition is met",
+                    "default": "none"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "places": {
+            "anyOf": [
+                {
+                    "type": "array",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "feature_ref.schema.json",
+                                "variable": true
+                            },
+                            {
+                                "$ref": "variable.schema.json"
+                            }
+                        ]
+                    },
+                    "variable": true,
+                    "description": "Features to place"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        }
     },
-    "early_out": {
-      "type": "string",
-      "enum": ["none", "first_success", "first_failure"],
-      "description": "If set to first_success or first_failure, placement ends when the condition is met",
-      "default": "none"
+    "patternProperties": {
+        "^\\$[a-z_][a-z0-9_]*\\$$": {
+            "$ref": "variable_assignment.schema.json",
+            "description": "Variable assignment"
+        }
     },
-    "places": {
-      "type": "array",
-      "items": {
-        "$ref": "feature_ref.schema.json"
-      },
-      "description": "Features to place"
-    }
-  },
-  "required": ["places", "type"],
-  "additionalProperties": false
+    "required": [
+        "places",
+        "type"
+    ],
+    "additionalProperties": false
 }

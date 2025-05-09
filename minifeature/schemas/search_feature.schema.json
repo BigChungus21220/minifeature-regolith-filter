@@ -1,50 +1,135 @@
 {
-  "description": "Search feature - attempts to place a number of features in an area",
-  "type": "object",
-  "properties": {
-    "type": {
-      "const": "search",
-      "description": "Search feature - attempts to place a number of features in an area"
-    },
-    "places": {
-      "$ref": "feature_ref.schema.json",
-      "description": "Feature to place"
-    },
-    "search_volume": {
-      "type": "object",
-      "properties": {
-        "min": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          },
-          "minItems": 3,
-          "maxItems": 3
+    "description": "Search feature - attempts to place a number of features in an area",
+    "type": "object",
+    "properties": {
+        "type": {
+            "const": "search",
+            "description": "Search feature - attempts to place a number of features in an area"
         },
-        "max": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          },
-          "minItems": 3,
-          "maxItems": 3
+        "places": {
+            "anyOf": [
+                {
+                    "$ref": "feature_ref.schema.json",
+                    "variable": true,
+                    "description": "Feature to place"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "search_volume": {
+            "anyOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "min": {
+                            "anyOf": [
+                                {
+                                    "type": "array",
+                                    "items": {
+                                        "anyOf": [
+                                            {
+                                                "type": "integer",
+                                                "variable": true
+                                            },
+                                            {
+                                                "$ref": "variable.schema.json"
+                                            }
+                                        ]
+                                    },
+                                    "minItems": 3,
+                                    "maxItems": 3,
+                                    "variable": true
+                                },
+                                {
+                                    "$ref": "variable.schema.json"
+                                }
+                            ]
+                        },
+                        "max": {
+                            "anyOf": [
+                                {
+                                    "type": "array",
+                                    "items": {
+                                        "anyOf": [
+                                            {
+                                                "type": "integer",
+                                                "variable": true
+                                            },
+                                            {
+                                                "$ref": "variable.schema.json"
+                                            }
+                                        ]
+                                    },
+                                    "minItems": 3,
+                                    "maxItems": 3,
+                                    "variable": true
+                                },
+                                {
+                                    "$ref": "variable.schema.json"
+                                }
+                            ]
+                        }
+                    },
+                    "required": [
+                        "min",
+                        "max"
+                    ],
+                    "additionalProperties": false,
+                    "variable": true,
+                    "description": "Area to search"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "search_axis": {
+            "anyOf": [
+                {
+                    "type": "string",
+                    "enum": [
+                        "-x",
+                        "+x",
+                        "-y",
+                        "+y",
+                        "-z",
+                        "+z"
+                    ],
+                    "variable": true
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "required_successes": {
+            "anyOf": [
+                {
+                    "type": "integer",
+                    "minimum": 1,
+                    "variable": true,
+                    "description": "Number of successful locations required for a placement to occur",
+                    "default": 1
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
         }
-      },
-      "required": ["min", "max"],
-      "additionalProperties": false,
-      "description": "Area to search"
     },
-    "search_axis": {
-      "type": "string",
-      "enum": ["-x", "+x", "-y", "+y", "-z", "+z"]
+    "patternProperties": {
+        "^\\$[a-z_][a-z0-9_]*\\$$": {
+            "$ref": "variable_assignment.schema.json",
+            "description": "Variable assignment"
+        }
     },
-    "required_successes": {
-      "type": "integer",
-      "minimum": 1,
-      "description": "Number of successful locations required for a placement to occur",
-      "default": 1
-    }
-  },
-  "required": ["places", "search_volume", "search_axis", "type"],
-  "additionalProperties": false
+    "required": [
+        "places",
+        "search_volume",
+        "search_axis",
+        "type"
+    ],
+    "additionalProperties": false
 }

@@ -1,0 +1,64 @@
+{
+  "description": "Search feature - attempts to place a number of features in an area",
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "search",
+      "description": "Search feature - attempts to place a number of features in an area"
+    },
+    "places": {
+      "$ref": "feature_ref.schema.json",
+      "variable": true,
+      "description": "Feature to place"
+    },
+    "search_volume": {
+      "type": "object",
+      "properties": {
+        "min": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "variable": true
+          },
+          "minItems": 3,
+          "maxItems": 3,
+          "variable": true
+        },
+        "max": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "variable": true
+          },
+          "minItems": 3,
+          "maxItems": 3,
+          "variable": true
+        }
+      },
+      "required": ["min", "max"],
+      "additionalProperties": false,
+      "variable": true,
+      "description": "Area to search"
+    },
+    "search_axis": {
+      "type": "string",
+      "enum": ["-x", "+x", "-y", "+y", "-z", "+z"],
+      "variable": true
+    },
+    "required_successes": {
+      "type": "integer",
+      "minimum": 1,
+      "variable": true,
+      "description": "Number of successful locations required for a placement to occur",
+      "default": 1
+    }
+  },
+  "patternProperties": {
+    "^\\$[a-z_][a-z0-9_]*\\$$": {
+      "$ref": "variable_assignment.schema.json",
+      "description": "Variable assignment"
+    }
+  },
+  "required": ["places", "search_volume", "search_axis", "type"],
+  "additionalProperties": false
+}

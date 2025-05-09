@@ -1,20 +1,39 @@
 {
-  "anyOf": [
-    {
-      "type": "integer"
-    },
-    {
-      "type": "object",
-      "properties": {
-        "range_min": {
-          "type": "integer"
+    "anyOf": [
+        {
+            "type": "integer"
         },
-        "range_max": {
-          "type": "integer"
+        {
+            "type": "object",
+            "properties": {
+                "range_min": {
+                    "anyOf": [
+                        {
+                            "type": "integer",
+                            "variable": true
+                        },
+                        {
+                            "$ref": "variable.schema.json"
+                        }
+                    ]
+                },
+                "range_max": {
+                    "anyOf": [
+                        {
+                            "type": "integer",
+                            "variable": true
+                        },
+                        {
+                            "$ref": "variable.schema.json"
+                        }
+                    ]
+                }
+            },
+            "required": [
+                "range_min",
+                "range_max"
+            ],
+            "additionalProperties": false
         }
-      },
-      "required": ["range_min", "range_max"],
-      "additionalProperties": false
-    }
-  ]
+    ]
 }

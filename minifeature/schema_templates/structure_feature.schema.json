@@ -1,0 +1,79 @@
+{
+  "description": "Structure feature - places a structure",
+  "type": "object",
+  "properties": {
+    "type": { 
+      "const": "structure",
+      "description": "Structure feature - places a structure"
+    },
+    "places_structure": {
+      "type": "string",
+      "variable": true,
+      "description": "Structure to place"
+    },
+    "adjustment_radius": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 16,
+      "variable": true,
+      "description": "Square radius on the x-z plane to try placing the struture in",
+      "default": 0
+    },
+    "facing_direction": {
+      "type": "string",
+      "enum": ["north", "south", "east", "west", "random"],
+      "variable": true,
+      "description": "Direction to rotate the feature in. `south` is usually the most stable",
+      "default": "south"
+    },
+    "constraints": {
+      "type": "object",
+      "properties": {
+        "grounded": {
+          "type": "object",
+          "additionalProperties": false,
+          "variable": true,
+          "description": "If included, all blocks directly below the feature's bottom layer's non-empty blocks may not be air, water, or lava"
+        },
+        "unburied": {
+          "type": "object",
+          "additionalProperties": false,
+          "variable": true,
+          "description": "If included, all blocks directly above the feature's top layer's non-empty blocks must be air"
+        },
+        "block_intersection": {
+          "type": "object",
+          "properties": {
+            "block_allowlist": {
+              "type": "array",
+              "items": {
+                "$ref": "block_ref.schema.json",
+                "variable": true
+              },
+              "minItems": 1,
+              "variable": true,
+              "description": "Blocks this feature may intersect"
+            }
+          },
+          "required": ["block_allowlist"],
+          "additionalProperties": false,
+          "variable": true
+        }
+      },
+      "additionalProperties": false,
+      "variable": true
+    }
+  },
+  "patternProperties": {
+    "^\\$[a-z_][a-z0-9_]*\\$$": {
+      "$ref": "variable_assignment.schema.json",
+      "description": "Variable assignment"
+    }
+  },
+  "required": [
+    "places_structure",
+    "constraints",
+    "type"
+  ],
+  "additionalProperties": false
+}

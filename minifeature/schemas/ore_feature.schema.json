@@ -1,50 +1,114 @@
 {
-  "description": "Ore feature - places a cluster of blocks",
-  "type": "object",
-  "properties": {
-    "type": {
-      "const": "ore",
-      "description": "Ore feature - places a cluster of blocks"
-    },
-    "count": {
-      "type": "integer",
-      "minimum": 1,
-      "description": "Number of blocks to place"
-    },
-    "discard_chance_on_air_exposure": {
-      "type": "number",
-      "minimum": 0,
-      "maximum": 1,
-      "description": "Chance for placement to fail any block is exposed to air",
-      "default": 1
-    },
-    "replace_rules": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "places_block": {
-            "$ref": "block_ref.schema.json",
-            "description": "Block to place"
-          },
-          "may_replace": {
-            "type": "array",
-            "items": {
-              "$ref": "block_ref.schema.json"
-            },
-            "minItems": 1,
-            "description": "List of blocks that may be replaced"
-          }
+    "description": "Ore feature - places a cluster of blocks",
+    "type": "object",
+    "properties": {
+        "type": {
+            "const": "ore",
+            "description": "Ore feature - places a cluster of blocks"
         },
-        "required": ["places_block"],
-        "additionalProperties": false
-      },
-      "minItems": 1
-    }
-  },
-  "required": [
-    "count",
-    "type"
-  ],
-  "additionalProperties": false
+        "count": {
+            "anyOf": [
+                {
+                    "type": "integer",
+                    "minimum": 1,
+                    "variable": true,
+                    "description": "Number of blocks to place"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "discard_chance_on_air_exposure": {
+            "anyOf": [
+                {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "variable": true,
+                    "description": "Chance for placement to fail any block is exposed to air",
+                    "default": 1
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "replace_rules": {
+            "anyOf": [
+                {
+                    "type": "array",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "places_block": {
+                                        "anyOf": [
+                                            {
+                                                "$ref": "block_ref.schema.json",
+                                                "variable": true,
+                                                "description": "Block to place"
+                                            },
+                                            {
+                                                "$ref": "variable.schema.json"
+                                            }
+                                        ]
+                                    },
+                                    "may_replace": {
+                                        "anyOf": [
+                                            {
+                                                "type": "array",
+                                                "items": {
+                                                    "anyOf": [
+                                                        {
+                                                            "$ref": "block_ref.schema.json",
+                                                            "variable": true
+                                                        },
+                                                        {
+                                                            "$ref": "variable.schema.json"
+                                                        }
+                                                    ]
+                                                },
+                                                "minItems": 1,
+                                                "variable": true,
+                                                "description": "List of blocks that may be replaced"
+                                            },
+                                            {
+                                                "$ref": "variable.schema.json"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "places_block"
+                                ],
+                                "additionalProperties": false,
+                                "variable": true
+                            },
+                            {
+                                "$ref": "variable.schema.json"
+                            }
+                        ]
+                    },
+                    "minItems": 1,
+                    "variable": true
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        }
+    },
+    "patternProperties": {
+        "^\\$[a-z_][a-z0-9_]*\\$$": {
+            "$ref": "variable_assignment.schema.json",
+            "description": "Variable assignment"
+        }
+    },
+    "required": [
+        "count",
+        "type"
+    ],
+    "additionalProperties": false
 }

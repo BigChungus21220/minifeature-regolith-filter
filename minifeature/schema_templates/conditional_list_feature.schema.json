@@ -1,0 +1,43 @@
+{
+  "description": "Conditional list feature - places multiple features conditionally in order",
+  "type": "object",
+  "properties": {
+    "type": { "const": "conditional_list" },
+    "early_out": {
+      "type": "string",
+      "enum": ["none", "first_success", "first_failure"],
+      "variable": true,
+      "description": "If set to first_success or first_failure, placement ends when the condition is met",
+      "default": "none"
+    },
+    "places": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": [
+          { 
+            "$ref": "feature_ref.schema.json",
+            "variable": true,
+            "description": "Feature to place"
+          },
+          {
+            "type": "string",
+            "contentMediaType": "text/molang",
+            "description": "Condition for placement"
+          }
+        ],
+        "minItems": 1,
+        "variable": true,
+        "description": "Features to place"
+      }
+    }
+  },
+  "patternProperties": {
+    "^\\$[a-z_][a-z0-9_]*\\$$": {
+      "$ref": "variable_assignment.schema.json",
+      "description": "Variable assignment"
+    }
+  },
+  "required": ["places", "type"],
+  "additionalProperties": false
+}

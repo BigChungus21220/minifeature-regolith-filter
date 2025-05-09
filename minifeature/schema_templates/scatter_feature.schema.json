@@ -1,0 +1,35 @@
+{
+    
+    "type": "object",
+    "description": "Scatter feature - places a child feature following a distribution. Corresponds to `minecraft:scatter_feature`",
+    "properties": {
+        "type": { 
+            "const": "scatter",
+            "description": "Scatter feature - places a child feature following a distribution. Corresponds to `minecraft:scatter_feature`"
+        },
+        "places": {
+            "$ref": "feature_ref.schema.json",
+            "variable": true,
+            "description": "The feature to place"
+        },
+        "project_input_to_floor": {
+            "type": "boolean",
+            "variable": true,
+            "description": "If true, sets the feature's origin on the y axis to the heightmap value (`q.heightmap`)",
+            "default": false
+        },
+        "distribution": {
+            "$ref": "distribution.schema.json",
+            "variable": true,
+            "description": "How the feature will be placed"
+        }
+    },
+    "patternProperties": {
+        "^\\$[a-z_][a-z0-9_]*\\$$": {
+            "$ref": "variable_assignment.schema.json",
+            "description": "Variable assignment"
+        }
+    },
+    "required": ["places", "distribution", "type"],
+    "additionalProperties": false
+}

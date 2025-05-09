@@ -1,40 +1,114 @@
 {
-  "description": "Biome filter",
-  "type": "object",
-  "properties": {
-    "test": {
-      "type": "string",
-      "enum": ["has_biome_tag"],
-      "description": "Test to evaluate"
+    "description": "Biome filter",
+    "type": "object",
+    "properties": {
+        "test": {
+            "anyOf": [
+                {
+                    "type": "string",
+                    "enum": [
+                        "has_biome_tag"
+                    ],
+                    "variable": true,
+                    "description": "Test to evaluate"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "operator": {
+            "anyOf": [
+                {
+                    "type": "string",
+                    "enum": [
+                        "!=",
+                        "<",
+                        "<=",
+                        "<>",
+                        "=",
+                        "==",
+                        ">",
+                        ">=",
+                        "equals",
+                        "not"
+                    ],
+                    "variable": true,
+                    "description": "Operator to test with"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "value": {
+            "anyOf": [
+                {
+                    "anyOf": [
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "variable": true,
+                    "description": "Value to test against"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "subject": {
+            "anyOf": [
+                {
+                    "anyOf": [
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "variable": true
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "domain": {
+            "anyOf": [
+                {
+                    "anyOf": [
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "variable": true
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        }
     },
-    "operator": {
-      "type": "string",
-      "enum": ["!=", "<", "<=", "<>", "=", "==", ">", ">=", "equals", "not"],
-      "description": "Operator to test with"
-    },
-    "value": {
-      "anyOf": [
-        { "type": "boolean" },
-        { "type": "number" },
-        { "type": "string" }
-      ],
-      "description": "Value to test against"
-    },
-    "subject": {
-      "anyOf": [
-        { "type": "boolean" },
-        { "type": "number" },
-        { "type": "string" }
-      ]
-    },
-    "domain": {
-      "anyOf": [
-        { "type": "boolean" },
-        { "type": "number" },
-        { "type": "string" }
-      ]
-    }
-  },
-  "required": ["test", "value"],
-  "additionalProperties": false
+    "required": [
+        "test",
+        "value"
+    ],
+    "additionalProperties": false
 }

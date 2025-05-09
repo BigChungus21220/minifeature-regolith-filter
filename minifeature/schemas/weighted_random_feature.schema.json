@@ -1,31 +1,72 @@
 {
-  "description": "Weighted random feature - places a feature at random from a list",
-  "type": "object",
-  "properties": {
-    "type": {
-      "const": "weighted_random",
-      "description": "Weighted random feature - places a feature at random from a list"
+    "description": "Weighted random feature - places a feature at random from a list",
+    "type": "object",
+    "properties": {
+        "type": {
+            "const": "weighted_random",
+            "description": "Weighted random feature - places a feature at random from a list"
+        },
+        "places": {
+            "anyOf": [
+                {
+                    "type": "array",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "type": "array",
+                                "items": [
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "$ref": "feature_ref.schema.json",
+                                                "variable": true,
+                                                "description": "Feature to place"
+                                            },
+                                            {
+                                                "$ref": "variable.schema.json"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "type": "number",
+                                                "variable": true,
+                                                "description": "Weight"
+                                            },
+                                            {
+                                                "$ref": "variable.schema.json"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "minItems": 2,
+                                "maxItems": 2,
+                                "variable": true
+                            },
+                            {
+                                "$ref": "variable.schema.json"
+                            }
+                        ]
+                    },
+                    "variable": true,
+                    "description": "Features to select from"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        }
     },
-    "places": {
-      "type": "array",
-      "items": {
-        "type": "array",
-        "items": [
-          {
-            "$ref": "feature_ref.schema.json",
-            "description": "Feature to place"
-          },
-          {
-            "type": "number",
-            "description": "Weight"
-          }
-        ],
-        "minItems": 2,
-        "maxItems": 2
-      },
-      "description": "Features to select from"
-    }
-  },
-  "required": ["places", "type"],
-  "additionalProperties": false
+    "patternProperties": {
+        "^\\$[a-z_][a-z0-9_]*\\$$": {
+            "$ref": "variable_assignment.schema.json",
+            "description": "Variable assignment"
+        }
+    },
+    "required": [
+        "places",
+        "type"
+    ],
+    "additionalProperties": false
 }

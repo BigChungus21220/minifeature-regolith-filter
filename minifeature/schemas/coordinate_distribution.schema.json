@@ -1,59 +1,104 @@
 {
-  "description": "Distribution on a coordinate axis",
-  "anyOf": [
-    {
-      "type": "string",
-      "contentMediaType": "text/molang",
-      "description": "Position relative to feature origin"
-    },
-    { 
-      "type": "number",
-      "description": "Position relative to feature origin" 
-    },
-    {
-      "type": "object",
-      "description": "Distribution of positions relative to feature origin",
-      "properties": {
-        "distribution": {
-          "type": "string",
-          "enum": [
-            "uniform",
-            "gaussian",
-            "inverse_gaussian",
-            "triangle",
-            "fixed_grid",
-            "jittered_grid"
-          ],
-          "description": "The distribution to use"
+    "description": "Distribution on a coordinate axis",
+    "anyOf": [
+        {
+            "type": "string",
+            "contentMediaType": "text/molang",
+            "description": "Position relative to feature origin"
         },
-        "extent": {
-          "type": "array",
-          "items": {
-            "anyOf": [
-              { "type": "number" },
-              {
-                "type": "string",
-                "contentMediaType": "text/molang"
-              }
-            ]
-          },
-          "minItems": 2,
-          "maxItems": 2,
-          "description": "The range to apply the distribution over"
+        {
+            "type": "number",
+            "description": "Position relative to feature origin"
         },
-        "grid_offset": {
-          "type": "integer",
-          "description": "Offset applied in step calculations",
-          "default": 0
-        },
-        "step_size": {
-          "type": "integer",
-          "description": "Step size used between placement positions",
-          "default": 1
+        {
+            "type": "object",
+            "description": "Distribution of positions relative to feature origin",
+            "properties": {
+                "distribution": {
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "enum": [
+                                "uniform",
+                                "gaussian",
+                                "inverse_gaussian",
+                                "triangle",
+                                "fixed_grid",
+                                "jittered_grid"
+                            ],
+                            "variable": true,
+                            "description": "The distribution to use"
+                        },
+                        {
+                            "$ref": "variable.schema.json"
+                        }
+                    ]
+                },
+                "extent": {
+                    "anyOf": [
+                        {
+                            "type": "array",
+                            "items": {
+                                "anyOf": [
+                                    {
+                                        "anyOf": [
+                                            {
+                                                "type": "number"
+                                            },
+                                            {
+                                                "type": "string",
+                                                "contentMediaType": "text/molang"
+                                            }
+                                        ],
+                                        "variable": true
+                                    },
+                                    {
+                                        "$ref": "variable.schema.json"
+                                    }
+                                ]
+                            },
+                            "minItems": 2,
+                            "maxItems": 2,
+                            "variable": true,
+                            "description": "The range to apply the distribution over"
+                        },
+                        {
+                            "$ref": "variable.schema.json"
+                        }
+                    ]
+                },
+                "grid_offset": {
+                    "anyOf": [
+                        {
+                            "type": "integer",
+                            "variable": true,
+                            "description": "Offset applied in step calculations",
+                            "default": 0
+                        },
+                        {
+                            "$ref": "variable.schema.json"
+                        }
+                    ]
+                },
+                "step_size": {
+                    "anyOf": [
+                        {
+                            "type": "integer",
+                            "variable": true,
+                            "description": "Step size used between placement positions",
+                            "default": 1
+                        },
+                        {
+                            "$ref": "variable.schema.json"
+                        }
+                    ]
+                }
+            },
+            "required": [
+                "distribution",
+                "extent"
+            ],
+            "additionalProperties": false
         }
-      },
-      "required": ["distribution", "extent"],
-      "additionalProperties": false
-    }
-  ]
+    ]
 }

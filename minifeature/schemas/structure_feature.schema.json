@@ -1,64 +1,150 @@
 {
-  "description": "Structure feature - places a structure",
-  "type": "object",
-  "properties": {
-    "type": { 
-      "const": "structure",
-      "description": "Structure feature - places a structure"
-    },
-    "places_structure": {
-      "type": "string",
-      "description": "Structure to place"
-    },
-    "adjustment_radius": {
-      "type": "integer",
-      "minimum": 0,
-      "maximum": 16,
-      "description": "Square radius on the x-z plane to try placing the struture in",
-      "default": 0
-    },
-    "facing_direction": {
-      "type": "string",
-      "enum": ["north", "south", "east", "west", "random"],
-      "description": "Direction to rotate the feature in. `south` is usually the most stable",
-      "default": "south"
-    },
-    "constraints": {
-      "type": "object",
-      "properties": {
-        "grounded": {
-          "type": "object",
-          "additionalProperties": false,
-          "description": "If included, all blocks directly below the feature's bottom layer's non-empty blocks may not be air, water, or lava"
+    "description": "Structure feature - places a structure",
+    "type": "object",
+    "properties": {
+        "type": {
+            "const": "structure",
+            "description": "Structure feature - places a structure"
         },
-        "unburied": {
-          "type": "object",
-          "additionalProperties": false,
-          "description": "If included, all blocks directly above the feature's top layer's non-empty blocks must be air"
+        "places_structure": {
+            "anyOf": [
+                {
+                    "type": "string",
+                    "variable": true,
+                    "description": "Structure to place"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
         },
-        "block_intersection": {
-          "type": "object",
-          "properties": {
-            "block_allowlist": {
-              "type": "array",
-              "items": {
-                "$ref": "block_ref.schema.json"
-              },
-              "minItems": 1,
-              "description": "Blocks this feature may intersect"
-            }
-          },
-          "required": ["block_allowlist"],
-          "additionalProperties": false
+        "adjustment_radius": {
+            "anyOf": [
+                {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 16,
+                    "variable": true,
+                    "description": "Square radius on the x-z plane to try placing the struture in",
+                    "default": 0
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "facing_direction": {
+            "anyOf": [
+                {
+                    "type": "string",
+                    "enum": [
+                        "north",
+                        "south",
+                        "east",
+                        "west",
+                        "random"
+                    ],
+                    "variable": true,
+                    "description": "Direction to rotate the feature in. `south` is usually the most stable",
+                    "default": "south"
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
+        },
+        "constraints": {
+            "anyOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "grounded": {
+                            "anyOf": [
+                                {
+                                    "type": "object",
+                                    "additionalProperties": false,
+                                    "variable": true,
+                                    "description": "If included, all blocks directly below the feature's bottom layer's non-empty blocks may not be air, water, or lava"
+                                },
+                                {
+                                    "$ref": "variable.schema.json"
+                                }
+                            ]
+                        },
+                        "unburied": {
+                            "anyOf": [
+                                {
+                                    "type": "object",
+                                    "additionalProperties": false,
+                                    "variable": true,
+                                    "description": "If included, all blocks directly above the feature's top layer's non-empty blocks must be air"
+                                },
+                                {
+                                    "$ref": "variable.schema.json"
+                                }
+                            ]
+                        },
+                        "block_intersection": {
+                            "anyOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "block_allowlist": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "anyOf": [
+                                                            {
+                                                                "$ref": "block_ref.schema.json",
+                                                                "variable": true
+                                                            },
+                                                            {
+                                                                "$ref": "variable.schema.json"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "minItems": 1,
+                                                    "variable": true,
+                                                    "description": "Blocks this feature may intersect"
+                                                },
+                                                {
+                                                    "$ref": "variable.schema.json"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "block_allowlist"
+                                    ],
+                                    "additionalProperties": false,
+                                    "variable": true
+                                },
+                                {
+                                    "$ref": "variable.schema.json"
+                                }
+                            ]
+                        }
+                    },
+                    "additionalProperties": false,
+                    "variable": true
+                },
+                {
+                    "$ref": "variable.schema.json"
+                }
+            ]
         }
-      },
-      "additionalProperties": false
-    }
-  },
-  "required": [
-    "places_structure",
-    "constraints",
-    "type"
-  ],
-  "additionalProperties": false
+    },
+    "patternProperties": {
+        "^\\$[a-z_][a-z0-9_]*\\$$": {
+            "$ref": "variable_assignment.schema.json",
+            "description": "Variable assignment"
+        }
+    },
+    "required": [
+        "places_structure",
+        "constraints",
+        "type"
+    ],
+    "additionalProperties": false
 }

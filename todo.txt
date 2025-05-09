@@ -1,0 +1,52 @@
+templates & inherited features
+
+templates:
+
+definition:
+
+<templated_feature> {
+   type: ...
+   prop: ...
+}
+
+reference:
+
+extends: <templated_feature>
+
+
+variables:
+
+assignment:
+$my_var$: ...
+
+usage:
+my_prop: $my_var$
+my_prop: "return $my_var$;"
+
+
+
+procedure:
+
+
+validate
+
+run template & variable replacement
+   register templates
+   for all minifeatures
+      if feature is template
+         run template replacement
+      track variables & run replacements
+
+remove variables from schemas
+   edit variable.schema.json, variable_assignment.schema.json to "not": {}
+
+re-validate
+
+run rest of algorithm
+
+
+detect cyclical dependencies
+- no protection currently
+- requires dependency graph (again)
+   - track template & feature source files & references
+   - run topo sort to find cycles

@@ -1,0 +1,73 @@
+{
+  "description": "Feature rule - places features in the world",
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "rule",
+      "description": "Feature rule - places features in the world"
+    },
+    "conditions": {
+      "type": "object",
+      "properties": {
+        "placement_pass": {
+          "type": "string",
+          "enum": [
+            "pregeneration_pass",
+            "first_pass",
+            "before_underground_pass",
+            "underground_pass",
+            "after_underground_pass",
+            "before_surface_pass",
+            "surface_pass",
+            "after_surface_pass",
+            "before_sky_pass",
+            "sky_pass",
+            "after_sky_pass",
+            "final_pass"
+          ],
+          "variable": true,
+          "description": "Suggests when to run this feature during generation"
+        },
+        "minecraft:biome_filter": {
+          "anyOf": [
+            {
+              "$ref": "filter_test.schema.json"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "filter_group.schema.json",
+                "variable": true
+              },
+              "minItems": 1
+            }
+          ],
+          "variable": true,
+          "description": "Biome filter this chunk must meet"
+        }
+      },
+      "required": ["placement_pass"],
+      "additionalProperties": false,
+      "variable": true,
+      "description": "Conditions for the feature to be placed in a given chunk"
+    },
+    "distribution": {
+      "$ref": "distribution.schema.json",
+      "variable": true,
+      "description": "How the feature will be placed"
+    },
+    "places": { 
+      "$ref": "feature_ref.schema.json",
+      "variable": true,
+      "description": "The feature to place"
+    }
+  },
+  "patternProperties": {
+    "^\\$[a-z_][a-z0-9_]*\\$$": {
+      "$ref": "variable_assignment.schema.json",
+      "description": "Variable assignment"
+    }
+  },
+  "required": ["conditions", "places", "distribution", "type"],
+  "additionalProperties": false
+}

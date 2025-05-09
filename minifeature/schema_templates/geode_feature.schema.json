@@ -1,0 +1,164 @@
+{
+  "description": "Geode feature - places a geode-like structure",
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "geode",
+      "description": "Geode feature - places a geode-like structure"
+    },
+    "max_radius": {
+      "type": "integer",
+      "variable": true,
+      "description": "Maximum radius of generated geode"
+    },
+    "filler": {
+      "$ref": "block_ref.schema.json",
+      "variable": true,
+      "description": "Block to use as the geode's core"
+    },
+    "inner_layer": {
+      "$ref": "block_ref.schema.json",
+      "variable": true,
+      "description": "Block to surround the core with"
+    },
+    "alternate_inner_layer": {
+      "$ref": "block_ref.schema.json",
+      "variable": true,
+      "description": "Alternate block to surround the core with"
+    },
+    "middle_layer": {
+      "$ref": "block_ref.schema.json",
+      "variable": true,
+      "description": "Block to surround the inner layer with"
+    },
+    "outer_layer": {
+      "$ref": "block_ref.schema.json",
+      "variable": true,
+      "description": "Block to surround the middle layer with"
+    },
+    "min_outer_wall_distance": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10,
+      "variable": true
+    },
+    "max_outer_wall_distance": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20,
+      "variable": true
+    },
+    "min_distribution_points": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10,
+      "variable": true
+    },
+    "max_distribution_points": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20,
+      "variable": true
+    },
+    "min_point_offset": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10,
+      "variable": true
+    },
+    "max_point_offset": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10,
+      "variable": true
+    },
+    "crack_point_offset": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10,
+      "variable": true
+    },
+    "generate_crack_chance": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": true,
+      "description": "Chance to generate a crack"
+    },
+    "base_crack_size": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 5,
+      "variable": true,
+      "description": "How large the crack should be"
+    },
+    "noise_multiplier": {
+      "type": "number",
+      "variable": true
+    },
+    "use_potential_placements_chance": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": true,
+      "description": "Chance for a \"special block\" to be placed in the geode (Unclear what this does)"
+    },
+    "use_alternate_layer0_chance": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": true,
+      "description": "Chance for an inner layer block to use the alternate inner layer block"
+    },
+    "invalid_blocks_threshold": {
+      "type": "integer",
+      "variable": true,
+      "description": "Something to do with aborting generation"
+    },
+    "placements_require_layer0_alternate": {
+      "type": "boolean",
+      "variable": true,
+      "description": "If true, inner placements only occur when the alternate inner layer is used"
+    },
+    "inner_placements": {
+      "type": "array",
+      "items": {
+        "$ref": "block_ref.schema.json",
+        "variable": true
+      },
+      "minItems": 1,
+      "variable": true,
+      "description": "Blocks to distribute in the inner layer"
+    }
+  },
+  "patternProperties": {
+    "^\\$[a-z_][a-z0-9_]*\\$$": {
+      "$ref": "variable_assignment.schema.json",
+      "description": "Variable assignment"
+    }
+  },
+  "required": [
+    "max_radius",
+    "filler",
+    "inner_layer",
+    "alternate_inner_layer",
+    "middle_layer",
+    "outer_layer",
+    "min_outer_wall_distance",
+    "max_outer_wall_distance",
+    "min_distribution_points",
+    "max_distribution_points",
+    "min_point_offset",
+    "max_point_offset",
+    "crack_point_offset",
+    "generate_crack_chance",
+    "base_crack_size",
+    "noise_multiplier",
+    "use_potential_placements_chance",
+    "use_alternate_layer0_chance",
+    "placements_require_layer0_alternate",
+    "invalid_blocks_threshold",
+    "type"
+  ],
+  "additionalProperties": false
+}

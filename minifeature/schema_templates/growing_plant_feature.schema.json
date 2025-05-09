@@ -1,0 +1,106 @@
+{
+  "description": "Growing plant feature - places a column of blocks like vines or sugarcane",
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "growing_plant",
+      "description": "Growing plant feature - places a column of blocks like vines or sugarcane"
+    },
+    "head_blocks": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": [
+          {
+            "$ref": "block_ref.schema.json",
+            "variable": true,
+            "description": "Block to place"
+          },
+          {
+            "type": "number",
+            "variable": true,
+            "description": "Weight"
+          }
+        ],
+        "variable": true
+      },
+      "variable": true,
+      "description": "Blocks to place as the head block of the feature"
+    },
+    "body_blocks": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": [
+          {
+            "$ref": "block_ref.schema.json",
+            "variable": true,
+            "description": "Block to place"
+          },
+          {
+            "type": "number",
+            "variable": true,
+            "description": "Weight"
+          }
+        ],
+        "variable": true
+      },
+      "variable": true,
+      "description": "Blocks to place in the middle of the feature"
+    },
+    "growth_direction": {
+      "type": "string",
+      "enum": ["up", "down"],
+      "variable": true,
+      "description": "Direction for the feature to generate in"
+    },
+    "allow_water": {
+      "type": "boolean",
+      "variable": true,
+      "description": "If true, growth may start in water (this may be buggy)",
+      "default": false
+    },
+    "age": {
+      "$ref": "integer_range.schema.json",
+      "variable": true,
+      "description": "Sets the age state of the top block"
+    },
+    "height_distribution": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": [
+          { 
+            "$ref": "integer_range.schema.json",
+            "variable": true,
+            "description": "Range"
+          },
+          {
+            "type": "number",
+            "variable": true,
+            "description": "Weight"
+          }
+        ],
+        "minItems": 2,
+        "maxItems": 2,
+        "variable": true
+      },
+      "minItems": 1,
+      "variable": true
+    }
+  },
+  "patternProperties": {
+    "^\\$[a-z_][a-z0-9_]*\\$$": {
+      "$ref": "variable_assignment.schema.json",
+      "description": "Variable assignment"
+    }
+  },
+  "required": [
+    "height_distribution",
+    "growth_direction",
+    "head_blocks",
+    "body_blocks",
+    "type"
+  ],
+  "additionalProperties": false
+}
