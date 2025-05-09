@@ -640,8 +640,9 @@ function resolveVars(value, vars) {
     const resolved = {};
     for (const [key, val] of Object.entries(value)) {
       if (var_pattern.test(key)){
+        resolved[key] = resolveVars(val, vars);
         if (!(key in vars)) {
-          vars[key] = resolveVars(val, vars);
+          vars[key] = resolved[key];
         }
       } else {
         resolved[key] = resolveVars(val, structuredClone(vars));
@@ -670,7 +671,9 @@ function resolve(feature, feature_namespace, vars){
   if ("type" in feature){
     getFeatureType(feature).forPlaces(feature, (subfeature) => {
       if (typeof subfeature == "object"){
-        subfeature = resolve(subfeature, feature_namespace, structuredClone(vars));
+        const res = resolve(subfeature, feature_namespace, structuredClone(vars));
+        Object.keys(subfeature).forEach(k => delete subfeature[k]);
+        Object.assign(subfeature, res);
       }
     });
 
