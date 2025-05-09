@@ -1,0 +1,15 @@
+{
+  "format_version": "1.13.0",
+  "minecraft:vegetation_patch_feature": {
+    "description": {
+      "identifier": "minifeature:templates/grass_0"
+    },
+    "vegetation_feature": "minifeature:templates/grass_0_0",
+    "horizontal_radius": 4,
+    "vertical_range": 2,
+    "depth": 0,
+    "ground_block": "minecraft:end_stone",
+    "replaceable_blocks": ["minecraft:air"],
+    "vegetation_chance": 0.1
+  }
+}

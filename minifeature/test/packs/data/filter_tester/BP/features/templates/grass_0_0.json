@@ -1,0 +1,16 @@
+{
+    "format_version": "1.13.0",
+    "minecraft:single_block_feature": {
+        "description": {
+            "identifier": "minifeature:templates/grass_0_0"
+        },
+        "places_block": "minecraft:grass",
+        "enforce_placement_rules": true,
+        "enforce_survivability_rules": true,
+        "may_attach_to": {
+            "bottom": [
+                "minecraft:end_stone"
+            ]
+        }
+    }
+}
