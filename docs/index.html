@@ -300,16 +300,18 @@
   const sidebar_content = document.getElementById("sidebar_content");
   const base_url = window.location.pathname;
 
-  let sections = {
-    "Overview": [],
-    "Schemas": []
-  };
+  let sections = {};
 
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
   
-  function makeSectionLink(id){
+  function makeSectionLink(id, level){
+    if (level === 2){
+      sections[id] = [];
+    } else {
+      sections[Object.keys(sections)[Object.keys(sections).length - 1]].push(id);
+    }
     return `<a class="section_link" href="${base_url}#${id}"><span class="material-symbols-outlined">link</span></a>`
   }
 
@@ -327,7 +329,7 @@
     let html = "";
     const ref_name = ref.split(".")[0];
     sections["Schemas"].push(ref_name);
-    html += `<h3 id=${ref_name}>${ref_name}${makeSectionLink(ref_name)}</h3>`
+    html += `<h3 id=${ref_name}>${ref_name}${makeSectionLink(ref_name), 3}</h3>`
     try {
       const data = await fetch(schema_prefix + ref);
       const json = await data.json();
@@ -476,18 +478,36 @@
 
   main_content.innerHTML = `
     <h1>MiniFeature Documentation</h1>
-    <h2 id="Overview">Overview${makeSectionLink("Overview")}</h2>
+    <h2 id="Overview">Overview${makeSectionLink("Overview", 2)}</h2>
     <div class="indent">
       <p>MiniFeature is a preprocessor for <a href="https://wiki.bedrock.dev/world-generation/world-generation-intro">MCBE world gen features</a>.</p>
-      <p>The MiniFeature format allows for inline feature definition, namespacing, and defining multiple features in one file.</p>
+      <p>The MiniFeature format allows for inline feature definition, templating, variables, namespacing, and defining multiple features in one file.</p>
       
-      <h3 id="Prerequisites">Prerequisites${makeSectionLink("Prerequisites")}</h3>
+      <h3 id="Prerequisites">Prerequisites${makeSectionLink("Prerequisites", 3)}</h3>
       <p>This documentation assumes you are familiar with <a href="https://wiki.bedrock.dev/guide/introduction">Minecraft Bedrock Edition addons</a>, <a href="https://wiki.bedrock.dev/world-generation/feature-types">vanilla world generation feature types</a>, and <a href="https://regolith-docs.readthedocs.io/en/latest/introduction/getting-started/">Regolith usage</a>.</p>
 
-      <h3 id="Installation">Installation${makeSectionLink("Installation")}</h3>
+      <h3 id="Installation">Installation${makeSectionLink("Installation", 3)}</h3>
       To install MiniFeature to a Regolith project, run <block>regolith install minifeature --profile=default</block> or <block>regolith install github.com/BigChungus21220/minifeature-regolith-filter/minifeature --profile=default</block>.
 
-      <h3 id="Usage">Usage${makeSectionLink("Usage")}</h3>
+      <h3 id="Editor-Setup">Editor Setup${makeSectionLink("Editor-Setup", 3)}</h3>
+      <p>If using VSCode, you may enable schema validation by adding the following to your <block>settings.json</block>:</p>
+${makeSnippet(
+`"json.schemas": [
+  {
+    "fileMatch": [
+      "**/*.minifeature.json"
+    ],
+    "url": "https://raw.githubusercontent.com/BigChungus21220/minifeature-regolith-filter/refs/heads/master/minifeature/schemas/feature_file.schema.json"
+  }
+],
+"yaml.schemas": {
+  "https://raw.githubusercontent.com/BigChungus21220/minifeature-regolith-filter/refs/heads/master/minifeature/schemas/feature_file.schema.json": "**/*.minifeature.yaml"
+}`, ".vscode/settings.json"
+)}
+    </div>
+
+    <h2 id="Usage">Usage${makeSectionLink("Usage", 2)}</h2>
+    <div class="indent">
       <p>MiniFeatures should be placed in <block>BP/minifeatures/</block> and should have the extension <block>.yaml</block>, <block>.json</block>, or <block>.jsonc</block>.&emsp;<block>.yaml</block> is recommended as it supports multiline strings, allowing for clean inline molang.</p>
       MiniFeature files start with a namespace for all features within the file. Multiple files may share the same namespace.
       <br/>
@@ -535,23 +555,44 @@
 }`, "myfeature.minifeature.yaml"
       )}
       <br/>
-      <h3 id="Editor-Setup">Editor Setup${makeSectionLink("Editor-Setup")}</h3>
-      <p>If using VSCode, you may enable schema validation by adding the following to your <block>settings.json</block>:</p>
-${makeSnippet(
-`"json.schemas": [
-  {
-    "fileMatch": [
-      "**/*.minifeature.json"
-    ],
-    "url": "https://raw.githubusercontent.com/BigChungus21220/minifeature-regolith-filter/refs/heads/master/minifeature/schemas/feature_file.schema.json"
+      <h3 id="Variables and Templates">Variables and Templates${makeSectionLink("Variables and Templates", 3)}</h3>
+      Minifeatures may contain variables as properties in the form <block>$var_name$</block>. Variables may contain any value, object, or array.<br/>
+      Variables may also be placed within a molang string, allowing for templated molang.<br/>
+      Minifeatures may also contain templates, which do not directly create features, but instead convert to inline features, which may differ based on the variables set.
+      ${makeSnippet(
+`{
+  namespace: "myfeature",
+
+  my_rule0: {
+    type: "rule",
+    $my_var$: "minecraft:oak_tree_feature",
+    places: {
+      type: "aggregate",
+      places: [
+        "my_scatter",
+        "$my_var$" # Replaced with "minecraft:oak_tree_feature".
+        {
+          inherits: "<my_templated_scatter>"
+        }
+      ]
+    },
+    ...
   }
-],
-"yaml.schemas": {
-  "https://raw.githubusercontent.com/BigChungus21220/minifeature-regolith-filter/refs/heads/master/minifeature/schemas/feature_file.schema.json": "**/*.minifeature.yaml"
-}`, ".vscode/settings.json"
-)}
+
+  my_scatter: {
+    places: $my_var$ # Fails to replace since $my_var$ is out of scope.
+    ...
+  }
+
+  &lt;my_templated_scatter&gt: {
+    places: $my_var$ # Replaced with "minecraft:oak_tree_feature" as it is templated.
+    ...
+  }
+}`, "myfeature.minifeature.yaml"
+      )}
+      <br/>
     </div>
-    <h2 id="Schemas">Schemas${makeSectionLink("Schemas")}</h2>
+    <h2 id="Schemas">Schemas${makeSectionLink("Schemas", 2)}</h2>
     <div id="schema_display" class="indent">
   `;
 

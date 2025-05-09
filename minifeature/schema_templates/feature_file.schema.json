@@ -18,7 +18,8 @@
         {
           "$ref": "feature_rule.schema.json"
         }
-      ]
+      ],
+      "description": "Feature or feature rule"
     },
     "^(?!namespace$)(<[a-z_][a-z0-9_]*>)$": {
       "$ref": "cond_ignore.schema.json",
@@ -29,7 +30,8 @@
         {
           "$ref": "feature_rule.schema.json"
         }
-      ]
+      ],
+      "description": "Feature or feature rule template"
     }
   },
   "required": ["namespace"],

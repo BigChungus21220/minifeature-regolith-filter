@@ -4,7 +4,7 @@
 ## Overview
 MiniFeature is a preprocessor for MCBE world gen features.
 
-The MiniFeature format allows for inline feature definition, namespacing, and defining multiple features in one file.
+The MiniFeature format allows for inline feature definition, templating, variables, namespacing, and defining multiple features in one file.
 
 ## Installation
 To install MiniFeature to a Regolith project, run ```regolith install minifeature --profile=default``` or ```regolith install github.com/BigChungus21220 minifeature-regolith-filter/minifeature --profile=default```.
