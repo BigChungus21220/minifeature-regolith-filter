@@ -33,6 +33,7 @@
 
   <plant>: {
     type: vegetation_patch,
+    $some_var$: minecraft:water,
     places: {
       type: block,
       places_block: $places_block$,
@@ -40,7 +41,8 @@
       enforce_survivability_rules: true,
       may_attach_to: {
         bottom: [
-          minecraft:end_stone
+          minecraft:end_stone,
+          $some_var$
         ]
       }
     },
@@ -49,7 +51,8 @@
     depth: 0,
     ground_block: minecraft:end_stone,
     replaceable_blocks: [
-      minecraft:air
+      minecraft:air,
+      $some_var$
     ],
     vegetation_chance: 0.1
   }

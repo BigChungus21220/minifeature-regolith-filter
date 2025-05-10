@@ -686,7 +686,7 @@ function resolve(feature, feature_namespace, vars){
         namespace = feature_namespace;
       }
       let name = match[3];
-      feature = resolve(templates[namespace][name], feature_namespace, structuredClone(vars));
+      feature = resolve(structuredClone(templates[namespace][name]), feature_namespace, structuredClone(vars));
     } else {
       console.error("feature.inherits does not meet expected pattern. (This state should be unreachable)");
     }

@@ -9,7 +9,8 @@
         "enforce_survivability_rules": true,
         "may_attach_to": {
             "bottom": [
-                "minecraft:end_stone"
+                "minecraft:end_stone",
+                "minecraft:water"
             ]
         }
     }

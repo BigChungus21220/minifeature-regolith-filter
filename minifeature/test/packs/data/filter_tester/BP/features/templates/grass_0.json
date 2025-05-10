@@ -9,7 +9,7 @@
     "vertical_range": 2,
     "depth": 0,
     "ground_block": "minecraft:end_stone",
-    "replaceable_blocks": ["minecraft:air"],
+    "replaceable_blocks": ["minecraft:air", "minecraft:water"],
     "vegetation_chance": 0.1
   }
 }
