@@ -29,12 +29,19 @@
 				},
 				"filters": [
 					{
-						"filter": "minifeature"
+						"filter": "minifeature",
+						"settings": {
+							"features_directory": "./BP/features",
+							"feature_rules_directory": "./BP/feature_rules",
+							"minifeatures_directory": "./BP/minifeatures",
+							"project_namespace": "minifeature",
+							"namespaced_subfolders": true
+						}
 					},
 					{
 						"filter": "filter_tester",
 						"settings": {
-						  "errors_stop_execution": false
+						  	"errors_stop_execution": false
 						}
 					}
 				]

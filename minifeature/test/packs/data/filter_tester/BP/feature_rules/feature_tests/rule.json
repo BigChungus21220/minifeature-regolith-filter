@@ -2,7 +2,7 @@
     "format_version": "1.13.0",
     "minecraft:feature_rules": {
         "description": {
-            "identifier": "minifeature:rule",
+            "identifier": "minifeature:feature_tests/rule",
             "places_feature": "minifeature:samples/sample0"
         },
         "conditions": {

@@ -1,10 +1,10 @@
 {
+  "description": "A filter for generating world gen features.",
   "filters": [
     {
       "runWith": "nodejs",
       "script": "./parser.js",
       "name": "MiniFeature",
-      "description": "A filter for generating world gen features.",
       "requirements": "./"
     }
   ]

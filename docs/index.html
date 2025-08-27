@@ -328,8 +328,8 @@
   async function document_ref(ref) {
     let html = "";
     const ref_name = ref.split(".")[0];
-    sections["Schemas"].push(ref_name);
-    html += `<h3 id=${ref_name}>${ref_name}${makeSectionLink(ref_name), 3}</h3>`
+    //sections["Schemas"].push(ref_name);
+    html += `<h3 id=${ref_name}>${ref_name}${makeSectionLink(ref_name, 3)}</h3>`
     try {
       const data = await fetch(schema_prefix + ref);
       const json = await data.json();
@@ -504,6 +504,20 @@ ${makeSnippet(
   "https://raw.githubusercontent.com/BigChungus21220/minifeature-regolith-filter/refs/heads/master/minifeature/schemas/feature_file.schema.json": "**/*.minifeature.yaml"
 }`, ".vscode/settings.json"
 )}
+
+      <h3 id="Config">Config${makeSectionLink("Config", 3)}</h3>
+      <p>Minifeatures uses the following default config:</p>
+      ${makeSnippet(
+`"settings": {
+    "features_directory": "./BP/features", // path to the output features folder
+    "feature_rules_directory": "./BP/feature_rules", // path to the output feature rules folder
+    "minifeatures_directory": "./BP/minifeatures", // path to the input minifeatures folder
+    "project_namespace": "minifeature", // vanilla namespace to use for generated features
+    "namespaced_subfolders": true // whether or not features are separated into different folders based on their minifeature namespace
+  }
+`, "config.json -> regolith.profiles.{profile}.filters.{minifeature filter}"
+)}
+      <p>Fields may be left out and will be assumed to be the default value.</p>
     </div>
 
     <h2 id="Usage">Usage${makeSectionLink("Usage", 2)}</h2>
