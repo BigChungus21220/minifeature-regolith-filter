@@ -86,13 +86,13 @@ export function forEachFile(directory, fn, recursive=false){
 }
 
 // resolves variables recursively
-export function resolveVars(value, vars) {
+export function resolveVars(value, vars, context) {
   if (typeof value === 'string') {
     if (var_pattern.test(value)) {
       if (value in vars) {
         return vars[value];
       } else {
-        console.warn(`Unresolved variable "${value}"`);
+        console.warn(`Unresolved variable "${value}" in ${context}`);
         return value;
       }
     }
@@ -101,26 +101,26 @@ export function resolveVars(value, vars) {
       if (match in vars) {
         return vars[match];
       } else {
-        console.warn(`Unresolved inner variable "${value}"`);
+        console.warn(`Unresolved inner variable "${value}" in ${context}`);
         return value;
       }
     });
   } else if (Array.isArray(value)) {
     const resolved = [];
     for (const val of value){
-      resolved.push(resolveVars(val, vars));
+      resolved.push(resolveVars(val, vars, context));
     }
     return resolved;
   } else if (value !== null && typeof value === 'object') {
     const resolved = {};
     for (const [key, val] of Object.entries(value)) {
       if (var_pattern.test(key)){
-        resolved[key] = resolveVars(val, vars);
+        resolved[key] = resolveVars(val, vars, context);
         if (!(key in vars)) {
           vars[key] = resolved[key];
         }
       } else {
-        resolved[key] = resolveVars(val, structuredClone(vars));
+        resolved[key] = resolveVars(val, structuredClone(vars), context);
       }
     }
     return resolved;

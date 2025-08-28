@@ -34,7 +34,7 @@ export function createFeature(namespace, name, object, vars={}){
         return new FeatureTemplate(namespace, name, object, vars);
     }
 
-    object = resolveVars(object, vars);
+    object = resolveVars(object, vars, `${namespace}.${name}`);
 
     if ("inherits" in object){
         //return new TemplateInstance(namespace, name, object, vars);

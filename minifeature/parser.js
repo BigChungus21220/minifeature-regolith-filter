@@ -44,7 +44,6 @@ if (!fs.existsSync(settings.minifeatures_directory)){
   process.exit(0);
 }
 
-// need to delay normal features until after templates are compiled
 let featureStack = [];
 let templateStack = [];
 
