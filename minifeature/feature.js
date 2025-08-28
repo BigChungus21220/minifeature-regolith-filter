@@ -44,7 +44,8 @@ export function createFeature(namespace, name, object, vars={}){
         let template = `${settings.project_namespace}:${template_namespace}${settings.namespaced_subfolders ? "/" : "_"}${template_name}`;
 
         if (templates.has(template)){
-            return createFeature(namespace, name, structuredClone(templates.get(template).object), {...vars, ...templates.get(template).vars});
+            console.log(templates.get(template).object);
+            return createFeature(namespace, name, structuredClone(templates.get(template).object), {...templates.get(template).vars, ...vars});
         } else {
             throw new Error(`Template, ${template_namespace}.${template_name}, not found`);
         }
@@ -176,7 +177,7 @@ class FeatureRule extends Feature {
     }
 
     resolve(vars){
-        vars = {...vars, ...this.vars};
+        vars = {...this.vars, ...vars};
         this.object.places = this.normalizeReference(this.object.places, vars);
     }
 
@@ -203,7 +204,7 @@ class AggregateFeature extends Feature {
     }
 
     resolve(vars){
-        vars = {...vars, ...this.vars};
+        vars = {...this.vars, ...vars};
         for (let i = 0; i < this.object.places.length; i++){
             this.object.places[i] = this.normalizeReference(this.object.places[i], vars, i);
         }
@@ -254,7 +255,7 @@ class ConditionalListFeature extends Feature {
     }
 
     resolve(vars){
-        vars = {...vars, ...this.vars};
+        vars = {...this.vars, ...vars};
         for (let i = 0; i < this.object.places.length; i++){
             let [ref, condition] = this.object.places[i];
             const wrapper = {
@@ -360,7 +361,7 @@ class ScatterFeature extends Feature {
     }
 
     resolve(vars){
-        vars = {...vars, ...this.vars};
+        vars = {...this.vars, ...vars};
         this.object.places = this.normalizeReference(this.object.places, vars);
     }
     
@@ -389,7 +390,7 @@ class SearchFeature extends Feature {
     }
 
     resolve(vars){
-        vars = {...vars, ...this.vars};
+        vars = {...this.vars, ...vars};
         this.object.places = this.normalizeReference(this.object.places, vars);
     }
     
@@ -440,7 +441,7 @@ class SurfaceSnapFeature extends Feature {
     }
 
     resolve(vars){
-        vars = {...vars, ...this.vars};
+        vars = {...this.vars, ...vars};
         this.object.places = this.normalizeReference(this.object.places, vars);
     }
     
@@ -467,7 +468,7 @@ class VegetationPatchFeature extends Feature {
     }
 
     resolve(vars){
-        vars = {...vars, ...this.vars};
+        vars = {...this.vars, ...vars};
         this.object.places = this.normalizeReference(this.object.places, vars);
     }
     
@@ -494,7 +495,7 @@ class WeightedRandomFeature extends Feature {
     }
 
     resolve(vars){
-        vars = {...vars, ...this.vars};
+        vars = {...this.vars, ...vars};
         for (let i = 0; i < this.object.places.length; i++){
             this.object.places[i][0] = this.normalizeReference(this.object.places[i][0], vars, i);
         }

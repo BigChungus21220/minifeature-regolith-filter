@@ -6,7 +6,8 @@
     $scatter_chance$: 25,
     places: {
       inherits: <plant>,
-      $places_block$: minecraft:grass
+      $places_block$: minecraft:grass,
+      $some_var$: minecraft:water,
     },
     conditions: {
       placement_pass: final_pass,
@@ -33,7 +34,7 @@
 
   <plant>: {
     type: vegetation_patch,
-    $some_var$: minecraft:water,
+    $some_var$: minecraft:air,
     places: {
       type: block,
       places_block: $places_block$,
