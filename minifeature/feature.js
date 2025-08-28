@@ -44,7 +44,6 @@ export function createFeature(namespace, name, object, vars={}){
         let template = `${settings.project_namespace}:${template_namespace}${settings.namespaced_subfolders ? "/" : "_"}${template_name}`;
 
         if (templates.has(template)){
-            console.log(templates.get(template).object);
             return createFeature(namespace, name, structuredClone(templates.get(template).object), {...templates.get(template).vars, ...vars});
         } else {
             throw new Error(`Template, ${template_namespace}.${template_name}, not found`);
