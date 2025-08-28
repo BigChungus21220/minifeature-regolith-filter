@@ -8,6 +8,7 @@ import {features, featureList, createFeature} from './feature.js';
 import {
   schema_dir,
   forEachFile,
+  template_name_pattern,
   settings
 } from './utils.js';
 
@@ -43,6 +44,9 @@ if (!fs.existsSync(settings.minifeatures_directory)){
   process.exit(0);
 }
 
+// need to delay normal features until after templates are compiled
+let featureStack = [];
+let templateStack = [];
 
 forEachFile(settings.minifeatures_directory, (data, filename) => {
   const filetype = filename.split('.').pop();
@@ -90,14 +94,33 @@ forEachFile(settings.minifeatures_directory, (data, filename) => {
   delete featureFile.namespace;
   
   for (const name in featureFile) {
-    try {
-      createFeature(namespace, name, featureFile[name]);
-    } catch (err) {
-      console.error(err.message);
-      success = false;
+    if (template_name_pattern.test(name)){
+      templateStack.push({name:name, namespace:namespace, object:featureFile[name]});
+    } else {
+      featureStack.push({name:name, namespace:namespace, object:featureFile[name]});
     }
   }
 }, true);
+
+// have to process templates first
+
+for (let template of templateStack){
+  try {
+    createFeature(template.namespace, template.name, template.object);
+  } catch (err) {
+    console.error(err.message);
+    success = false;
+  }
+}
+
+for (let feature of featureStack){
+  try {
+    createFeature(feature.namespace, feature.name, feature.object);
+  } catch (err) {
+    console.error(err.message);
+    success = false;
+  }
+}
 
 // scan vanilla features & rules in this pack
 
