@@ -82,32 +82,6 @@ export function createFeature(namespace, name, object, vars={}){
     }
 }
 
-class TemplateInstance {
-    constructor(namespace, name, object, vars){
-        this.namespace = namespace;
-        this.name = name;
-        this.object = object;
-        this.type = "template_instance";
-
-        this.vars = vars;
-        
-        const match = object.inherits.match(template_ref_pattern);
-        const template_namespace = match[2] ? match[2] : namespace;
-        const template_name = match[3]
-        this.template = `${settings.project_namespace}:${template_namespace}${settings.namespaced_subfolders ? "/" : "_"}${template_name}`;
-    }
-
-    resolve(vars){
-        vars = {...vars, ...this.vars};
-        if (templates.has(this.template)){
-            let feature = createFeature(this.namespace, this.name, structuredClone(templates.get(this.template).object), vars);
-            return feature.resolve(structuredClone(vars));
-        } else {
-            throw new Error(`Template, ${this.template.namespace}.${this.template.name}, not found`);
-        }
-    }
-}
-
 class FeatureTemplate {
     constructor(namespace, name, object, vars){
         this.namespace = namespace;
@@ -134,14 +108,6 @@ class Feature {
         this.identifier = `${settings.project_namespace}:${namespace}${settings.namespaced_subfolders ? "/" : "_"}${name}`;
 
         this.vars = vars;
-        /*for (let prop in this.object){
-            if (var_pattern.test(prop)){
-                if (!(prop in this.vars)) {
-                    this.vars[prop] = this.object[prop];
-                }
-                delete this.object[prop];
-            }
-        }*/
 
         if (featureList.has(this.identifier)) {
             throw new Error(`Duplicate feature in registry, ${this.identifier}`);
@@ -204,7 +170,8 @@ class Feature {
 class FeatureRule extends Feature {
     constructor(namespace, name, object, vars){
         super(namespace, name, object, vars);
-        this.path = `${settings.feature_rules_directory}/${namespace}${settings.namespaced_subfolders ? "/" : "_"}${name}.json`;
+        this.path = `${settings.feature_rules_directory}/${namespace}${settings.namespaced_subfolders ? `/${namespace}_` : "_"}${name}.json`;
+        this.identifier = `${settings.project_namespace}:${namespace}_${name}`;
         this.type = "rule";
     }
 
